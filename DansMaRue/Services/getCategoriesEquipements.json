@@ -1,0 +1,308 @@
+[{
+  "request": "getCategoriesEquipements",
+  "answer": {
+    "status": 0,
+    "version": 1,
+    "categories" : {
+      "0": {
+        "children_id": [
+          "10000",
+          "20000"
+        ]
+      },
+      "1000": {
+        "children_id": [
+          "1100",
+          "1200",
+          "1300",
+          "1400"
+        ],
+        "name": "Propreté, tags et dégradations",
+        "parent_id": "10000"
+      },
+      "1100": {
+        "name": "Poubelles non vidées",
+        "parent_id": "1000"
+      },
+      "1200": {
+        "name": "Etat du sol, plaintes, murs, cloisons et plafonds",
+        "parent_id": "1000"
+      },
+      "1300": {
+        "name": "Dans l'enceinte de la piscine",
+        "parent_id": "1000"
+      },
+      "1400": {
+        "name": "Dans le bassin",
+        "parent_id": "1000"
+      },
+      "2000": {
+        "children_id": [
+          "2001",
+          "2002",
+          "2003",
+          "2004",
+          "2005",
+          "2006",
+          "2007",
+          "2008",
+          "2009",
+          "2010",
+          "2011",
+          "2012",
+          "2013"
+        ],
+        "name": "Appareils et éclairages défectueux",
+        "parent_id": "10000"
+      },
+      "2001": {
+        "name": "Tripode",
+        "parent_id": "2000"
+      },
+      "2002": {
+        "name": "Distributeurs",
+        "parent_id": "2000"
+      },
+      "2003": {
+        "name": "Caisse automatique",
+        "parent_id": "2000"
+      },
+      "2004": {
+        "name": "Chaise de mise à l'eau PMR",
+        "parent_id": "2000"
+      },
+      "2005": {
+        "name": "Sèche-cheveux",
+        "parent_id": "2000"
+      },
+      "2006": {
+        "name": "Distributeur de savon",
+        "parent_id": "2000"
+      },
+      "2007": {
+        "name": "Répondeur téléphonique",
+        "parent_id": "2000"
+      },
+      "2008": {
+        "name": "Interphone / sonnette à l'entrée",
+        "parent_id": "2000"
+      },
+      "2009": {
+        "name": "Douches",
+        "parent_id": "2000"
+      },
+      "2010": {
+        "name": "Serrures de cabines de change ou d'aisance",
+        "parent_id": "2000"
+      },
+      "2011": {
+        "name": "Range casque moto",
+        "parent_id": "2000"
+      },
+      "2012": {
+        "name": "Fuite d'eau",
+        "parent_id": "2000"
+      },
+      "2013": {
+        "name": "Autre",
+        "parent_id": "2000"
+      },
+      "3000": {
+        "children_id": [
+          "3001",
+          "3002",
+          "3003",
+          "3004",
+          "3005",
+          "3006",
+          "3007",
+          "3008",
+          "3009",
+          "3010",
+          "3011",
+          "3012",
+          "3013"
+        ],
+        "name": "Mobilier dégradé",
+        "parent_id": "10000"
+      },
+      "3001": {
+        "name": "Panneau d'affichage dans le hall d'entrée",
+        "parent_id": "3000"
+      },
+      "3002": {
+        "name": "Banc, chaise",
+        "parent_id": "3000"
+      },
+      "3003": {
+        "name": "Table",
+        "parent_id": "3000"
+      },
+      "3004": {
+        "name": "Porte-manteau",
+        "parent_id": "3000"
+      },
+      "3005": {
+        "name": "Serrure de cabine de change",
+        "parent_id": "3000"
+      },
+      "3006": {
+        "name": "Casier dans les vestiaires",
+        "parent_id": "3000"
+      },
+      "3007": {
+        "name": "Casier à valeur sur le bassin",
+        "parent_id": "3000"
+      },
+      "3008": {
+        "name": "Porte",
+        "parent_id": "3000"
+      },
+      "3009": {
+        "name": "Miroir",
+        "parent_id": "3000"
+      },
+      "3010": {
+        "name": "Rangement du matériel",
+        "parent_id": "3000"
+      },
+      "3011": {
+        "name": "Ligne d'eau",
+        "parent_id": "3000"
+      },
+      "3012": {
+        "name": "Petit matériel sportif",
+        "parent_id": "3000"
+      },
+      "3013": {
+        "name": "Autre",
+        "parent_id": "3000"
+      },
+      "4000": {
+        "children_id": [
+          "4001",
+          "4002",
+          "4003",
+          "4004",
+          "4005"
+        ],
+        "name": "Eclairage défectueux",
+        "parent_id": "10000"
+      },
+      "4001": {
+        "name": "Eclairage de sécurité",
+        "parent_id": "4000"
+      },
+      "4002": {
+        "name": "Eclairage dans le hall",
+        "parent_id": "4000"
+      },
+      "4003": {
+        "name": "Eclairage dans la halle bassin",
+        "parent_id": "4000"
+      },
+      "4004": {
+        "name": "Eclairage ailleurs dans l'équipement",
+        "parent_id": "4000"
+      },
+      "4005": {
+        "name": "Eclairage à l'extérieur du bâtiment",
+        "parent_id": "4000"
+      },
+      "5000": {
+        "children_id": [
+          "5001",
+          "5002",
+          "5003",
+          "5004",
+          "5005"
+        ],
+        "name": "Signalétique défaillante",
+        "parent_id": "10000"
+      },
+      "5001": {
+        "name": "Signalisation de cheminement vers l'équipement",
+        "parent_id": "5000"
+      },
+      "5002": {
+        "name": "Panneau(x) d'information",
+        "parent_id": "5000"
+      },
+      "5003": {
+        "name": "Dans l'équipement",
+        "parent_id": "5000"
+      },
+      "5004": {
+        "name": "Dans les vestiaires",
+        "parent_id": "5000"
+      },
+      "5005": {
+        "name": "Dans la halle bassin",
+        "parent_id": "5000"
+      },
+      "6000": {
+        "children_id": [
+          "6001",
+          "6002",
+          "6003",
+          "6004"
+        ],
+        "name": "Rangement",
+        "parent_id": "10000"
+      },
+      "6001": {
+        "name": "Matériel sportif",
+        "parent_id": "6000"
+      },
+      "6002": {
+        "name": "Matériel de nettoyage",
+        "parent_id": "6000"
+      },
+      "6003": {
+        "name": "Matériaux dans l'enceinte",
+        "parent_id": "6000"
+      },
+      "6004": {
+        "name": "Autres",
+        "parent_id": "6000"
+      },
+      "10000": {
+        "children_id": [
+          "1000",
+          "2000",
+          "3000",
+          "4000",
+          "5000",
+          "6000"
+        ],
+        "name": "Piscines",
+        "parent_id": "0"
+      },
+      "21000": {
+        "children_id": [
+          "21001",
+          "21002"
+        ],
+        "name": "Dégradations",
+        "parent_id": "20000"
+      },
+      "21001": {
+        "name": "... salle de classe",
+        "alias": "Dégradations salle de classe",
+        "parent_id": "20000"
+      },
+      "21002": {
+        "name": "... de la cours",
+        "alias": "Dégradations de la cours",
+        "parent_id": "20000"
+      },
+      "20000": {
+        "children_id": [
+          "21000"
+        ],
+        "name": "Ecoles",
+        "parent_id": "0"
+      }     
+    }
+  }
+}]

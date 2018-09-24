@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="x5b-XH-g8d">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Montserrat-Regular.otf">
+            <string>Montserrat-Regular</string>
+        </array>
+        <array key="Montserrat-SemiBold.otf">
+            <string>Montserrat-SemiBold</string>
+        </array>
+    </customFonts>
+    <scenes>
+        <!--Thanks Anomaly View Controller-->
+        <scene sceneID="Dbg-UG-HBj">
+            <objects>
+                <viewController storyboardIdentifier="Mail" id="x5b-XH-g8d" customClass="ThanksAnomalyViewController" customModule="DansMaRue" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Asp-Qa-ULr"/>
+                        <viewControllerLayoutGuide type="bottom" id="aMw-rL-XxD"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="I4C-Nc-z2Q">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view alpha="0.5" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5Bw-j1-4FH">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8fV-fa-yoh">
+                                <rect key="frame" x="20" y="223" width="335" height="221"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="757" text="RESTEZ EN CONTACT !" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mBK-zm-c92">
+                                        <rect key="frame" x="18" y="8" width="299" height="57"/>
+                                        <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="247" verticalCompressionResistancePriority="754" text="Connectez-vous à" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c4V-cU-IMd">
+                                        <rect key="frame" x="110.5" y="75" width="114.5" height="17"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="17" id="FXh-Gr-uzF"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="14"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="753" text="ou renseignez uniquement" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KWs-0P-q0y">
+                                        <rect key="frame" x="19" y="138" width="297" height="17"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="17" id="xGR-va-CbC"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="14"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="241" verticalCompressionResistancePriority="756" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="characterWrap" translatesAutoresizingMaskIntoConstraints="NO" id="4GU-Q5-m1Z" customClass="UIButton_MyParisianAccount" customModule="DansMaRue" customModuleProvider="target">
+                                        <rect key="frame" x="71" y="102" width="193" height="31"/>
+                                        <color key="backgroundColor" red="0.87450980389999999" green="0.1333333333" blue="0.35294117650000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="31.5" id="6Hi-R1-dLi"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat" pointSize="14"/>
+                                        <state key="normal" title="MON COMPTE" image="monCompte">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="connectToCp:" destination="x5b-XH-g8d" eventType="touchUpInside" id="tKw-Xq-2LJ"/>
+                                            <segue destination="c8K-Px-6gG" kind="show" identifier="thanksToCompteParisien" id="ugL-U7-yxS"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="235" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aJd-ur-krK">
+                                        <rect key="frame" x="8" y="155" width="315" height="29"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="29" id="zVU-36-Fuz"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="14"/>
+                                        <state key="normal" title="votre adresse mail">
+                                            <color key="titleColor" red="0.87450980389999999" green="0.1333333333" blue="0.35294117650000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="enterMail:" destination="x5b-XH-g8d" eventType="touchUpInside" id="IyV-Xu-G3J"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="pour suivre la prise en charge de votre contribution." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qGM-WE-yNN">
+                                        <rect key="frame" x="10" y="183" width="315" height="34"/>
+                                        <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="14"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u7f-fh-S1T">
+                                        <rect key="frame" x="295" y="10" width="30" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="30" id="D0C-72-Wln"/>
+                                            <constraint firstAttribute="height" constant="30" id="ufO-Sx-ZUb"/>
+                                        </constraints>
+                                        <state key="normal" image="icon_exit"/>
+                                        <connections>
+                                            <action selector="closeModal:" destination="x5b-XH-g8d" eventType="touchUpInside" id="2zw-D7-I5g"/>
+                                            <action selector="closeModal:" destination="Uj8-T9-0NK" eventType="touchUpInside" id="40M-Y5-y3P"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="mBK-zm-c92" firstAttribute="top" secondItem="8fV-fa-yoh" secondAttribute="topMargin" id="0Pk-bm-fQr"/>
+                                    <constraint firstItem="KWs-0P-q0y" firstAttribute="leading" secondItem="8fV-fa-yoh" secondAttribute="leading" constant="19" id="2Zc-iS-7rC"/>
+                                    <constraint firstItem="u7f-fh-S1T" firstAttribute="top" secondItem="8fV-fa-yoh" secondAttribute="top" constant="10" id="6tX-Md-5A8"/>
+                                    <constraint firstItem="mBK-zm-c92" firstAttribute="leading" secondItem="8fV-fa-yoh" secondAttribute="leading" constant="18" id="7YI-Mq-u1I"/>
+                                    <constraint firstItem="4GU-Q5-m1Z" firstAttribute="top" secondItem="c4V-cU-IMd" secondAttribute="bottom" constant="10" id="7cN-qk-8PE"/>
+                                    <constraint firstItem="c4V-cU-IMd" firstAttribute="centerX" secondItem="8fV-fa-yoh" secondAttribute="centerX" id="Cbh-EV-JwO"/>
+                                    <constraint firstItem="KWs-0P-q0y" firstAttribute="centerX" secondItem="8fV-fa-yoh" secondAttribute="centerX" id="FQS-Vq-Xun"/>
+                                    <constraint firstItem="c4V-cU-IMd" firstAttribute="top" secondItem="mBK-zm-c92" secondAttribute="bottom" constant="10" id="I34-AP-Dqf"/>
+                                    <constraint firstItem="aJd-ur-krK" firstAttribute="leading" secondItem="8fV-fa-yoh" secondAttribute="leadingMargin" id="LPb-QA-UaX"/>
+                                    <constraint firstItem="4GU-Q5-m1Z" firstAttribute="leading" secondItem="8fV-fa-yoh" secondAttribute="leading" constant="71" id="O1W-c1-gbc"/>
+                                    <constraint firstAttribute="bottom" secondItem="qGM-WE-yNN" secondAttribute="bottom" constant="4" id="VCD-x8-yVV"/>
+                                    <constraint firstAttribute="trailing" secondItem="aJd-ur-krK" secondAttribute="trailing" constant="12" id="VGg-fA-VxM"/>
+                                    <constraint firstItem="4GU-Q5-m1Z" firstAttribute="centerX" secondItem="8fV-fa-yoh" secondAttribute="centerX" id="Znf-6T-V0W"/>
+                                    <constraint firstAttribute="bottom" secondItem="aJd-ur-krK" secondAttribute="bottom" constant="37" id="Zov-No-ubk"/>
+                                    <constraint firstItem="mBK-zm-c92" firstAttribute="centerX" secondItem="qGM-WE-yNN" secondAttribute="centerX" id="aR6-Ce-SGK"/>
+                                    <constraint firstItem="KWs-0P-q0y" firstAttribute="top" secondItem="4GU-Q5-m1Z" secondAttribute="bottom" constant="5" id="cj9-j4-pib"/>
+                                    <constraint firstItem="qGM-WE-yNN" firstAttribute="leading" secondItem="8fV-fa-yoh" secondAttribute="leading" constant="10" id="f1g-gk-zby"/>
+                                    <constraint firstItem="mBK-zm-c92" firstAttribute="centerX" secondItem="8fV-fa-yoh" secondAttribute="centerX" id="iK9-KV-AA8"/>
+                                    <constraint firstItem="aJd-ur-krK" firstAttribute="top" secondItem="KWs-0P-q0y" secondAttribute="bottom" id="l4U-0i-9c8"/>
+                                    <constraint firstAttribute="trailing" secondItem="qGM-WE-yNN" secondAttribute="trailing" constant="10" id="nYh-wZ-Acc"/>
+                                    <constraint firstItem="qGM-WE-yNN" firstAttribute="top" secondItem="KWs-0P-q0y" secondAttribute="bottom" constant="28" id="ojB-5n-uLG"/>
+                                    <constraint firstAttribute="width" secondItem="8fV-fa-yoh" secondAttribute="height" multiplier="144:95" id="r7k-BO-x0W"/>
+                                    <constraint firstAttribute="trailing" secondItem="u7f-fh-S1T" secondAttribute="trailing" constant="10" id="xkl-gq-bUZ"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="8fV-fa-yoh" firstAttribute="centerX" secondItem="I4C-Nc-z2Q" secondAttribute="centerX" id="bz2-SE-inc"/>
+                            <constraint firstAttribute="trailing" secondItem="8fV-fa-yoh" secondAttribute="trailing" constant="20" id="lhz-8v-bC7"/>
+                            <constraint firstItem="8fV-fa-yoh" firstAttribute="leading" secondItem="I4C-Nc-z2Q" secondAttribute="leading" constant="20" id="mbO-xA-Bea"/>
+                            <constraint firstItem="8fV-fa-yoh" firstAttribute="centerY" secondItem="I4C-Nc-z2Q" secondAttribute="centerY" id="oTk-LA-ncf"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="closeButtonMail" destination="u7f-fh-S1T" id="YBy-07-XXS"/>
+                        <outlet property="connectLabel" destination="c4V-cU-IMd" id="aEf-id-pIh"/>
+                        <outlet property="greyView" destination="8fV-fa-yoh" id="Ogu-aQ-18E"/>
+                        <outlet property="infoBisLabel" destination="qGM-WE-yNN" id="wf7-LS-0ce"/>
+                        <outlet property="infoLabel" destination="KWs-0P-q0y" id="jAp-9n-Zm7"/>
+                        <outlet property="mailButton" destination="aJd-ur-krK" id="cQo-D2-zgt"/>
+                        <outlet property="myAccountButton" destination="4GU-Q5-m1Z" id="GxN-Ry-kD0"/>
+                        <outlet property="stayTunedLabel" destination="mBK-zm-c92" id="VvQ-CV-MgN"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ojL-Ys-ikl" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-972" y="73"/>
+        </scene>
+        <!--Thanks Anomaly View Controller-->
+        <scene sceneID="Qyb-Me-f1A">
+            <objects>
+                <viewController storyboardIdentifier="Thanks" id="Uj8-T9-0NK" customClass="ThanksAnomalyViewController" customModule="DansMaRue" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="TiY-Oj-ymK"/>
+                        <viewControllerLayoutGuide type="bottom" id="7Cl-Ha-lRC"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="emT-hu-S27">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view alpha="0.5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hKr-zl-y23">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dlC-Mf-TmY">
+                                <rect key="frame" x="20" y="202" width="335" height="263"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Merci ! " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sFB-35-sWd">
+                                        <rect key="frame" x="4" y="121" width="319" height="21"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="21" id="HG8-CP-03b"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="20"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mxo-Xz-gzK">
+                                        <rect key="frame" x="293" y="8" width="30" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="30" id="MyB-KS-iv3"/>
+                                            <constraint firstAttribute="height" constant="30" id="r0O-uI-DAI"/>
+                                        </constraints>
+                                        <state key="normal" image="icon_exit"/>
+                                        <connections>
+                                            <action selector="closeModal:" destination="Uj8-T9-0NK" eventType="touchUpInside" id="r7X-VS-a8U"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Les services de la ville de Paris vous remercient pour votre contribution." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u9b-MI-MNv">
+                                        <rect key="frame" x="28" y="172" width="291" height="37.5"/>
+                                        <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="16"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="245" image="imgRemerciement" translatesAutoresizingMaskIntoConstraints="NO" id="qe0-Nb-A4M">
+                                        <rect key="frame" x="132" y="20" width="71" height="71"/>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="sFB-35-sWd" firstAttribute="centerY" secondItem="dlC-Mf-TmY" secondAttribute="centerY" id="HuX-zS-4E1"/>
+                                    <constraint firstAttribute="trailing" secondItem="mxo-Xz-gzK" secondAttribute="trailing" constant="12" id="INi-cR-86V"/>
+                                    <constraint firstAttribute="trailing" secondItem="u9b-MI-MNv" secondAttribute="trailing" constant="16" id="KpE-En-SQ6"/>
+                                    <constraint firstItem="qe0-Nb-A4M" firstAttribute="centerX" secondItem="dlC-Mf-TmY" secondAttribute="centerX" id="QjV-0R-E6m"/>
+                                    <constraint firstItem="qe0-Nb-A4M" firstAttribute="top" secondItem="dlC-Mf-TmY" secondAttribute="top" constant="20" id="VLj-jt-5Lv"/>
+                                    <constraint firstItem="sFB-35-sWd" firstAttribute="leading" secondItem="dlC-Mf-TmY" secondAttribute="leading" constant="4" id="YYC-ui-Ktd"/>
+                                    <constraint firstItem="mxo-Xz-gzK" firstAttribute="trailing" secondItem="sFB-35-sWd" secondAttribute="trailing" id="fu6-OJ-T8w"/>
+                                    <constraint firstItem="u9b-MI-MNv" firstAttribute="leading" secondItem="dlC-Mf-TmY" secondAttribute="leading" constant="28" id="m49-hc-e2h"/>
+                                    <constraint firstItem="mxo-Xz-gzK" firstAttribute="top" secondItem="dlC-Mf-TmY" secondAttribute="topMargin" id="nRM-Pa-AjR"/>
+                                    <constraint firstItem="sFB-35-sWd" firstAttribute="top" secondItem="qe0-Nb-A4M" secondAttribute="bottom" constant="30" id="pTh-I7-HG9"/>
+                                    <constraint firstItem="u9b-MI-MNv" firstAttribute="top" secondItem="sFB-35-sWd" secondAttribute="bottom" constant="30" id="pjL-5m-rN9"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="dlC-Mf-TmY" firstAttribute="centerY" secondItem="emT-hu-S27" secondAttribute="centerY" id="33X-0Q-pvy"/>
+                            <constraint firstAttribute="trailing" secondItem="hKr-zl-y23" secondAttribute="trailing" id="7Ej-PE-rd5"/>
+                            <constraint firstItem="dlC-Mf-TmY" firstAttribute="centerX" secondItem="emT-hu-S27" secondAttribute="centerX" id="KcR-e8-bVZ"/>
+                            <constraint firstItem="hKr-zl-y23" firstAttribute="leading" secondItem="emT-hu-S27" secondAttribute="leading" id="S8y-TM-Fpr"/>
+                            <constraint firstItem="7Cl-Ha-lRC" firstAttribute="top" secondItem="hKr-zl-y23" secondAttribute="bottom" id="U17-ky-6c2"/>
+                            <constraint firstAttribute="trailing" secondItem="dlC-Mf-TmY" secondAttribute="trailing" constant="20" id="avn-hs-5YM"/>
+                            <constraint firstItem="dlC-Mf-TmY" firstAttribute="leading" secondItem="emT-hu-S27" secondAttribute="leading" constant="20" id="ghh-yz-1Qx"/>
+                            <constraint firstItem="hKr-zl-y23" firstAttribute="top" secondItem="emT-hu-S27" secondAttribute="top" id="smE-sr-ibX"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="checkImage" destination="qe0-Nb-A4M" id="7yJ-2i-ox8"/>
+                        <outlet property="closeButton" destination="mxo-Xz-gzK" id="iWW-cD-1k4"/>
+                        <outlet property="subtitleLabel" destination="u9b-MI-MNv" id="dM8-Ex-lmE"/>
+                        <outlet property="thanksLabel" destination="sFB-35-sWd" id="PJx-Pt-a4Y"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="QCx-bC-9ue" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="183.75" y="69.718309859154928"/>
+        </scene>
+        <!--CompteParisien-->
+        <scene sceneID="xsi-UL-CLh">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="thanksToCompteParisien" storyboardName="CompteParisien" id="c8K-Px-6gG" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ihJ-4e-ixg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-973" y="551"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="icon_exit" width="24" height="24"/>
+        <image name="imgRemerciement" width="71" height="71"/>
+        <image name="monCompte" width="25" height="25"/>
+    </resources>
+</document>

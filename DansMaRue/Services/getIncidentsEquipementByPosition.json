@@ -1,0 +1,41 @@
+[{
+  "request": "getIncidentsEquipementByPosition",
+  "answer": {
+    "status": 0,
+    "equipements": {
+      "1002": {
+        "name": "Piscine Dunois",
+        "adresse": "70 Rue Dunois, 75013 Paris",
+        "latitude": 48.833077,
+        "longitude": 2.3663658000000396,
+        "parent_id": 1000,
+        "closest_incidents": [
+          {
+            "categoryId": 1001,
+            "equipementId": 1002,
+            "id": 301153,
+            "alias": "Poubelles non vidées",
+            "isIncidentFollowedByUser": false,
+            "state": "O",
+            "pictures": {
+              "incident_picture": "https://r57.rec.apps.paris.fr/sira/image?resource_type=photo_signalement&id=193654"
+            },
+            "source": "DansMaRue"
+          },
+          {
+            "categoryId": 2012,
+            "equipementId": 1002,
+            "id": 301154,
+            "alias": "Fuite d'eau",
+            "isIncidentFollowedByUser": true,
+            "state": "O",
+            "pictures": {
+              "incident_picture": "https://r57.rec.apps.paris.fr/sira/image?resource_type=photo_signalement&id=193655"
+            },
+            "source": "DansMaRue"
+          }
+        ]
+      }
+    }
+  }
+}]

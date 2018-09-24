@@ -1,0 +1,366 @@
+[{
+  "request": "getEquipements",
+  "answer": {
+    "status": 0,
+    "version": 1.123,
+    "equipements": {
+      "0": {
+        "name": "Anomalie dans un équipement municipal",
+        "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAMAAABrrFhUAAAAclBMVEX///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADCilrcAAAAJXRSTlMAwEAMHPPjzDP8A5BwsKBPIOBQYK9vZz4l5grnN/d7aA34ttKPWmzb+AAAA7VJREFUeF7k1EsKhEAMhsGAsR860jC0R8j9rzggsxD/RZYuvjpE2bt8Hm5c27lGrJ/NoFqNS21GtOw9/vq+GM63xE0ZxuIzHg6H5SeuDEn5qdow+QnJkJGfKgOXn2bIyi/JkJGfZkjJD5Wh5ofKUPMDZJjkB8pQ8wNkmOQHylDzQ2Wo+QEyTPIDZaj5ATJM8gNlqPmhMvT5Y99edqOIwSAKx+4J9xESgr73XOH9X5ElQjAeFYsSXTr//t98UU5styJ0TohhVPz0GKbFT49hXPz0GKbFT49hXPz0GMbFT49hSPyut34Yu24c+ttVjGFC/Kbz5dfu5TyJMdx7/LbT/Pv6fNq0GO47fsv6p+C6iDHccfzuh78i3tUY7vXktzz44R0W9WS4z5Pftj6SXDf5ZLjHk9/pMebJfzL0n/ym+THAPO3rZPjh0z+c/M4t0LP7ZOi/9l4vLYDL1XxN9l97b23Um/ma7L/29m2A3nxN9l97hzbAYLgmG+LXmLENMJqvyf43v+5JWUxvhv746QD+GOrx8/8K6DH0x88fQT2G/vjpfwb9MdTjZzoI6TG0xc91FNZjaIuf6TKkx9AWP9d1WI+hLX6uBxE9hrb4mZ7E9Bja4ud6FNVjaIuf51ncH8PDUQC3fBjRY2iLn+vTmB5DW/wMH0eNMey+6/EzfB43xFCPn3/0GOrxC5vjwRA/7+gxNMTPOnoM1fj5xxBDPX5ZMZTjlxdD7T88ImMoxC80hkL8UmMoxC80hsKbX2oMhfilxlCIX2gMhTe/1Bga4hdwTQ4dhmEYhmEYhmEYhmHKD2lK2v5L1QBq1L5OWLL2dcIata8Tlqx9nbBG7euEJWtfJ6xR+zphydrXCWvUvk5YsvZ1whq1rxOWrH2dsEbt64Qla18nrAH7zXkGELD/vwMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAT3blkAAAAIBB2PunvqLFmKUPAAAA0MupgxoIgiCGgYcgymgxmD/Fe7YUCjYEP6rI6gz4kPXNgCArM+Ah68kJgC4BbgSCriwBagSKsA4BagSCsAwBZgSKsg4BYgSCsgwBXgSKtB4BbgSCtBwBagSKth4BZgSCthwBYgSKuB4BXgSCuBwBWgSKuh4BVgSCurgJgPcH3XkfyyoItnQAAAAASUVORK5CYII=",
+        "children_id": [
+          10000,
+          20000
+        ]
+      },
+      "10000": {
+        "name": "Anomalie dans une piscine",
+        "placeholder_searchbar":"Quelle est la piscine concernée ?",
+        "msg_alert_no_equipement": "Vous devez sélectionner une piscine sur la carte ou saisir un nom de piscine dans la barre de recherche afin de déclarer une anomalie.",
+        "msg_alert_photo": "Dans les piscines, il est interdit de photographier des personnes.",
+         "icon": "data:image/png;base64,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",
+        "parent_id": "0",
+        "children_id": [
+          1001,
+          1002,
+          1003,
+          1004,
+          1005,
+          1006,
+          1007,
+          1008,
+          1009,
+          1010,
+          1011,
+          1012,
+          1013,
+          1014,
+          1015,
+          1016,
+          1017,
+          1018,
+          1019,
+          1020,
+          1021,
+          1022,
+          1023,
+          1024,
+          1025,
+          1026,
+          1027,
+          1028,
+          1029,
+          1030,
+          1031,
+          1032,
+          1033,
+          1034,
+          1035,
+          1036
+        ]
+      },
+      "1001": {
+        "name": "Piscine Joséphine Baker",
+        "adresse": "Quai François Mauriac, 75013 Paris",
+        "latitude": 48.83391109999999,
+        "longitude": 2.377615399999968,
+        "parent_id": 10000
+      },
+      "1002": {
+        "name": "Piscine Dunois",
+        "adresse": "70 Rue Dunois, 75013 Paris",
+        "latitude": 48.833077,
+        "longitude": 2.3663658000000396,
+        "parent_id": 10000
+      },
+      "1003": {
+        "name": "Piscine Municipale Jean-Taris",
+        "adresse": "16 Rue Thouin, 75005 Paris",
+        "latitude": 48.8447685,
+        "longitude": 2.347994999999969,
+        "parent_id": 10000
+      },
+      "1004": {
+        "name": "Piscine de la Cour des Lions",
+        "adresse": "9 Rue Alphonse Baudin, 75011 Paris",
+        "latitude": 48.860452,
+        "longitude": 2.370251000000053,
+        "parent_id": 10000
+      },
+      "1005": {
+        "name": "Piscine Georges Rigal",
+        "adresse": "115 Boulevard de Charonne, 75011 Paris",
+        "latitude": 48.856438,
+        "longitude": 2.393391000000065,
+        "parent_id": 10000
+      },
+      "1006": {
+        "name": "Piscine Château des Rentiers",
+        "adresse": "184 Rue du Château-des-Rentiers, 75013 Paris",
+        "latitude": 48.8304631,
+        "longitude": 2.3620034000000487,
+        "parent_id": 10000
+      },
+      "1007": {
+        "name": "Piscine Saint-Germain",
+        "adresse": "12 Rue Lobineau, 75006 Paris",
+        "latitude": 48.8517838,
+        "longitude": 2.3358901000000287,
+        "parent_id": 10000
+      },
+      "1008": {
+        "name": "Piscine Saint-Merri",
+        "adresse": "16 Rue du Renard, 75004 Paris",
+        "latitude": 48.8591413,
+        "longitude": 2.3524175000000014,
+        "parent_id": 10000
+      },
+      "1009": {
+        "name": "Piscine de la Butte aux Cailles",
+        "adresse": "5 Place Paul Verlaine, 75013 Paris",
+        "latitude": 48.82742830000001,
+        "longitude": 2.352474900000061,
+        "parent_id": 10000
+      },
+      "1010": {
+        "name": "Piscine Alfred Nakache",
+        "adresse": "4-12 Rue Denoyez, 75020 Paris",
+        "latitude": 48.82742830000001,
+        "longitude": 2.352474900000061,
+        "parent_id": 10000
+      },
+      "1011": {
+        "name": "Piscine Municipale Armand Massard",
+        "adresse": "66 Boulevard du Montparnasse, 75015 Paris",
+        "latitude": 48.84225,
+        "longitude": 2.321620800000005,
+        "parent_id": 10000
+      },
+      "1012": {
+        "name": "Piscine Roger Le Gall",
+        "adresse": "34 Boulevard Carnot, 75012 Paris",
+        "latitude": 48.8420785,
+        "longitude": 2.4125838999999587,
+        "parent_id": 10000
+      },
+      "1013": {
+        "name": "Piscine Georges Vallerey",
+        "adresse": "148 Avenue Gambetta, 75020 Paris",
+        "latitude": 48.8753888,
+        "longitude": 2.406186400000024,
+        "parent_id": 10000
+      },
+      "1014": {
+        "name": "Piscine Valeyre",
+        "adresse": "24 Rue de Rochechouart, 75009 Paris",
+        "latitude": 48.8780033,
+        "longitude": 2.345010499999944,
+        "parent_id": 10000
+      },
+      "1015": {
+        "name": "Piscine Municipale Aspirant Dunand",
+        "adresse": "20 Rue Saillard, 75014 Paris",
+        "latitude": 48.83182840000001,
+        "longitude": 2.3262763000000177,
+        "parent_id": 10000
+      },
+      "1016": {
+        "name": "Piscine Suzanne Berlioux",
+        "adresse": "10 Place de la Rotonde, 75001 Paris",
+        "latitude": 48.8628732,
+        "longitude": 2.343283299999939,
+        "parent_id": 10000
+      },
+      "1017": {
+        "name": "Piscine Jean Boiteux",
+        "adresse": "13 Rue Antoine-Julien Hénard, 75012 Paris",
+        "latitude": 48.8421084,
+        "longitude": 2.3893273999999565,
+        "parent_id": 10000
+      },
+      "1018": {
+        "name": "Piscine Georges Drigny",
+        "adresse": "18 Rue Bochart de Saron, 75009 Paris",
+        "latitude": 48.8819847,
+        "longitude": 2.3429843999999775,
+        "parent_id": 10000
+      },
+      "1019": {
+        "name": "Piscine Georges Hermant",
+        "adresse": "8-10 Rue David d'Angers, 75019 Paris",
+        "latitude": 48.8826541,
+        "longitude": 2.38963769999998,
+        "parent_id": 10000
+      },
+      "1020": {
+        "name": "Piscine Château-Landon",
+        "adresse": "31 Rue du Château Landon, 75010 Paris",
+        "latitude": 48.8833274,
+        "longitude": 2.3632884999999533,
+        "parent_id": 10000
+      },
+      "1021": {
+        "name": "Piscine Catherine Lagatu",
+        "adresse": "155 Avenue Parmentier, 75010 Paris",
+        "latitude": 48.8715431,
+        "longitude": 2.3694430000000466,
+        "parent_id": 10000
+      },
+      "1023": {
+        "name": "Piscine Municipale Didot",
+        "adresse": "22 Avenue Georges Lafenestre, 75014 Paris",
+        "latitude": 48.8242092,
+        "longitude": 2.3094547000000603,
+        "parent_id": 10000
+      },
+      "1024": {
+        "name": "Piscine Mathis",
+        "adresse": "15 Rue Mathis, 75019 Paris",
+        "latitude": 48.8906642,
+        "longitude": 2.374890300000061,
+        "parent_id": 10000
+      },
+      "1025": {
+        "name": "Piscine des Amiraux",
+        "adresse": "6 Rue Hermann-Lachapelle, 75018 Paris",
+        "latitude": 48.89429739999999,
+        "longitude": 2.3509923999999955,
+        "parent_id": 10000
+      },
+      "1026": {
+        "name": "Piscine Hébert",
+        "adresse": "2 Rue des Fillettes, 75018 Paris",
+        "latitude": 48.8938832,
+        "longitude": 2.3631900000000314,
+        "parent_id": 10000
+      },
+      "1027": {
+        "name": "Piscine Rouvet",
+        "adresse": "1 Rue Rouvet, 75019 Paris",
+        "latitude": 48.89308549999999,
+        "longitude": 2.38513080000007,
+        "parent_id": 10000
+      },
+      "1028": {
+        "name": "Piscine Keller",
+        "adresse": "14 Rue de l'Ingénieur Robert Keller, 75015 Paris",
+        "latitude": 48.8473705,
+        "longitude": 2.28204310000001,
+        "parent_id": 10000
+      },
+      "1029": {
+        "name": "Piscine Municipale Bernard Lafay",
+        "adresse": "79 Rue de La Jonquière, 75017 Paris",
+        "latitude": 48.8944858,
+        "longitude": 2.3186748000000534,
+        "parent_id": 10000
+      },
+      "1030": {
+        "name": "Piscine Henry-de-Montherlant",
+        "adresse": "32 Boulevard Lannes, 75016 Paris",
+        "latitude": 48.867358,
+        "longitude": 2.271453999999949,
+        "parent_id": 10000
+      },
+      "1031": {
+        "name": "Piscine d'Auteuil",
+        "adresse": "1 Route des Lacs à Passy, 75016 Paris",
+        "latitude": 48.8583897,
+        "longitude": 2.2609105000000227,
+        "parent_id": 10000
+      },
+      "1032": {
+        "name": "Piscine Jacqueline Auriol",
+        "adresse": "7 Allée Louis de Funès, 75008 Paris",
+        "latitude": 48.8762713,
+        "longitude": 2.306542600000057,
+        "parent_id": 10000
+      },
+      "1033": {
+        "name": "Piscine La Plaine",
+        "adresse": "13 Rue du Général Guillaumat, 75015 Paris",
+        "latitude": 48.8278133,
+        "longitude": 2.293902399999979,
+        "parent_id": 10000
+      },
+      "1034": {
+        "name": "Piscine Municipale Champerret",
+        "adresse": "36 Boulevard de Reims, 75017 Paris",
+        "latitude": 48.8886539,
+        "longitude": 2.296049000000039,
+        "parent_id": 10000
+      },
+      "1035": {
+        "name": "Piscine Paris",
+        "adresse": "4 Rue Louis Armand, 75015 Paris",
+        "latitude": 48.83278860000001,
+        "longitude": 2.2770629999999983,
+        "parent_id": 10000
+      },
+      "1036": {
+        "name": "Piscine de l'INSEP",
+        "adresse": "46 Route de la Pyramide, 75012 Paris",
+        "latitude": 48.8310037,
+        "longitude": 2.449134299999969,
+        "parent_id": 10000
+      },
+      "20000": {
+        "name": "Anomalie d'une école",
+        "placeholder_searchbar":"Quelle est l'école concernée ?",
+        "msg_alert_no_equipement": "Vous devez sélectionner une école sur la carte ou saisir un nom d'école dans la barre de recherche afin de déclarer une anomalie.",
+        "msg_alert_photo": "",
+        "icon": "data:image/png;base64,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",
+        "parent_id": "0",
+        "children_id": [
+          2001,
+          2002,
+          2003,
+          2004,
+          2005,
+          2006
+        ]
+      },
+      "2001": {
+        "name": "École élémentaire 173 Château des rentiers",
+        "adresse": "173 Rue du Château-des-Rentiers, 75013 Paris",
+        "latitude": 48.8302807,
+        "longitude": 48.8302807,
+        "parent_id": 20000
+      },
+      "2002": {
+        "name": "Ecole Maternelle",
+        "adresse": "4-12 Cité Souzy, 75011 Paris",
+        "latitude": 48.8517514,
+        "longitude": 2.388755700000047,
+        "parent_id": 20000
+      },
+      "2003": {
+        "name": "École Dynamique",
+        "adresse": "36 Rue des Artistes, 75014 Paris",
+        "latitude": 48.8263677,
+        "longitude": 2.334278700000027,
+        "parent_id": 20000
+      },
+      "2004": {
+        "name": "Ecole Massillon",
+        "adresse": "2 Bis Quai des Célestins, 75004 Paris",
+        "latitude": 48.85169579999999,
+        "longitude": 2.3623152999999775,
+        "parent_id": 20000
+      },
+      "2005": {
+        "name": "École élémentaire Sainte-Isaure",
+        "adresse": "18 Rue Sainte-Isaure, 75018 Paris",
+        "latitude": 48.89419849999999,
+        "longitude": 2.3444323999999597,
+        "parent_id": 20000
+      },
+      "2006": {
+        "name": "L'Ecole Maigret",
+        "adresse": "24 Rue de l'Ingénieur Robert Keller, 75015 Paris",
+        "latitude": 48.8470946,
+        "longitude": 2.2841985000000022,
+        "parent_id": 20000
+      }
+    }
+  }
+}]

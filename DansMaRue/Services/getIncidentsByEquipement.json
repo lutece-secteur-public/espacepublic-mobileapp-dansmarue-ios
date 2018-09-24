@@ -1,0 +1,33 @@
+[{
+  "request": "getIncidentsByEquipement",
+  "answer": {
+    "status": 0,
+    "closest_incidents": [
+      {
+        "categoryId": 1001,
+        "equipementId": 1002,
+        "id": 301153,
+        "alias": "Poubelles non vidées",
+        "isIncidentFollowedByUser": false,
+        "state": "O",
+        "pictures": {
+          "incident_picture": "https://r57.rec.apps.paris.fr/sira/image?resource_type=photo_signalement&id=193654"
+        },
+        "source": "DansMaRue"
+      },
+      {
+        "categoryId": 2012,
+        "equipementId": 1002,
+        "id": 301154,
+        "alias": "Fuite d'eau",
+        "isIncidentFollowedByUser": true,
+        "state": "O",
+        "pictures": {
+          "incident_picture": "https://r57.rec.apps.paris.fr/sira/image?resource_type=photo_signalement&id=193655"
+        },
+        "source": "DansMaRue"
+      }
+    ]
+    
+  }
+}]

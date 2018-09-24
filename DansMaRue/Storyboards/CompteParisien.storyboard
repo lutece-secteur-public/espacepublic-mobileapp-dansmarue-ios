@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="kkV-Zy-G2b">
+    <device id="retina5_5" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Montserrat-Regular.otf">
+            <string>Montserrat-Regular</string>
+        </array>
+    </customFonts>
+    <scenes>
+        <!--Compte Parisien View Controller-->
+        <scene sceneID="H95-01-kOd">
+            <objects>
+                <viewController storyboardIdentifier="CompteParisien" id="kkV-Zy-G2b" customClass="CompteParisienViewController" customModule="DansMaRue" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="mue-gx-ufF"/>
+                        <viewControllerLayoutGuide type="bottom" id="93u-AA-U8n"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="wa0-I1-XVz">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BackgroundImage" translatesAutoresizingMaskIntoConstraints="NO" id="nFK-jp-Efp">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                            </imageView>
+                            <view alpha="0.5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EAS-ln-oaF">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                                <color key="backgroundColor" red="0.047058823530000002" green="0.31764705879999999" blue="0.54117647059999996" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r8G-Ha-MqP">
+                                <rect key="frame" x="35" y="35" width="25" height="25"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="25" id="BNV-DD-KVx"/>
+                                    <constraint firstAttribute="width" constant="25" id="K8B-Zf-U1q"/>
+                                </constraints>
+                                <state key="normal" image="icon_back"/>
+                                <connections>
+                                    <action selector="backToCompteParisien:" destination="kkV-Zy-G2b" eventType="touchUpInside" id="G4e-gG-4ib"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="idi-2M-MtK" customClass="UIButton_Connexion" customModule="DansMaRue" customModuleProvider="target">
+                                <rect key="frame" x="12" y="667" width="390" height="57"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="57" id="FJM-9z-mAu"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="20"/>
+                                <state key="normal" title="Connexion">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="connectToCompteParisien:" destination="kkV-Zy-G2b" eventType="touchUpInside" id="Gxx-31-Egw"/>
+                                </connections>
+                            </button>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Mail" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Aej-7j-L7W">
+                                <rect key="frame" x="35" y="293.33333333333331" width="344" height="20"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="16"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="done"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5eP-l6-7P9">
+                                <rect key="frame" x="35" y="553" width="128" height="27"/>
+                                <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="12"/>
+                                <state key="normal" title="Mot de passe oublié ?">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="didTapForgetPwd:" destination="kkV-Zy-G2b" eventType="touchUpInside" id="MD9-jM-xRB"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4k5-MV-kDA">
+                                <rect key="frame" x="315" y="553" width="54" height="27"/>
+                                <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="12"/>
+                                <state key="normal" title="S'inscrire">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="didTapRegister:" destination="kkV-Zy-G2b" eventType="touchUpInside" id="BnJ-8U-xYg"/>
+                                </connections>
+                            </button>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Mot de passe" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7ah-pF-ZLP">
+                                <rect key="frame" x="35" y="358.33333333333331" width="344" height="20"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="16"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="done" secureTextEntry="YES"/>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mon compte " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wg7-Si-Hbn">
+                                <rect key="frame" x="71" y="37" width="272" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="nFK-jp-Efp" secondAttribute="trailing" id="05V-uB-dDR"/>
+                            <constraint firstItem="7ah-pF-ZLP" firstAttribute="centerY" secondItem="wa0-I1-XVz" secondAttribute="centerY" id="0wQ-AN-0FK"/>
+                            <constraint firstItem="nFK-jp-Efp" firstAttribute="leading" secondItem="wa0-I1-XVz" secondAttribute="leading" id="0yW-4w-6rU"/>
+                            <constraint firstItem="7ah-pF-ZLP" firstAttribute="leading" secondItem="wa0-I1-XVz" secondAttribute="leadingMargin" constant="15" id="1eQ-mQ-605"/>
+                            <constraint firstItem="93u-AA-U8n" firstAttribute="top" secondItem="nFK-jp-Efp" secondAttribute="bottom" id="6sl-U9-Edt"/>
+                            <constraint firstItem="93u-AA-U8n" firstAttribute="top" secondItem="idi-2M-MtK" secondAttribute="bottom" constant="12" id="AAy-Bb-HTu"/>
+                            <constraint firstItem="93u-AA-U8n" firstAttribute="top" secondItem="EAS-ln-oaF" secondAttribute="bottom" id="FCH-80-AQT"/>
+                            <constraint firstItem="wg7-Si-Hbn" firstAttribute="centerX" secondItem="Aej-7j-L7W" secondAttribute="centerX" id="G5X-YQ-rbs"/>
+                            <constraint firstItem="idi-2M-MtK" firstAttribute="top" secondItem="5eP-l6-7P9" secondAttribute="bottom" constant="87" id="Hjo-WV-f5i"/>
+                            <constraint firstItem="r8G-Ha-MqP" firstAttribute="leading" secondItem="wa0-I1-XVz" secondAttribute="leadingMargin" constant="15" id="Iza-U8-eUI"/>
+                            <constraint firstItem="nFK-jp-Efp" firstAttribute="top" secondItem="wa0-I1-XVz" secondAttribute="top" id="NfO-ak-AJ7"/>
+                            <constraint firstItem="93u-AA-U8n" firstAttribute="top" secondItem="nFK-jp-Efp" secondAttribute="bottom" id="NqJ-6R-zzE"/>
+                            <constraint firstItem="Aej-7j-L7W" firstAttribute="leading" secondItem="wa0-I1-XVz" secondAttribute="leadingMargin" constant="15" id="OL5-dJ-ksk"/>
+                            <constraint firstItem="nFK-jp-Efp" firstAttribute="top" secondItem="wa0-I1-XVz" secondAttribute="top" id="PMb-O5-lIV"/>
+                            <constraint firstItem="wg7-Si-Hbn" firstAttribute="centerY" secondItem="r8G-Ha-MqP" secondAttribute="centerY" id="Rs6-0l-iM7"/>
+                            <constraint firstAttribute="trailing" secondItem="EAS-ln-oaF" secondAttribute="trailing" id="TzW-C9-BDP"/>
+                            <constraint firstItem="nFK-jp-Efp" firstAttribute="leading" secondItem="wa0-I1-XVz" secondAttribute="leading" id="Wl5-bA-CUn"/>
+                            <constraint firstItem="EAS-ln-oaF" firstAttribute="top" secondItem="wa0-I1-XVz" secondAttribute="top" id="ZZX-Xk-34A"/>
+                            <constraint firstAttribute="trailing" secondItem="nFK-jp-Efp" secondAttribute="trailing" id="cOp-wN-kbc"/>
+                            <constraint firstItem="7ah-pF-ZLP" firstAttribute="top" secondItem="Aej-7j-L7W" secondAttribute="bottom" constant="45" id="csc-5o-hqF"/>
+                            <constraint firstItem="wg7-Si-Hbn" firstAttribute="leading" secondItem="r8G-Ha-MqP" secondAttribute="trailing" constant="11" id="eyi-tD-SNg"/>
+                            <constraint firstItem="r8G-Ha-MqP" firstAttribute="top" secondItem="mue-gx-ufF" secondAttribute="bottom" constant="15" id="i23-id-PnY"/>
+                            <constraint firstItem="idi-2M-MtK" firstAttribute="leading" secondItem="wa0-I1-XVz" secondAttribute="leading" constant="12" id="kDv-8k-AN3"/>
+                            <constraint firstItem="5eP-l6-7P9" firstAttribute="baseline" secondItem="4k5-MV-kDA" secondAttribute="baseline" id="mB0-nD-qYC"/>
+                            <constraint firstItem="5eP-l6-7P9" firstAttribute="leading" secondItem="wa0-I1-XVz" secondAttribute="leading" constant="35" id="mRT-yh-LW5"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="7ah-pF-ZLP" secondAttribute="trailing" constant="15" id="quw-HW-Onu"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Aej-7j-L7W" secondAttribute="trailing" constant="15" id="rF0-HS-eeT"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="4k5-MV-kDA" secondAttribute="trailing" constant="25" id="scN-V5-GPK"/>
+                            <constraint firstItem="EAS-ln-oaF" firstAttribute="leading" secondItem="wa0-I1-XVz" secondAttribute="leading" id="tnU-C6-0A1"/>
+                            <constraint firstAttribute="trailing" secondItem="idi-2M-MtK" secondAttribute="trailing" constant="12" id="w9z-f0-xJU"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="backButton" destination="r8G-Ha-MqP" id="R5k-MB-0n7"/>
+                        <outlet property="backgroundImage" destination="nFK-jp-Efp" id="l1D-OJ-3hi"/>
+                        <outlet property="connectionButton" destination="idi-2M-MtK" id="c5B-0q-bTj"/>
+                        <outlet property="forgetPasswordButton" destination="5eP-l6-7P9" id="ark-oU-9cN"/>
+                        <outlet property="mailTextField" destination="Aej-7j-L7W" id="kd6-6t-fR7"/>
+                        <outlet property="monCompteLabel" destination="wg7-Si-Hbn" id="cAc-aH-lah"/>
+                        <outlet property="passwordTextField" destination="7ah-pF-ZLP" id="e87-Ut-QeV"/>
+                        <outlet property="registerButton" destination="4k5-MV-kDA" id="xm0-rd-H4h"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="CgC-eY-Yut" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="130.43478260869566" y="133.69565217391306"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="BackgroundImage" width="375" height="667"/>
+        <image name="icon_back" width="22" height="22"/>
+    </resources>
+</document>

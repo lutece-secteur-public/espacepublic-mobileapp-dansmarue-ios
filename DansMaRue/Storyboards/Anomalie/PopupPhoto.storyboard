@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina5_5" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Montserrat-Regular.otf">
+            <string>Montserrat-Regular</string>
+        </array>
+    </customFonts>
+    <scenes>
+        <!--Popup Photo View Controller-->
+        <scene sceneID="cZq-uh-5l3">
+            <objects>
+                <viewController storyboardIdentifier="popupPhoto" id="XgY-fb-Xyb" customClass="PopupPhotoViewController" customModule="DansMaRue" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Kre-Kf-2hx"/>
+                        <viewControllerLayoutGuide type="bottom" id="wqS-HP-uAs"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="caX-zg-4gT">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="baI-vM-gcM">
+                                <rect key="frame" x="15" y="150" width="384" height="165"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ajouter une image" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lMl-Iw-9wt">
+                                        <rect key="frame" x="0.0" y="0.0" width="384" height="45"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="45" id="RPm-Gw-yKb"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="13"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RBg-Y0-H1O" customClass="UIButton_PrendrePhoto" customModule="DansMaRue" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="45" width="384" height="60"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="60" id="kXX-sa-g0L"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="20"/>
+                                        <state key="normal" title="Prendre une photo"/>
+                                        <connections>
+                                            <action selector="takePhoto:" destination="XgY-fb-Xyb" eventType="touchUpInside" id="vwe-gx-P6O"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lUE-ei-fbI" customClass="UIButton_RechercherPhoto" customModule="DansMaRue" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="105" width="384" height="60"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="60" id="Gzk-4S-Y3A"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="20"/>
+                                        <state key="normal" title="Choisir dans l'album"/>
+                                        <connections>
+                                            <action selector="searchPhoto:" destination="XgY-fb-Xyb" eventType="touchUpInside" id="XQX-ie-JdW"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="lUE-ei-fbI" secondAttribute="trailing" id="8pi-lh-fiM"/>
+                                    <constraint firstAttribute="trailing" secondItem="lMl-Iw-9wt" secondAttribute="trailing" id="BN7-5Z-itq"/>
+                                    <constraint firstItem="lUE-ei-fbI" firstAttribute="top" secondItem="RBg-Y0-H1O" secondAttribute="bottom" id="KY2-Sc-4fI"/>
+                                    <constraint firstItem="RBg-Y0-H1O" firstAttribute="leading" secondItem="baI-vM-gcM" secondAttribute="leading" id="MKl-4U-aTk"/>
+                                    <constraint firstAttribute="height" constant="165" id="Tg0-1K-HUD"/>
+                                    <constraint firstItem="lMl-Iw-9wt" firstAttribute="top" secondItem="baI-vM-gcM" secondAttribute="top" id="c4K-fD-hBy"/>
+                                    <constraint firstAttribute="trailing" secondItem="RBg-Y0-H1O" secondAttribute="trailing" id="g3L-Jq-5EY"/>
+                                    <constraint firstItem="RBg-Y0-H1O" firstAttribute="top" secondItem="lMl-Iw-9wt" secondAttribute="bottom" id="hLo-wp-f2o"/>
+                                    <constraint firstItem="lMl-Iw-9wt" firstAttribute="leading" secondItem="baI-vM-gcM" secondAttribute="leading" id="jpE-Z3-0Y6"/>
+                                    <constraint firstItem="lUE-ei-fbI" firstAttribute="leading" secondItem="baI-vM-gcM" secondAttribute="leading" id="vVX-yi-tnD"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S3j-oE-f9F" customClass="UIButton_AnnulerPhoto" customModule="DansMaRue" customModuleProvider="target">
+                                <rect key="frame" x="15" y="325" width="384" height="60"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="YYq-JX-0cT"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="close:" destination="XgY-fb-Xyb" eventType="touchUpInside" id="J1Z-Bc-THb"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="S3j-oE-f9F" firstAttribute="leading" secondItem="caX-zg-4gT" secondAttribute="leading" constant="15" id="8jP-7m-ZIL"/>
+                            <constraint firstAttribute="trailing" secondItem="baI-vM-gcM" secondAttribute="trailing" constant="15" id="a4h-sE-TjP"/>
+                            <constraint firstItem="baI-vM-gcM" firstAttribute="top" secondItem="caX-zg-4gT" secondAttribute="topMargin" constant="150" id="arE-3K-X9l"/>
+                            <constraint firstItem="baI-vM-gcM" firstAttribute="leading" secondItem="caX-zg-4gT" secondAttribute="leading" constant="15" id="b2Y-RV-sm4"/>
+                            <constraint firstItem="S3j-oE-f9F" firstAttribute="top" secondItem="baI-vM-gcM" secondAttribute="bottom" constant="10" id="u0G-I1-whr"/>
+                            <constraint firstAttribute="trailing" secondItem="S3j-oE-f9F" secondAttribute="trailing" constant="15" id="wmE-Zl-iQ2"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="ajoutImageLabel" destination="lMl-Iw-9wt" id="W8L-v3-c44"/>
+                        <outlet property="btnPrisePhoto" destination="RBg-Y0-H1O" id="aw7-NU-TrW"/>
+                        <outlet property="buttonsView" destination="baI-vM-gcM" id="kmv-RT-wNm"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="EAW-fR-b7M" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-679.20000000000005" y="-127.28635682158921"/>
+        </scene>
+    </scenes>
+</document>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1217" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="retina4_0" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="EHf-IW-A2E">
+            <objects>
+                <viewController id="01J-lp-oVM" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Llm-lL-Icb"/>
+                        <viewControllerLayoutGuide type="bottom" id="xb3-aO-Qok"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="launchImage" translatesAutoresizingMaskIntoConstraints="NO" id="EI7-uX-hjm">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_Paris" translatesAutoresizingMaskIntoConstraints="NO" id="wCI-Hf-U9g">
+                                <rect key="frame" x="125.5" y="477" width="69" height="38"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_dansMaRue" translatesAutoresizingMaskIntoConstraints="NO" id="bfI-RC-ly1">
+                                <rect key="frame" x="80" y="93" width="161" height="167.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="bfI-RC-ly1" secondAttribute="height" multiplier="247:257" id="IRT-Wq-XWb"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="EI7-uX-hjm" firstAttribute="bottom" secondItem="xb3-aO-Qok" secondAttribute="top" id="FSM-je-tNn"/>
+                            <constraint firstItem="EI7-uX-hjm" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="HnU-om-UOC"/>
+                            <constraint firstItem="bfI-RC-ly1" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" constant="64" id="I6i-vB-qkV"/>
+                            <constraint firstItem="EI7-uX-hjm" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="Kdp-ca-sgH"/>
+                            <constraint firstItem="EI7-uX-hjm" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="Mam-or-Lhc"/>
+                            <constraint firstItem="EI7-uX-hjm" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="O43-nY-QzE"/>
+                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="wCI-Hf-U9g" secondAttribute="bottom" constant="53" id="OSD-Tf-XrT"/>
+                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="EI7-uX-hjm" secondAttribute="bottom" id="TqQ-Jg-FPq"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="bfI-RC-ly1" secondAttribute="trailing" constant="63" id="ibv-0y-zmO"/>
+                            <constraint firstItem="EI7-uX-hjm" firstAttribute="centerX" secondItem="wCI-Hf-U9g" secondAttribute="centerX" id="tgj-wE-0he"/>
+                            <constraint firstAttribute="trailing" secondItem="EI7-uX-hjm" secondAttribute="trailing" id="uEZ-Sy-1aC"/>
+                            <constraint firstItem="bfI-RC-ly1" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="73" id="yUW-hg-JrM"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="49.275362318840585" y="373.36956521739131"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="launchImage" width="180" height="320"/>
+        <image name="logo_Paris" width="69" height="38"/>
+        <image name="logo_dansMaRue" width="171" height="186"/>
+    </resources>
+</document>
