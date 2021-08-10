@@ -11,13 +11,15 @@ import UIKit
 class ProfileViewController: UIViewController {
 
     //MARK: - Properties
-    var currentFilter = "All"
+    var currentFilter = "Draft"
     var malfunctionDraftArray: [Anomalie] = []
     var malfunctionSolvedArray: [Anomalie] = []
     var malfunctionNotSolvedArray: [Anomalie] = []
     // Array [Drafts, Not Solved, Solved]
     let malfunctionSections = ["Brouillons", "En cours", "Clôturées"]
     var isPremierAffichageFormConnexion = true;
+    
+    var vSpinner : UIView?
     
     
     //MARK: - IBOutlets
@@ -32,7 +34,7 @@ class ProfileViewController: UIViewController {
         
         self.navigationController?.navigationBar.tintColor = UIColor.white
         self.navigationController?.navigationBar.barTintColor = UIColor.pinkDmr()
-        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.white]
+        self.navigationController?.navigationBar.titleTextAttributes = convertToOptionalNSAttributedStringKeyDictionary([NSAttributedString.Key.foregroundColor.rawValue:UIColor.white])
 
     }
     
@@ -60,17 +62,50 @@ class ProfileViewController: UIViewController {
         self.malfunctionSolvedArray.removeAll()
         self.malfunctionNotSolvedArray.removeAll()
         
-        if User.shared.isLogged, let uid = User.shared.uid {
+        switch currentFilter
+        {
+        case "Not Solved":
+            fillMalfunctionNotSolvedArray()
+        case "Solved":
+           fillMalfunctionSolvedArray()
+        default:
+            break
+        }
+        
+        self.malfunctionTableView.reloadData()
+    }
+
+    //MARK: - IBActions
+    @IBAction func changeMalfunctionFilter(_ sender: Any) {
+        switch malfunctionTypeSegmentedControl.selectedSegmentIndex
+        {
+        case 0:
+            currentFilter = "Draft"
+        case 1:
+            currentFilter = "Not Solved"
+            fillMalfunctionNotSolvedArray()
+        case 2:
+            currentFilter = "Solved"
+            fillMalfunctionSolvedArray()
+        default:
+            break
+        }
+        
+        malfunctionTableView.reloadData()
+    }
+    
+    func fillMalfunctionSolvedArray() {
+        self.malfunctionSolvedArray.removeAll()
+            if User.shared.isLogged, let uid = User.shared.uid {
             DispatchQueue.global().async {
+                //Affichage du spinner de chargement
+                self.showSpinner(onView: self.view)
+                
                 // Récupération des anomalies outdoor
-                RestApiManager.sharedInstance.getIncidentsByUser(guid: uid) { (anomalies: [Anomalie]) in
+                RestApiManager.sharedInstance.getIncidentsByUser(guid: uid, isIncidentSolved: true) { (anomalies: [Anomalie]) in
                     
                     for anomalie in anomalies {
-                        if anomalie.anomalieStatus == .Resolu {
-                            self.malfunctionSolvedArray.append(anomalie)
-                        } else {
-                            self.malfunctionNotSolvedArray.append(anomalie)
-                        }
+                        self.malfunctionSolvedArray.append(anomalie)
                     }
                     
                     // Récupération des anomalies indoor
@@ -88,36 +123,84 @@ class ProfileViewController: UIViewController {
                         self.malfunctionSolvedArray.sort(by: { $0.dateHour.compare($1.dateHour) == .orderedDescending })
                         
                         DispatchQueue.main.async {
+                            //Fin du chargement
+                            self.removeSpinner()
+                            
                             self.malfunctionTableView.reloadData()
                             
                             // Suppression des Badge du push Notification
                             UIApplication.shared.applicationIconBadgeNumber = 0
                         }
                     }
-                    
                 }
             }
         }
-        
-        self.malfunctionTableView.reloadData()
     }
+    
+    func fillMalfunctionNotSolvedArray() {
+        
+        self.malfunctionNotSolvedArray.removeAll()
+        if User.shared.isLogged, let uid = User.shared.uid {
+            DispatchQueue.global().async {
+                //Affichage du spinner de chargement
+                self.showSpinner(onView: self.view)
+                
+                // Récupération des anomalies outdoor
+                RestApiManager.sharedInstance.getIncidentsByUser(guid: uid, isIncidentSolved: false) { (anomalies: [Anomalie]) in
+                    
+                    for anomalie in anomalies {
+                        self.malfunctionNotSolvedArray.append(anomalie)
+                    }
+                    
+                    // Récupération des anomalies indoor
+                    RestApiManager.sharedInstance.getIncidentsEquipementByUser(guid: uid) { (anomalies: [AnomalieEquipement]) in
 
-    //MARK: - IBActions
-    @IBAction func changeMalfunctionFilter(_ sender: Any) {
-        switch malfunctionTypeSegmentedControl.selectedSegmentIndex
-        {
-        case 0:
-            currentFilter = "All"
-        case 1:
-            currentFilter = "Draft"
-        case 2:
-            currentFilter = "Not Solved"
-        case 3:
-            currentFilter = "Solved"
-        default:
-            break
+                        for anomalie in anomalies {
+                            if anomalie.anomalieStatus == .Resolu {
+                                self.malfunctionSolvedArray.append(anomalie)
+                            } else {
+                                self.malfunctionNotSolvedArray.append(anomalie)
+                            }
+                        }
+                        // Tri des anomalies par date
+                        self.malfunctionNotSolvedArray.sort(by: { $0.dateHour.compare($1.dateHour) == .orderedDescending })
+                        self.malfunctionSolvedArray.sort(by: { $0.dateHour.compare($1.dateHour) == .orderedDescending })
+                        
+                        DispatchQueue.main.async {
+                            //Fin du chargement
+                            self.removeSpinner()
+                            
+                            self.malfunctionTableView.reloadData()
+                            
+                            // Suppression des Badge du push Notification
+                            UIApplication.shared.applicationIconBadgeNumber = 0
+                        }
+                    }
+                }
+            }
         }
-        malfunctionTableView.reloadData()
+    }
+    
+    func showSpinner(onView : UIView) {
+        let spinnerView = UIView.init(frame: onView.bounds)
+        spinnerView.backgroundColor = UIColor.init(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
+        let ai = UIActivityIndicatorView.init(style: .whiteLarge)
+        ai.startAnimating()
+        ai.center = spinnerView.center
+        
+        DispatchQueue.main.async {
+            spinnerView.addSubview(ai)
+            onView.addSubview(spinnerView)
+        }
+        
+        vSpinner = spinnerView
+    }
+    
+    func removeSpinner() {
+        DispatchQueue.main.async {
+            self.vSpinner?.removeFromSuperview()
+            self.vSpinner = nil
+        }
     }
     
 }
@@ -145,21 +228,23 @@ extension ProfileViewController: UITableViewDelegate {
                 }
             }
         } else {
-         
-            DispatchQueue.global().async {
-                
-                RestApiManager.sharedInstance.getIncidentById(idSignalement: anomalie.id, source: source){ (anomalie: Anomalie) in
-                    DispatchQueue.main.async {
-                        let anomalyDetailStoryboard = UIStoryboard(name: Constants.StoryBoard.detailAnomaly, bundle: nil)
-                        let anomalyDetailViewController = anomalyDetailStoryboard.instantiateViewController(withIdentifier: Constants.ViewControllerIdentifier.detailAnomaly) as! AnomalyDetailViewController
-                        anomalyDetailViewController.selectedAnomaly = anomalie
-                        // Gestion du mode d'affichage de l'écran de détail en fonction du status de l'anomalie
-                        anomalyDetailViewController.currentAnomalyState = (anomalie.anomalieStatus == .Resolu ? .solved : .notsolved)
-                        self.present(anomalyDetailViewController, animated: true, completion: nil)
-                        anomalyDetailViewController.customNavigationDelegate = self
-                        
+            //Si ano DMR, on affiche le détail
+            if source == AnomalieSource.dmr {
+                DispatchQueue.global().async {
+                    
+                    RestApiManager.sharedInstance.getIncidentById(idSignalement: anomalie.id, source: source){ (anomalie: Anomalie) in
+                        DispatchQueue.main.async {
+                            let anomalyDetailStoryboard = UIStoryboard(name: Constants.StoryBoard.detailAnomaly, bundle: nil)
+                            let anomalyDetailViewController = anomalyDetailStoryboard.instantiateViewController(withIdentifier: Constants.ViewControllerIdentifier.detailAnomaly) as! AnomalyDetailViewController
+                            anomalyDetailViewController.selectedAnomaly = anomalie
+                            // Gestion du mode d'affichage de l'écran de détail en fonction du status de l'anomalie
+                            anomalyDetailViewController.currentAnomalyState = (anomalie.anomalieStatus == .Resolu ? .solved : .notsolved)
+                            self.present(anomalyDetailViewController, animated: true, completion: nil)
+                            anomalyDetailViewController.customNavigationDelegate = self
+                            
+                        }
                     }
-                }
+                 }
             }
         }
         
@@ -172,21 +257,13 @@ extension ProfileViewController: UITableViewDelegate {
         switch malfunctionTypeSegmentedControl.selectedSegmentIndex
         {
         case 0:
-            if indexPath.section == 0 {
-                filterSelected = malfunctionDraftArray[indexPath.row].anomalieStatus
-            } else if indexPath.section == 1 {
-                filterSelected = malfunctionNotSolvedArray[indexPath.row].anomalieStatus
-            } else {
-                filterSelected = malfunctionSolvedArray[indexPath.row].anomalieStatus
-            }
-        case 1:
             filterSelected = malfunctionDraftArray[indexPath.row].anomalieStatus
-        case 2:
+        case 1:
             filterSelected = malfunctionNotSolvedArray[indexPath.row].anomalieStatus
-        case 3:
+        case 2:
             filterSelected = malfunctionSolvedArray[indexPath.row].anomalieStatus
         default:
-            filterSelected = .Nouveau
+            filterSelected = .Brouillon
             break
         }
         
@@ -217,38 +294,10 @@ extension ProfileViewController: UITableViewDelegate {
         }
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             switch currentFilter
             {
-            case "All":
-                if indexPath.section == 0 {
-                    AnomalieBrouillon.shared.remove(anomalie: malfunctionDraftArray[indexPath.row])
-                    malfunctionDraftArray.remove(at: indexPath.row)
-                    tableView.deleteRows(at: [indexPath], with: .fade)
-                } else if indexPath.section == 1 {
-                    RestApiManager.sharedInstance.unfollow(anomalie: malfunctionNotSolvedArray[indexPath.row] ,onCompletion: { (result: Bool) in
-                        if result {
-                            //Mise à jour de l'UI
-                            DispatchQueue.main.async {
-                                self.malfunctionNotSolvedArray.remove(at: indexPath.row)
-                                tableView.deleteRows(at: [indexPath], with: .fade)
-                                
-                            }
-                        }
-                    })
-                } else {
-                    RestApiManager.sharedInstance.unfollow(anomalie: malfunctionSolvedArray[indexPath.row] ,onCompletion: { (result: Bool) in
-                        if result {
-                            //Mise à jour de l'UI
-                            DispatchQueue.main.async {
-                                self.malfunctionSolvedArray.remove(at: indexPath.row)
-                                tableView.deleteRows(at: [indexPath], with: .fade)
-                                
-                            }
-                        }
-                    })
-                }
             case "Draft":
                 AnomalieBrouillon.shared.remove(anomalie: malfunctionDraftArray[indexPath.row])
                  malfunctionDraftArray.remove(at: indexPath.row)
@@ -289,14 +338,6 @@ extension ProfileViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch currentFilter
         {
-        case "All":
-            if section == 0 {
-                return malfunctionDraftArray.count
-            } else if section == 1 {
-                return malfunctionNotSolvedArray.count
-            } else {
-                return malfunctionSolvedArray.count
-            }
         case "Draft":
             return malfunctionDraftArray.count
         case "Not Solved":
@@ -313,9 +354,6 @@ extension ProfileViewController: UITableViewDataSource {
         
         switch currentFilter
         {
-        case "All":
-            tableView.backgroundView = nil
-            numberOfSections = malfunctionSections.count
         case "Draft":
             if malfunctionDraftArray.count > 0 {
                 numberOfSections = 1
@@ -433,7 +471,7 @@ extension ProfileViewController: UITableViewDataSource {
         
         malfunctionMainTitle.text = anomalie.alias
         malfunctionAddress.text = anomalie.address
-        malfunctionSecondTitle.text = DateUtils.displayDuration(fromDate: anomalie.date, hour: anomalie.hour)
+        malfunctionSecondTitle.text = DateUtils.formatDateByLocal(dateString: anomalie.date) + " " + anomalie.hour + " " + anomalie.number
         
         if let anoEquipement = anomalie as? AnomalieEquipement {
             if let equipement = ReferalManager.shared.getEquipement(forId: anoEquipement.equipementId) {
@@ -460,3 +498,9 @@ extension ProfileViewController: CustomNavigationDelegate {
     
 }
 
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToOptionalNSAttributedStringKeyDictionary(_ input: [String: Any]?) -> [NSAttributedString.Key: Any]? {
+	guard let input = input else { return nil }
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.Key(rawValue: key), value)})
+}

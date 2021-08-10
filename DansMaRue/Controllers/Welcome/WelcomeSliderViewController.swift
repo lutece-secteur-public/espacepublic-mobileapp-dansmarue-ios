@@ -40,7 +40,7 @@ class WelcomeSliderViewController: UIViewController {
         paragraphStyle.lineSpacing = 3
         paragraphStyle.alignment = NSTextAlignment.center
         
-        attributedString.addAttribute(NSParagraphStyleAttributeName, value:paragraphStyle, range:NSMakeRange(0, attributedString.length))
+        attributedString.addAttribute(NSAttributedString.Key.paragraphStyle, value:paragraphStyle, range:NSMakeRange(0, attributedString.length))
         
         welcomeSubtitle.attributedText = attributedString;
         

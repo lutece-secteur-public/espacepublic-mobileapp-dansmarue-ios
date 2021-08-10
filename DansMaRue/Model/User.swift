@@ -16,6 +16,7 @@ class User {
     var lastName: String?
     var email: String?
     var password: String?
+    var isAgent: Bool?
     
     var tokenId: String?
     var uid: String?
@@ -28,6 +29,7 @@ class User {
         lastName = UserDefaults.standard.object(forKey: Constants.Key.lastName) as? String
         email = UserDefaults.standard.object(forKey: Constants.Key.email) as? String
         password = UserDefaults.standard.object(forKey: Constants.Key.password) as? String
+        isAgent = UserDefaults.standard.object(forKey: Constants.Key.isAgent) as? Bool
     }
     
     static let shared = User()
@@ -60,10 +62,12 @@ class User {
         self.lastName = nil
         self.email = nil
         self.password = nil
+        self.isAgent = nil
         
         UserDefaults.standard.removeObject(forKey: Constants.Key.firstName)
         UserDefaults.standard.removeObject(forKey: Constants.Key.lastName)
         UserDefaults.standard.removeObject(forKey: Constants.Key.email)
         UserDefaults.standard.removeObject(forKey: Constants.Key.password)
+        UserDefaults.standard.removeObject(forKey: Constants.Key.isAgent)
     }
 }

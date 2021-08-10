@@ -61,11 +61,18 @@ class ModifyAddressViewController: UIViewController {
             
             self.perform(#selector(searchBarFirstResponder), with: nil, afterDelay: 0.1)
             
+            if #available(iOS 13.0, *) {
+                searchController?.hidesNavigationBarDuringPresentation = true
+                searchBar.searchTextField.backgroundColor=UIColor.white
+                searchBar.searchTextField.tintColor=UIColor.black
+                self.navigationItem.searchController = searchController
+            } else {
+                // Prevent the navigation bar from being hidden when searching.
+                searchController?.hidesNavigationBarDuringPresentation = false
+            }
+            
             view.addSubview(searchBar)
         }
-        
-        // Prevent the navigation bar from being hidden when searching.
-        searchController?.hidesNavigationBarDuringPresentation = false
         
         // Active sur le filtre sur Paris uniquement
         MapsUtils.filterToParis(resultsViewController: self.resultsViewController!)
@@ -95,7 +102,7 @@ class ModifyAddressViewController: UIViewController {
         equipementSearchController?.tableView.reloadData()
     }
     
-    func searchBarFirstResponder() {
+    @objc func searchBarFirstResponder() {
         self.searchController?.searchBar.becomeFirstResponder()
     }
 }
@@ -115,8 +122,31 @@ extension ModifyAddressViewController: GMSAutocompleteResultsViewControllerDeleg
                 return
             }
             if let addressFound = response {
-                self.delegate.changeAddress(newAddress: addressFound.firstResult()! )
-                 _ = self.navigationController?.popViewController(animated: true)
+                let addressSelected:GMSAddress = addressFound.firstResult()!
+                
+                var numRue = ""
+                var rue = ""
+                var cp = ""
+                
+                for component in place.addressComponents! {
+                    if component.types[0] == "street_number" {
+                        numRue = component.name
+                    }
+                    if component.types[0] == "route" {
+                        rue = component.name
+                    }
+                    if component.types[0] == "postal_code" {
+                        cp = component.name
+                    }
+                }
+                let adresse = numRue + " " + rue + ", " + cp + " Paris, France"
+                addressSelected.setValue(adresse.components(separatedBy: ",")[0], forKey: "thoroughfare")
+                
+                self.delegate.changeAddress(newAddress: addressSelected)
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                   _ = self.navigationController?.popViewController(animated: true)
+                }                
             }
         }
         

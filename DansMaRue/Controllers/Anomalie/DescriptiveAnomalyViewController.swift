@@ -39,9 +39,9 @@ class DescriptiveAnomalyViewController: UIViewController {
         }
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "OK", style: .plain, target: self, action: #selector(saveAction))
   
-        NotificationCenter.default.addObserver(self, selector: #selector(DescriptiveAnomalyViewController.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(DescriptiveAnomalyViewController.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(DescriptiveAnomalyViewController.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(DescriptiveAnomalyViewController.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     
     }
     
@@ -53,8 +53,8 @@ class DescriptiveAnomalyViewController: UIViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     //Permet d'ajuster la taille du champs texte par rapport au clavier quand il apparait
@@ -62,9 +62,9 @@ class DescriptiveAnomalyViewController: UIViewController {
         // 1
         var userInfo = notification.userInfo!
         // 2
-        let keyboardFrame:CGRect = (userInfo[UIKeyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue
+        let keyboardFrame:CGRect = (userInfo[UIResponder.keyboardFrameBeginUserInfoKey] as! NSValue).cgRectValue
         // 3
-        let animationDurarion = userInfo[UIKeyboardAnimationDurationUserInfoKey] as! TimeInterval
+        let animationDurarion = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as! TimeInterval
         // 4
         let changeInHeight = (keyboardFrame.height)
         //5
@@ -72,21 +72,21 @@ class DescriptiveAnomalyViewController: UIViewController {
            self.bottomConstraint.constant = changeInHeight
         })
     }
-    func keyboardWillShow(notification:NSNotification) {
+    @objc func keyboardWillShow(notification:NSNotification) {
         adjustingHeight(show: true, notification: notification)
     }
     
-    func keyboardWillHide(notification:NSNotification) {
+    @objc func keyboardWillHide(notification:NSNotification) {
         adjustingHeight(show: false, notification: notification)
     }
     
 
     //MARK: - Other methods
-    func backAction(){
+    @objc func backAction(){
         _ = navigationController?.popViewController(animated: true)
     }
     
-    func saveAction() {
+    @objc func saveAction() {
         delegate.changeDescriptive(descriptive: textViewDescriptive.text)
         _ = navigationController?.popViewController(animated: true)
     }

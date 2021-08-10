@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="76J-1T-71R">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Title-->
+        <scene sceneID="77r-lG-y7g">
+            <objects>
+                <viewController id="76J-1T-71R" customClass="ManageAddressViewController" customModule="DansMaRue" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="6Qw-K3-dL5">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="TXn-uF-MA0">
+                                <rect key="frame" x="0.0" y="51" width="414" height="796"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <button key="tableFooterView" hidden="YES" opaque="NO" tag="101" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="sYj-WG-vhi">
+                                    <rect key="frame" x="0.0" y="99.5" width="414" height="30"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                                    <state key="normal" title="Tout supprimer">
+                                        <color key="titleColor" red="0.8759407401" green="0.030588618035883884" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="deleteAll:" destination="76J-1T-71R" eventType="touchDown" id="fKA-jW-pLa"/>
+                                    </connections>
+                                </button>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="AddressTableViewCell" id="hdj-BK-r19">
+                                        <rect key="frame" x="0.0" y="28" width="414" height="43.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="hdj-BK-r19" id="3EU-gf-AZH">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="100" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="wordWrap" numberOfLines="0" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tfq-RD-Egd">
+                                                    <rect key="frame" x="20" y="5" width="374" height="0.0"/>
+                                                    <accessibility key="accessibilityConfiguration">
+                                                        <accessibilityTraits key="traits" staticText="YES" adjustable="YES"/>
+                                                    </accessibility>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="Tfq-RD-Egd" firstAttribute="leading" secondItem="3EU-gf-AZH" secondAttribute="leading" constant="20" id="7Wu-Pq-vhs"/>
+                                                <constraint firstAttribute="trailing" secondItem="Tfq-RD-Egd" secondAttribute="trailing" constant="20" id="mgC-n0-fYh"/>
+                                                <constraint firstItem="Tfq-RD-Egd" firstAttribute="top" secondItem="3EU-gf-AZH" secondAttribute="top" constant="5" id="uAp-Z8-bSo"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="76J-1T-71R" id="Rc2-yy-jXR"/>
+                                    <outlet property="delegate" destination="76J-1T-71R" id="QkF-H1-qHI"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="TXn-uF-MA0" firstAttribute="leading" secondItem="2ae-9z-f3R" secondAttribute="leading" id="B2L-E4-kCf"/>
+                            <constraint firstItem="TXn-uF-MA0" firstAttribute="bottom" secondItem="2ae-9z-f3R" secondAttribute="bottom" constant="-15" id="Wvm-VA-s3h"/>
+                            <constraint firstItem="TXn-uF-MA0" firstAttribute="top" secondItem="2ae-9z-f3R" secondAttribute="top" constant="7" id="jnf-Tu-GzB"/>
+                            <constraint firstItem="TXn-uF-MA0" firstAttribute="centerX" secondItem="6Qw-K3-dL5" secondAttribute="centerX" id="lBn-lO-DTJ"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="2ae-9z-f3R"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Title" id="r8k-ed-QUa">
+                        <barButtonItem key="rightBarButtonItem" title="Modifier" id="4ll-wm-gxm" userLabel="Modifier">
+                            <connections>
+                                <action selector="modifier:" destination="76J-1T-71R" id="RgA-JW-Lur"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="tableView" destination="TXn-uF-MA0" id="Vcq-xT-LIJ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1xu-lt-JQm" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-202.89855072463769" y="8.7053571428571423"/>
+        </scene>
+    </scenes>
+</document>

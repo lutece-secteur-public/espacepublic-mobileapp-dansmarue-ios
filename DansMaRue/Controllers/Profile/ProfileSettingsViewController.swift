@@ -28,6 +28,7 @@ class ProfileSettingsViewController: UIViewController {
         } else {
             // Connexion de l'utilisateur
             let compteParisienVC = UIStoryboard(name: Constants.StoryBoard.compteParisien, bundle: nil).instantiateViewController(withIdentifier: Constants.ViewControllerIdentifier.compteParisien)
+            compteParisienVC.modalPresentationStyle = .fullScreen
             self.navigationController?.present(compteParisienVC, animated: true)
         }
         
@@ -50,16 +51,16 @@ class ProfileSettingsViewController: UIViewController {
     //MARK: - Private function
     
     func authorizationSettings() {
-        let alertController = UIAlertController (title: Constants.AlertBoxTitle.modificationPreferences, message: Constants.AlertBoxMessage.modificationPreferences, preferredStyle: UIAlertControllerStyle.alert)
+        let alertController = UIAlertController (title: Constants.AlertBoxTitle.modificationPreferences, message: Constants.AlertBoxMessage.modificationPreferences, preferredStyle: UIAlertController.Style.alert)
         
-        let settingsAction = UIAlertAction(title: Constants.AlertBoxTitle.reglages, style: UIAlertActionStyle.default) { (_) -> Void in
-            let settingsUrl = NSURL(string: UIApplicationOpenSettingsURLString)
+        let settingsAction = UIAlertAction(title: Constants.AlertBoxTitle.reglages, style: UIAlertAction.Style.default) { (_) -> Void in
+            let settingsUrl = NSURL(string: UIApplication.openSettingsURLString)
             if let url = settingsUrl {
                 UIApplication.shared.openURL(url as URL)
             }
         }
         
-        let cancelAction = UIAlertAction(title: Constants.AlertBoxTitle.annuler, style: UIAlertActionStyle.default, handler: nil)
+        let cancelAction = UIAlertAction(title: Constants.AlertBoxTitle.annuler, style: UIAlertAction.Style.default, handler: nil)
         alertController.addAction(settingsAction)
         alertController.addAction(cancelAction)
         

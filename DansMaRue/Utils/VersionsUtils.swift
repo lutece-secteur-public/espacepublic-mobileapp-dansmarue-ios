@@ -22,6 +22,16 @@ public class VersionsUtils: UIViewController {
         })
     }
     
+    func isMAJObligatoire(onCompletion: @escaping VersionUtilsResponse) {
+        //Appel du BO pour savoir si la MAJ est obligatoire
+        var isMAJObligatoire = false
+        let currentVersion: String = Bundle.main.version
+        RestApiManager.sharedInstance.checkVersion{(lastVersionObligatoire: String) in
+            isMAJObligatoire = self.compareVersion(currentVersion: currentVersion, storeVersion: lastVersionObligatoire)
+            onCompletion(isMAJObligatoire, nil)
+        }        
+    }
+    
     private func getVersionFromStore( onCompletion: @escaping ServiceResponse ) {
         let identifier = Bundle.main.bundleIdentifier!
         let url = "https://itunes.apple.com/lookup?bundleId=\(identifier)"

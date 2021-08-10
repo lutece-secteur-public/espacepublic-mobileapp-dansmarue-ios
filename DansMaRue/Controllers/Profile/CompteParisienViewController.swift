@@ -8,8 +8,9 @@
 
 import UIKit
 import TTGSnackbar
+import SafariServices
 
-class CompteParisienViewController: UIViewController {
+class CompteParisienViewController: UIViewController, SFSafariViewControllerDelegate {
 
     //MARK: - Properties
     var completionHandler : ((_ controller:CompteParisienViewController) -> Void)?
@@ -40,9 +41,9 @@ class CompteParisienViewController: UIViewController {
                     TTGSnackbar.init(message: Constants.AlertBoxMessage.authenticationOk, duration: .middle).show()
                     self.backToCompteParisien(self)
                 } else {
-                    let alertController = UIAlertController (title: Constants.AlertBoxTitle.erreur, message: Constants.AlertBoxMessage.erreur, preferredStyle: UIAlertControllerStyle.alert)
+                    let alertController = UIAlertController (title: Constants.AlertBoxTitle.erreur, message: Constants.AlertBoxMessage.erreur, preferredStyle: UIAlertController.Style.alert)
                     
-                    let okAction = UIAlertAction(title: Constants.AlertBoxTitle.ok, style: UIAlertActionStyle.default) { (_) -> Void in
+                    let okAction = UIAlertAction(title: Constants.AlertBoxTitle.ok, style: UIAlertAction.Style.default) { (_) -> Void in
                         // nothing
                     }
                     
@@ -63,11 +64,23 @@ class CompteParisienViewController: UIViewController {
     }
     
     @IBAction func didTapForgetPwd(_ sender: Any) {
-        UIApplication.shared.openURL(NSURL(string: Constants.Services.urlForgetPassword)! as URL)
+        let urlForgetPassword = Constants.Services.urlForgetPassword
+        if let url = URL(string: urlForgetPassword) {
+            let vc = SFSafariViewController(url: url, entersReaderIfAvailable: true)
+            vc.delegate = self
+
+            present(vc, animated: true)
+        }
     }
     
     @IBAction func didTapRegister(_ sender: Any) {
-        UIApplication.shared.openURL(NSURL(string: Constants.Services.urlRegiserCompteParisien)! as URL)
+        let urlRegiserCompteParisien = Constants.Services.urlRegiserCompteParisien
+        if let url = URL(string: urlRegiserCompteParisien) {
+            let vc = SFSafariViewController(url: url, entersReaderIfAvailable: true)
+            vc.delegate = self
+
+            present(vc, animated: true)
+        }
     }
 
     
@@ -104,16 +117,20 @@ class CompteParisienViewController: UIViewController {
     }
     
     func designUITextField(){
-        mailTextField.attributedPlaceholder = NSAttributedString(string: Constants.PlaceHolder.mail, attributes: [NSForegroundColorAttributeName: UIColor.white])
+        mailTextField.attributedPlaceholder = NSAttributedString(string: Constants.PlaceHolder.mail, attributes: convertToOptionalNSAttributedStringKeyDictionary([convertFromNSAttributedStringKey(NSAttributedString.Key.foregroundColor): UIColor.white]))
         mailTextField.textColor = UIColor.white
-        mailTextField.borderStyle = UITextBorderStyle.none
+        mailTextField.borderStyle = UITextField.BorderStyle.none
         mailTextField.tintColor = UIColor.white
 
         
-        passwordTextField.attributedPlaceholder = NSAttributedString(string: Constants.PlaceHolder.password, attributes: [NSForegroundColorAttributeName: UIColor.white])
+        passwordTextField.attributedPlaceholder = NSAttributedString(string: Constants.PlaceHolder.password, attributes: convertToOptionalNSAttributedStringKeyDictionary([convertFromNSAttributedStringKey(NSAttributedString.Key.foregroundColor): UIColor.white]))
         passwordTextField.textColor = UIColor.white
-        passwordTextField.borderStyle = UITextBorderStyle.none
+        passwordTextField.borderStyle = UITextField.BorderStyle.none
         passwordTextField.tintColor = UIColor.white
+        
+        if #available(iOS 12.0, *) {
+            passwordTextField.textContentType = .oneTimeCode
+        }
     }
 
     
@@ -125,7 +142,7 @@ extension CompteParisienViewController : UITextFieldDelegate {
         return false
     }
     
-    func textFieldDidChange () {
+    @objc func textFieldDidChange () {
         if ((mailTextField.text!.isValidEmail() == false) || (mailTextField.text?.isEmpty)! || (passwordTextField.text?.isEmpty)!) {
             connectionButton.isEnabled = false
             connectionButton.backgroundColor = UIColor.lightGreyDmr()
@@ -140,8 +157,8 @@ extension CompteParisienViewController : UITextFieldDelegate {
         
         var myMutableStringTitle = NSMutableAttributedString()
         let placeHolder  = textField.attributedPlaceholder?.string
-        myMutableStringTitle = NSMutableAttributedString(string:placeHolder!, attributes: [NSFontAttributeName:UIFont(name: Constants.fontDmr, size: 12.0)!])
-        myMutableStringTitle.addAttribute(NSForegroundColorAttributeName, value: UIColor.white, range:NSRange(location:0,length:(placeHolder?.count)!))
+        myMutableStringTitle = NSMutableAttributedString(string:placeHolder!, attributes: convertToOptionalNSAttributedStringKeyDictionary([convertFromNSAttributedStringKey(NSAttributedString.Key.font):UIFont(name: Constants.fontDmr, size: 12.0)!]))
+        myMutableStringTitle.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.white, range:NSRange(location:0,length:(placeHolder?.count)!))
         textField.attributedPlaceholder = myMutableStringTitle
     }
     
@@ -153,4 +170,15 @@ extension CompteParisienViewController : UITextFieldDelegate {
     
     
     
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToOptionalNSAttributedStringKeyDictionary(_ input: [String: Any]?) -> [NSAttributedString.Key: Any]? {
+	guard let input = input else { return nil }
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.Key(rawValue: key), value)})
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromNSAttributedStringKey(_ input: NSAttributedString.Key) -> String {
+	return input.rawValue
 }

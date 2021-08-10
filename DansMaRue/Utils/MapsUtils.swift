@@ -34,6 +34,10 @@ class MapsUtils : NSObject {
         
         resultsViewController.autocompleteBounds = bounds
         
+        // Specify the place data types to return.
+        let fields: GMSPlaceField = GMSPlaceField(rawValue: UInt(GMSPlaceField.name.rawValue) | UInt(GMSPlaceField.placeID.rawValue) | UInt(GMSPlaceField.formattedAddress.rawValue) | UInt(GMSPlaceField.addressComponents.rawValue) | UInt(GMSPlaceField.coordinate.rawValue) )!
+        resultsViewController.placeFields = fields
+        
         // Set up the autocomplete filter.
         let filter = GMSAutocompleteFilter()
         filter.type = .address
@@ -135,6 +139,21 @@ class MapsUtils : NSObject {
                 onCompletion(address!)
             }
             
+        }
+    }
+    
+    //Récupération des coordonnées via l'adresse
+    open class func getCoordinateFromAddress(adresse: String, onCompletion: @escaping (CLLocationCoordinate2D) -> Void) {
+        let geoCoder = CLGeocoder()
+        geoCoder.geocodeAddressString(adresse) { (placemarks, error) in
+            guard
+                let placemarks = placemarks,
+                let location = placemarks.first?.location
+            else {
+                // no location found
+                return
+            }
+            onCompletion(location.coordinate)
         }
     }
 }

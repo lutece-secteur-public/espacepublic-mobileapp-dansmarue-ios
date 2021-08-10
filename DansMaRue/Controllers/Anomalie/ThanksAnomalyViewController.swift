@@ -150,7 +150,7 @@ class ThanksAnomalyViewController: UIViewController {
     
     
     //MARK: - Other function
-    func textFieldDidChange (textToCheck: UITextField) {
+    @objc func textFieldDidChange (textToCheck: UITextField) {
         if !textToCheck.text!.isValidEmail() {
             self.confirmAction?.isEnabled = false
         } else {
@@ -200,16 +200,17 @@ class ThanksAnomalyViewController: UIViewController {
         
     }
     
-    func closeForTimeout() {
+    @objc func closeForTimeout() {
         self.timer.invalidate()
         
         //message alerte
-        let alertController = UIAlertController(title: Constants.AlertBoxTitle.erreur, message: Constants.AlertBoxMessage.errorSaveLabel, preferredStyle: .alert)
+        let alertController = UIAlertController(title: Constants.AlertBoxTitle.information, message: Constants.AlertBoxMessage.errorSaveLabel, preferredStyle: .alert)
         // Create OK button
         let OKAction = UIAlertAction(title: Constants.AlertBoxTitle.ok, style: .default) {
             (action:UIAlertAction!) in
             
             SaveAnomalyActivityIndicator.shared.hideOverlayView()
+            self.currentAnomaly?.anomalieStatus = .Brouillon
             self.currentAnomaly?.saveToDraft()
             self.dismiss(animated: true)
             self.closeDelegate?.displayMap()
@@ -237,7 +238,7 @@ class SaveAnomalyActivityIndicator: UIActivityIndicatorView {
     }
     
     open func showOverlay(_ view: UIView, _ frame: CGRect) {
-        overlayView.frame = CGRect(x: 0, y: 0, width: frame.width , height: frame.height)
+        overlayView.frame = CGRect(x: 0, y: 0, width: frame.width, height: (frame.height + 25))
         backView.frame = CGRect(x: 0, y: 0, width: view.frame.width , height: view.frame.height)
         backView.center = view.center
         let white = UIColor ( red: 1/255, green: 0/255, blue:0/255, alpha: 0.0 )
@@ -259,11 +260,12 @@ class SaveAnomalyActivityIndicator: UIActivityIndicatorView {
         waitLabel.textColor = .black
         waitLabel.font = UIFont.init(name: Constants.fontDmr, size: 16)
         waitLabel.textAlignment = .center
+        waitLabel.tag=100
         
         activityIndicator.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
         //activityIndicator.center = overlayView.center
         activityIndicator.transform = CGAffineTransform(scaleX: 3, y: 3)
-        activityIndicator.activityIndicatorViewStyle = .white
+        activityIndicator.style = .white
         activityIndicator.color = UIColor.pinkDmr()
         activityIndicator.center = CGPoint(x: overlayView.bounds.width / 2, y: overlayView.bounds.height / 2 + 30)
         
@@ -279,6 +281,9 @@ class SaveAnomalyActivityIndicator: UIActivityIndicatorView {
         activityIndicator.isHidden = true
         overlayView.removeFromSuperview()
         backView.removeFromSuperview()
+        if let viewWithTag = overlayView.viewWithTag(100) {
+            viewWithTag.removeFromSuperview()
+        }
     }
 }
 

@@ -18,7 +18,7 @@ public enum Priority: String {
         case .dangereux:
             return "Dangereux"
         case .tresGenant:
-            return "Trés gênant"
+            return "Très gênant"
         default:
             return "Gênant (valeur par défaut)"
         }

@@ -30,7 +30,7 @@ class PriorityViewController: UIViewController {
     
     
     //MARK: Other Methods
-    func backAction(){
+    @objc func backAction(){
     _ = navigationController?.popViewController(animated: true)
     }
     

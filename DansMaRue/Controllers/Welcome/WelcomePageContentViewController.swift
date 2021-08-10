@@ -34,7 +34,7 @@ class WelcomePageContentViewController: UIPageViewController {
                          Constants.LabelMessage.textSlide2,
                          Constants.LabelMessage.textSlide3]
         
-        self.setViewControllers([getViewControllerAtIndex(index:0)] as [UIViewController], direction: UIPageViewControllerNavigationDirection.forward, animated: false, completion: nil)
+        self.setViewControllers([getViewControllerAtIndex(index:0)] as [UIViewController], direction: UIPageViewController.NavigationDirection.forward, animated: false, completion: nil)
         
     }
 

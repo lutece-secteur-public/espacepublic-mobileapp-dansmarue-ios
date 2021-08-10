@@ -17,6 +17,8 @@ class TypeAnomalie : NSObject {
     var alias: String
     var childrensId: [String]
     var imageFromWS: UIImage
+    var isAgent: Bool
+    var messageBO: String
     
     var image: UIImage {
         if let image = UIImage(named: "icon_\(categorieId)") {
@@ -37,6 +39,10 @@ class TypeAnomalie : NSObject {
         static let childrensId = "children_id"
         static let image = "image"
         static let image_mobile = "image_mobile"
+        static let isAgent = "isAgent"
+        static let messageBO = "messageBO"
+        static let horsDMR = "horsDMR"
+        static let messageHorsDMR = "messageHorsDMR"
     }
 
     
@@ -48,6 +54,8 @@ class TypeAnomalie : NSObject {
         self.alias = ""
         self.childrensId = []
         self.imageFromWS = UIImage()
+        self.isAgent = false
+        self.messageBO = ""
     }
 
 }

@@ -12,7 +12,7 @@ import GooglePlaces
 import SwiftyJSON
 
 
-class AddAnomalyViewController: UIViewController {
+class AddAnomalyViewController: UIViewController, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
 
     // MARK: - Constantes
     struct RowId {
@@ -31,6 +31,14 @@ class AddAnomalyViewController: UIViewController {
     var typeContribution: TypeContribution = .outdoor
     var selectedEquipement: Equipement?
     
+    var choixComplementTexte: [String] = ["", "bis", "ter", "quarter"]
+    var choixComplement: [String] = ["", "b", "t", "q"]
+    var complement = ""
+    var complementTexte = ""
+    var numAdresse = ""
+    
+    var vSpinner : UIView?
+    
     //MARK: - IBoutlets
     @IBOutlet var tableViewAddAnomaly: UITableView!
     
@@ -44,7 +52,7 @@ class AddAnomalyViewController: UIViewController {
         if let location = MapsUtils.userLocation() {
             if currentAnomalie == nil {
                 if self.typeContribution == .outdoor {
-                    currentAnomalie = Anomalie(address: MapsUtils.fullAddress(), latitude: location.latitude, longitude: location.longitude, categorieId: nil, descriptive: nil, priorityId: Priority.genant.rawValue, photo1: nil, photo2: nil, anomalieStatus: .Nouveau, mailUser: "" )
+                    currentAnomalie = Anomalie(address: MapsUtils.fullAddress(), latitude: location.latitude, longitude: location.longitude, categorieId: nil, descriptive: nil, priorityId: Priority.genant.rawValue, photo1: nil, photo2: nil, anomalieStatus: .Nouveau, mailUser: "", number: "" )
                     if let myAddress = currentAnomalie?.address {
                         currentAnomalie?.streetName = MapsUtils.addressLabel
                         currentAnomalie?.postalCode = MapsUtils.getPostalCode(address: myAddress)
@@ -53,7 +61,7 @@ class AddAnomalyViewController: UIViewController {
                     showAlertMessagePhoto(equipement: equipement)
                     self.selectedEquipement = equipement
                     
-                    currentAnomalie = AnomalieEquipement(address: equipement.adresse, latitude: equipement.latitude, longitude: equipement.longitude, categorieId: nil, descriptive: nil, priorityId: Priority.genant.rawValue, photo1: nil, photo2: nil, anomalieStatus: .Nouveau, mailUser: "" )
+                    currentAnomalie = AnomalieEquipement(address: equipement.adresse, latitude: equipement.latitude, longitude: equipement.longitude, categorieId: nil, descriptive: nil, priorityId: Priority.genant.rawValue, photo1: nil, photo2: nil, anomalieStatus: .Nouveau, mailUser: "", number: "" )
                     
                     currentAnomalie?.postalCode = MapsUtils.getPostalCode(address: equipement.adresse)
                     
@@ -123,6 +131,7 @@ class AddAnomalyViewController: UIViewController {
         let modifyAddress = UIStoryboard(name: Constants.StoryBoard.addAnomaly, bundle: nil).instantiateViewController(withIdentifier: Constants.ViewControllerIdentifier.modifyAddress) as! ModifyAddressViewController
         modifyAddress.delegate = self
         self.navigationController?.pushViewController(modifyAddress, animated: true)
+        self.navigationController?.navigationBar.backgroundColor = UIColor.pinkDmr()
 
     }
     
@@ -142,27 +151,217 @@ class AddAnomalyViewController: UIViewController {
             self.present(alertController, animated: true, completion:nil)
         }
         else {
-            let mailAnomalyStoryboard = UIStoryboard(name: Constants.StoryBoard.thanks, bundle: nil)
-            let mailAnomalyVC = mailAnomalyStoryboard.instantiateViewController(withIdentifier: Constants.ViewControllerIdentifier.mail) as! ThanksAnomalyViewController
-            mailAnomalyVC.modalPresentationStyle = .overFullScreen
-            mailAnomalyVC.currentAnomaly = self.currentAnomalie
+            //Vérification du n° obligatoire ou non de l'adresse
+            //Récupération du 1er caractere de la rue pour vérifier si c'est un n°
+            let trimmedAddress = self.currentAnomalie?.address.trimmingCharacters(in: .whitespaces)
+            let first = trimmedAddress![trimmedAddress!.startIndex]
+            let str = String(first)
             
-            if User.shared.isLogged {
-                // Enregistrement de l'anomalies et des photos.
-                self.currentAnomalie?.mailUser = User.shared.email!
-                mailAnomalyVC.status = .saveIncident
+            //Si l'adresse ne commence pas par un n°, affichage de la popup d'ajout de n°
+            if Int(str) == nil && !(trimmedAddress?.lowercased().starts(with: "pont"))! {
+                showAlertNumber()
             } else {
-                mailAnomalyVC.status = .showMail
+                //Sinon publication de l'ano
+                publicationAnomalie()
             }
-            mailAnomalyVC.typeContribution = self.typeContribution
-            mailAnomalyVC.closeDelegate = self
-            self.present(mailAnomalyVC, animated: true, completion: nil)
         }
-        
     }
     
+    //Affichage de la popup de numéro obligatoire
+    func showAlertNumber() {
+         //Affichage de la popup pour le n° de rue obligatoire
+         //message alerte
+         let alertController = UIAlertController(title: Constants.AlertBoxTitle.adresseInvalide, message: Constants.AlertBoxMessage.numRueObligatoire, preferredStyle: .alert)
+         
+        
+         //Textfield pour la saisie du numéro
+         alertController.addTextField { [weak self] (textField) in
+            textField.keyboardType = .numberPad
+            textField.text = self?.numAdresse
+            textField.delegate = self
+         }
+         
+        
+        // Boutton complément d'adresse
+        var titreAlertComplement = Constants.AlertBoxTitle.complementAdresseFacultatif
+        if complement != "" {
+            titreAlertComplement = Constants.AlertBoxTitle.complementAdresse + " : " + complementTexte
+        }
+        
+         let ajoutComplementAction = UIAlertAction.init(title: titreAlertComplement, style: .default, handler: { (action: UIAlertAction!) in
+             //Affichage alert selection complément
+            let alert = UIAlertController(title: "Complément d'adresse", message: "\n\n\n\n\n\n\n\n\n", preferredStyle: UIAlertController.Style.alert);
+            alert.isModalInPopover = true;
+            let pickerFrame: CGRect = CGRect(x: 5, y: 70, width: 250, height: 140);
+            let picker: UIPickerView = UIPickerView(frame: pickerFrame);
+            picker.delegate = self;
+            picker.dataSource = self;
+            alert.view.addSubview(picker);
+             
+            let OKAction = UIAlertAction.init(title: Constants.AlertBoxTitle.ok, style: .default, handler: { (action: UIAlertAction!) in
+               print("ok")
+               self.showAlertNumber()
+            })
+            alert.addAction(OKAction)
+             
+            self.present(alert, animated: true, completion: nil);
+         })
+         alertController.addAction(ajoutComplementAction)
+         
+        
+         // Boutton publier
+         let OKAction = UIAlertAction.init(title: Constants.AlertBoxTitle.publier, style: .default, handler: { (action: UIAlertAction!) in
+             let textField = alertController.textFields![0] as UITextField
+             
+            //On ajoute le numéro si il est inférieur à 4 chiffres
+            if textField.text != "" && textField.text!.count < 4 && textField.text != "000" {
+                if self.complement != "" {
+                    //Si un complément d'adresse est renseigné
+                    self.currentAnomalie?.address = textField.text! + self.complement + " " + (self.currentAnomalie?.address)!
+                } else {
+                    self.currentAnomalie?.address = textField.text! + " " + (self.currentAnomalie?.address)!
+                }
+                
+                //Affichage du spinner de chargement
+                self.showSpinner(onView: self.view)
+                
+                //MAJ des coordonnées via la nouvelle adresse
+                MapsUtils.getCoordinateFromAddress(adresse: textField.text! + self.currentAnomalie!.streetName + " " + self.currentAnomalie!.postalCode) { (coordinate: CLLocationCoordinate2D) in
+                    self.currentAnomalie?.latitude = coordinate.latitude
+                    self.currentAnomalie?.longitude = coordinate.longitude
+                    
+                    //Utilisation des nouvelles coordonnées pour récupérer le code postal (DMR-1785)
+                    //Suite à l'ajout d'un n°, si une adresse est à cheval sur 2 arrondissements, le nouveau numéro necessite une vérification du CP
+                    MapsUtils.getAddressFromCoordinate(lat: self.currentAnomalie!.latitude, long: self.currentAnomalie!.longitude) {
+                        (address: GMSAddress) in
+                        //MAJ du CP dans l'adresse
+                        self.currentAnomalie?.address = (self.currentAnomalie?.address.replacingOccurrences(of: self.currentAnomalie!.postalCode, with: address.postalCode!))!
+                        //MAJ du CP
+                        self.currentAnomalie?.postalCode = address.postalCode ?? ""
+                        
+                        //Fin du chargement
+                        self.removeSpinner()
+                        
+                        self.publicationAnomalie()
+                    }
+                }
+             } else {
+                //Fin du chargement
+                self.removeSpinner()
+                self.present(alertController, animated: true, completion:nil)
+             }
+         })
+         alertController.addAction(OKAction)
+         
+        
+         // Boutton annuler
+         let cancelAction = UIAlertAction.init(title: Constants.AlertBoxTitle.annuler, style: UIAlertAction.Style.cancel, handler:{ (action: UIAlertAction!) in
+            self.numAdresse = ""
+            self.complement = ""
+         })
+         alertController.addAction(cancelAction)
+        
+         // Present Dialog message
+         self.present(alertController, animated: true, completion:nil)
+    }
     
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
     
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int)-> Int {
+        return choixComplement.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return choixComplementTexte[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        print(row)
+        complement = choixComplement[row]
+        complementTexte = choixComplementTexte[row]
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange,
+        replacementString string: String) -> Bool {
+        
+        let isNumOk = textField.text!.count <= 2 || (textField.text!.count == 3 && string == "")
+        
+        if isNumOk {
+            //Enregistrement du n°
+            numAdresse = textField.text! + string
+        }
+        
+        //Limitation des adresse à 3 chiffres - Prise en compte de la suppression de texte (DMR-1728)
+        return isNumOk
+    }
+    
+    func publicationAnomalie() {
+        let mailAnomalyStoryboard = UIStoryboard(name: Constants.StoryBoard.thanks, bundle: nil)
+        let mailAnomalyVC = mailAnomalyStoryboard.instantiateViewController(withIdentifier: Constants.ViewControllerIdentifier.mail) as! ThanksAnomalyViewController
+        mailAnomalyVC.modalPresentationStyle = .overFullScreen
+        mailAnomalyVC.currentAnomaly = self.currentAnomalie
+        
+        if User.shared.isLogged {
+            // Enregistrement de l'anomalies et des photos.
+            self.currentAnomalie?.mailUser = User.shared.email!
+            mailAnomalyVC.status = .saveIncident
+        } else {
+            mailAnomalyVC.status = .showMail
+        }
+        mailAnomalyVC.typeContribution = self.typeContribution
+        mailAnomalyVC.closeDelegate = self
+        self.present(mailAnomalyVC, animated: true, completion: nil)
+    }
+    
+    /// Methode permettant de récuperer le n° d'une adresse
+    ///
+    /// - Parameter street: l'adresse complete
+    func getStreetNumber(adresse : String) -> String {
+        var number = ""
+        var hasValue = false
+        
+        // Loops thorugh the street
+        for char in adresse {
+            let str = String(char)
+            // Checks if the char is a number
+            if (Int(str) != nil){
+                // If it is it appends it to number
+                number+=str
+                // Here we set the hasValue to true, beacause the street number will come in one order
+                hasValue = true
+            }
+            else{
+                if(hasValue){
+                    break
+                }
+            }
+        }
+        return number
+    }
+    
+    func showSpinner(onView : UIView) {
+        let spinnerView = UIView.init(frame: onView.bounds)
+        spinnerView.backgroundColor = UIColor.init(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
+        let ai = UIActivityIndicatorView.init(style: .whiteLarge)
+        ai.startAnimating()
+        ai.center = spinnerView.center
+        
+        DispatchQueue.main.async {
+            spinnerView.addSubview(ai)
+            onView.addSubview(spinnerView)
+        }
+        
+        vSpinner = spinnerView
+    }
+    
+    func removeSpinner() {
+        DispatchQueue.main.async {
+            self.vSpinner?.removeFromSuperview()
+            self.vSpinner = nil
+        }
+    }
     
     //MARK: - Other functions
     func changeTypeAnomalie(newType:TypeAnomalie) {
@@ -209,25 +408,25 @@ class AddAnomalyViewController: UIViewController {
         self.tableViewAddAnomaly.reloadData()
     }
     
-    func takePhoto(_ sender: UITapGestureRecognizer) {
+    @objc func takePhoto(_ sender: UITapGestureRecognizer) {
         let popupPhoto = UIStoryboard(name: Constants.StoryBoard.popupPhoto, bundle: nil).instantiateViewController(withIdentifier: Constants.ViewControllerIdentifier.popupPhoto) as! PopupPhotoViewController
         
-        self.addChildViewController(popupPhoto)
+        self.addChild(popupPhoto)
         self.view.addSubview(popupPhoto.view)
         popupPhoto.delegate = self
         popupPhoto.isFirstPhoto = true
-        popupPhoto.didMove(toParentViewController: self)
+        popupPhoto.didMove(toParent: self)
     }
     
-    func takePhoto2(_ sender: UITapGestureRecognizer) {
+    @objc func takePhoto2(_ sender: UITapGestureRecognizer) {
         let popupPhoto = UIStoryboard(name: Constants.StoryBoard.popupPhoto, bundle: nil).instantiateViewController(withIdentifier: Constants.ViewControllerIdentifier.popupPhoto) as! PopupPhotoViewController
         
-        self.addChildViewController(popupPhoto)
+        self.addChild(popupPhoto)
 
         self.view.addSubview(popupPhoto.view)
         popupPhoto.delegate = self
         popupPhoto.isFirstPhoto = false
-        popupPhoto.didMove(toParentViewController: self)
+        popupPhoto.didMove(toParent: self)
     }
     
     
@@ -271,7 +470,7 @@ class AddAnomalyViewController: UIViewController {
         return false
     }
 
-    func btnDeletePhoto(sender:UIButton!)
+    @objc func btnDeletePhoto(sender:UIButton!)
     {
         if sender.tag == 100 {
             // Suppression de l'image 1
@@ -317,11 +516,11 @@ extension AddAnomalyViewController: UITableViewDataSource {
         if (indexPath.section, indexPath.row) == (0,RowId.map) {
             return 210
         } else if (indexPath.section, indexPath.row) == (0,1) {
-            return 14
+            return 0
         } else if (indexPath.section, indexPath.row) == (0,RowId.photos) {
             return 160
         } else if (indexPath.section, indexPath.row) == (0,4) {
-            return 24
+            return 0
         } else if (indexPath.section, indexPath.row) == (0,5) {
             return 40
         } else if (indexPath.section, indexPath.row) == (0,8) {
@@ -336,11 +535,11 @@ extension AddAnomalyViewController: UITableViewDataSource {
         if (indexPath.section, indexPath.row) == (0,RowId.map) {
             return 210
         } else if (indexPath.section, indexPath.row) == (0,1) {
-            return 14
+            return 0
         } else if (indexPath.section, indexPath.row) == (0,RowId.photos) {
             return 160
         } else if (indexPath.section, indexPath.row) == (0,4) {
-            return 24
+            return 0
         } else if (indexPath.section, indexPath.row) == (0,5) {
             return 40
         } else if (indexPath.section, indexPath.row) == (0,8) {
@@ -416,7 +615,7 @@ extension AddAnomalyViewController: UITableViewDataSource {
                 mapView.mapType = GMSMapViewType.terrain
                 
                 // Permet de décaler les donnees Google (Logo, icone, ...)
-                let mapInsets = UIEdgeInsetsMake(0.0, 0.0, 30.0, 0.0)
+                let mapInsets = UIEdgeInsets.init(top: 0.0, left: 0.0, bottom: 30.0, right: 0.0)
                 mapView.padding = mapInsets
                 
                 mapView.isMyLocationEnabled = true

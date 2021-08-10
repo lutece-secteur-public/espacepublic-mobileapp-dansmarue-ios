@@ -7,13 +7,16 @@ target 'DansMaRue' do
   use_frameworks!
 
   # Pods for DansMaRue
-  pod 'GoogleMaps'
-  pod 'GooglePlaces'
+  pod 'GoogleMaps', '3.2.0'
+  pod 'GooglePlaces', '3.2.0'
   pod 'SwiftyJSON'
-  pod 'Fabric'
-  pod 'Crashlytics', '~>  3.9'
+  pod 'Fabric', '~> 1.9.0'
+  pod 'Crashlytics', '~>  3.12'
   pod 'SDWebImage', '~> 4.0'
   pod 'TTGSnackbar'
+  pod 'Firebase/Crashlytics'
+  pod 'Firebase/Analytics'
+  pod 'Mapbox-iOS-SDK', '~> 6.3.0'
   # pod 'AdtagLocationDetection', '3.1.7'
 
   target 'DansMaRueTests' do

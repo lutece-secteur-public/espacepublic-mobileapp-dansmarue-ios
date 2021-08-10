@@ -66,8 +66,8 @@ class AnomalyDetailViewController: UIViewController {
         let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(self.respondToSwipeGesture))
         let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(self.respondToSwipeGesture))
         
-        swipeRight.direction = UISwipeGestureRecognizerDirection.right
-        swipeLeft.direction = UISwipeGestureRecognizerDirection.left
+        swipeRight.direction = UISwipeGestureRecognizer.Direction.right
+        swipeLeft.direction = UISwipeGestureRecognizer.Direction.left
         
         self.view.addGestureRecognizer(swipeRight)
         self.view.addGestureRecognizer(swipeLeft)
@@ -175,7 +175,9 @@ class AnomalyDetailViewController: UIViewController {
             self.anomalyDescriptionLabel.text = anomalie.descriptive
             self.anomalyStreetLabel.text = MapsUtils.getStreetAddress(address: anomalie.address)
             self.anomalyStreetBisLabel.text = MapsUtils.boroughLabel(postalCode: postalCode)
-            self.timelineLabel.text = DateUtils.displayDuration(fromDate: anomalie.date, hour: anomalie.hour)
+            self.timelineLabel.text = DateUtils.formatDateByLocal(dateString: anomalie.date) + " " + anomalie.hour + "\n" + anomalie.number
+            self.timelineLabel.lineBreakMode = .byClipping
+            self.timelineLabel.numberOfLines=0
             self.concernedLabel.text = "\(anomalie.followers) intéressé(e)s"
             self.greetingsLabel.text = "\(anomalie.congratulations) félicitation(s)"
             
@@ -185,7 +187,7 @@ class AnomalyDetailViewController: UIViewController {
             if anomalie.firstImageUrl.isEmpty {
                 if(anomalie.photoDoneUrl.isEmpty) {
                     anomalyMainImageView.image = anomalie.imageCategorie
-                    anomalyMainImageView.contentMode = UIViewContentMode.scaleAspectFit
+                    anomalyMainImageView.contentMode = UIView.ContentMode.scaleAspectFit
                 } else {
                     let imageURL = URL(string: anomalie.photoDoneUrl) ?? URL(string: Constants.Image.noImage)
                     anomalyMainImageView.sd_setImage(with: imageURL!, placeholderImage: anomalie.imageCategorie, options: .allowInvalidSSLCertificates)
@@ -200,19 +202,19 @@ class AnomalyDetailViewController: UIViewController {
     }
     
     //Navigation entre photos
-    func respondToSwipeGesture(gesture: UIGestureRecognizer) {
+    @objc func respondToSwipeGesture(gesture: UIGestureRecognizer) {
         
         if let swipeGesture = gesture as? UISwipeGestureRecognizer {
             
             
             switch swipeGesture.direction {
-            case UISwipeGestureRecognizerDirection.right:
+            case UISwipeGestureRecognizer.Direction.right:
                 print("Swiped right")                
                 if (self.numberPhotoSelect>1) {
                     numberPhotoSelect-=1
                 }
                 anomalyMainImageView.sd_setImage(with: setPhotoURL(), placeholderImage: self.selectedAnomaly?.imageCategorie, options: .allowInvalidSSLCertificates)
-            case UISwipeGestureRecognizerDirection.left:
+            case UISwipeGestureRecognizer.Direction.left:
                 print("Swiped left")
                 if (self.numberPhotoSelect<(self.selectedAnomaly?.nbPhoto)!) {
                     self.numberPhotoSelect+=1

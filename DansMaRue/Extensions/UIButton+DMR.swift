@@ -20,7 +20,7 @@ class UIButton_Custom: UIButton {
         self.frame.size = CGSize(width: self.frame.size.width, height: 49.0)
         self.titleLabel?.font = UIFont(name: Constants.fontDmr, size: 16.0)
         
-        self.setTitleColor(UIColor.white, for: UIControlState.normal)
+        self.setTitleColor(UIColor.white, for: UIControl.State.normal)
 
     }
 }
@@ -36,7 +36,7 @@ class UIButton_AddAnomalie: UIButton {
         self.titleLabel?.font = UIFont(name: Constants.fontDmr, size: 32.0)
         self.setTitle("+",for: .normal)
         
-        self.setTitleColor(UIColor.white, for: UIControlState.normal)
+        self.setTitleColor(UIColor.white, for: UIControl.State.normal)
         
         self.backgroundColor = UIColor.pinkButtonDmr()
         
@@ -55,7 +55,7 @@ class UIButton_PublierAnomalie: UIButton {
         //self.titleLabel?.font = UIFont(name: "Montserrat", size: 20.0)
         self.setTitle(Constants.TitleButton.publier,for: .normal)
         
-        self.setTitleColor(UIColor.white, for: UIControlState.normal)
+        self.setTitleColor(UIColor.white, for: UIControl.State.normal)
         
         self.backgroundColor = UIColor.pinkButtonDmr()
         
@@ -74,7 +74,7 @@ class UIButton_Connexion: UIButton {
         self.titleLabel?.font = UIFont(name: Constants.fontDmr, size: 20.0)
         self.setTitle(Constants.TitleButton.connexion,for: .normal)
         
-        self.setTitleColor(UIColor.white, for: UIControlState.normal)
+        self.setTitleColor(UIColor.white, for: UIControl.State.normal)
         
         self.backgroundColor = UIColor.pinkButtonDmr()
         
@@ -99,7 +99,7 @@ class UIButton_PrendrePhoto: UIButton {
         self.titleLabel?.font = UIFont(name: Constants.fontDmr, size: 20.0)
         self.setTitle(Constants.TitleButton.prendrePhoto,for: .normal)
         
-        self.setTitleColor(UIColor.pinkButtonDmr(), for: UIControlState.normal)
+        self.setTitleColor(UIColor.pinkButtonDmr(), for: UIControl.State.normal)
         
         self.backgroundColor = UIColor.white
         
@@ -123,7 +123,7 @@ class UIButton_RechercherPhoto: UIButton {
         self.titleLabel?.font = UIFont(name: Constants.fontDmr, size: 20.0)
         self.setTitle(Constants.TitleButton.choisirAlbum,for: .normal)
         
-        self.setTitleColor(UIColor.pinkButtonDmr(), for: UIControlState.normal)
+        self.setTitleColor(UIColor.pinkButtonDmr(), for: UIControl.State.normal)
         
         self.backgroundColor = UIColor.white
         
@@ -142,7 +142,7 @@ class UIButton_AnnulerPhoto: UIButton {
         self.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16.0)
         self.setTitle(Constants.AlertBoxTitle.annuler,for: .normal)
         
-        self.setTitleColor(UIColor.pinkButtonDmr(), for: UIControlState.normal)
+        self.setTitleColor(UIColor.pinkButtonDmr(), for: UIControl.State.normal)
         
         self.backgroundColor = UIColor.white
         
@@ -159,7 +159,7 @@ class UIButton_EditAddress: UIButton {
         self.layer.borderWidth = 0
         //self.titleLabel?.font = UIFont(name: "Montserrat", size: 32.0)
         
-        self.setTitleColor(UIColor.white, for: UIControlState.normal)
+        self.setTitleColor(UIColor.white, for: UIControl.State.normal)
         self.setTitle("",for: .normal)
         
         //self.contentEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 0)
@@ -177,7 +177,7 @@ class UIButton_Congrats: UIButton {
         self.layer.cornerRadius = 10
         self.layer.borderWidth = 0
         
-        self.setTitleColor(UIColor.white, for: UIControlState.normal)
+        self.setTitleColor(UIColor.white, for: UIControl.State.normal)
         self.setTitle(Constants.TitleButton.feliciter ,for: .normal)
         self.titleLabel?.font = UIFont(name: Constants.fontDmr, size: 20.0)
         self.backgroundColor = UIColor.greenDmr()
@@ -195,7 +195,7 @@ class UIButton_Solved: UIButton {
         self.layer.cornerRadius = 10
         self.layer.borderWidth = 0
         
-        self.setTitleColor(UIColor.white, for: UIControlState.normal)
+        self.setTitleColor(UIColor.white, for: UIControl.State.normal)
         self.setTitle(Constants.TitleButton.declarerCommeResolue,for: .normal)
         self.titleLabel?.font = UIFont(name: Constants.fontDmr, size: 20.0)
         self.backgroundColor = UIColor.pinkDmr()
@@ -209,7 +209,7 @@ class UIButton_MyParisianAccount: UIButton {
         self.layer.cornerRadius = 10
         self.layer.borderWidth = 0
         
-        self.setTitleColor(UIColor.white, for: UIControlState.normal)
+        self.setTitleColor(UIColor.white, for: UIControl.State.normal)
         self.setTitle(Constants.TitleButton.monCompte,for: .normal)
         self.backgroundColor = UIColor.pinkDmr()
         let image = UIImage(named:Constants.Image.iconMonCompte)
@@ -229,7 +229,7 @@ class UIButton_CloseAnomalie: UIButton {
         self.titleLabel?.font = UIFont(name: Constants.fontDmr, size: 18.0)
         self.setTitle("",for: .normal)
         
-        self.setTitleColor(UIColor.white, for: UIControlState.normal)
+        self.setTitleColor(UIColor.white, for: UIControl.State.normal)
         
         self.backgroundColor = UIColor.black
         

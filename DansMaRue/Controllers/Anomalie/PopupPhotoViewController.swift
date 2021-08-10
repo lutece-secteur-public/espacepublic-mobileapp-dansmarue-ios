@@ -32,7 +32,7 @@ class PopupPhotoViewController: UIViewController {
         self.ajoutImageLabel.textColor = UIColor.greyDmr()
         
         
-        btnPrisePhoto.isEnabled = UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera)
+        btnPrisePhoto.isEnabled = UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.camera)
         
         self.showAnimate()
     }
@@ -45,7 +45,7 @@ class PopupPhotoViewController: UIViewController {
     // MARK: - IBActions
     @IBAction func takePhoto(_ sender: UIButton_PrendrePhoto) {
         print(" prise de photo ...")
-        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera) {
+        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.camera) {
             checkCameraStatus()
         } else {
             let alertController = UIAlertController(title: Constants.AlertBoxTitle.erreur, message: "Device has no camera", preferredStyle: .alert)
@@ -102,7 +102,7 @@ class PopupPhotoViewController: UIViewController {
     /// Methode permettant de verifier les authorisations sur l'utilisation de la caméra
     ///
     func checkCameraStatus() {
-        let authStatus = AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeVideo)
+        let authStatus = AVCaptureDevice.authorizationStatus(for: AVMediaType(rawValue: convertFromAVMediaType(AVMediaType.video)))
         switch authStatus {
             case .authorized: showCameraPicker()
             case .denied: alertPromptToAllowCameraAccessViaSettings()
@@ -116,9 +116,9 @@ class PopupPhotoViewController: UIViewController {
     func alertPromptToAllowCameraAccessViaSettings() {
         let alert = UIAlertController(title: Constants.AlertBoxTitle.grantPhoto, message: Constants.AlertBoxMessage.grantPhoto, preferredStyle: .alert )
         alert.addAction(UIAlertAction(title: Constants.AlertBoxTitle.parametres, style: .cancel) { alert in
-            UIApplication.shared.openURL(URL(string: UIApplicationOpenSettingsURLString)!)
+            UIApplication.shared.openURL(URL(string: UIApplication.openSettingsURLString)!)
         })
-        let cancelAction = UIAlertAction(title: Constants.AlertBoxTitle.annuler, style: UIAlertActionStyle.default, handler: nil)
+        let cancelAction = UIAlertAction(title: Constants.AlertBoxTitle.annuler, style: UIAlertAction.Style.default, handler: nil)
         alert.addAction(cancelAction)
 
         present(alert, animated: true, completion: nil)
@@ -127,8 +127,8 @@ class PopupPhotoViewController: UIViewController {
     /// Permet de demander l'authorisation d'utiliser la camera pour la prise de photo
     ///
     func permissionPrimeCameraAccess() {
-        if AVCaptureDevice.devices(withMediaType: AVMediaTypeVideo).count > 0 {
-            AVCaptureDevice.requestAccess(forMediaType: AVMediaTypeVideo, completionHandler: { [weak self] granted in
+        if AVCaptureDevice.devices(for: AVMediaType(rawValue: convertFromAVMediaType(AVMediaType.video))).count > 0 {
+            AVCaptureDevice.requestAccess(for: AVMediaType(rawValue: convertFromAVMediaType(AVMediaType.video)), completionHandler: { [weak self] granted in
                 DispatchQueue.main.async {
                     self?.checkCameraStatus() // try again
                 }
@@ -142,7 +142,7 @@ class PopupPhotoViewController: UIViewController {
     func showCameraPicker() {
         let imagePickerController = UIImagePickerController()
         imagePickerController.delegate = self
-        imagePickerController.sourceType = UIImagePickerControllerSourceType.camera;
+        imagePickerController.sourceType = UIImagePickerController.SourceType.camera;
         imagePickerController.allowsEditing = false
         present(imagePickerController, animated: true, completion: nil)
     }
@@ -156,16 +156,19 @@ extension PopupPhotoViewController: UIImagePickerControllerDelegate {
         dismiss(animated: true, completion: nil)
     }
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+// Local variable inserted by Swift 4.2 migrator.
+let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
+
         // The info dictionary may contain multiple representations of the image. You want to use the original.
-        if let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+        if let selectedImage = info[convertFromUIImagePickerControllerInfoKey(UIImagePickerController.InfoKey.originalImage)] as? UIImage {
             // Dismiss the picker.
             dismiss(animated: true, completion: nil)
             self.removeAnimate()
             
             // Compress and resize Image
             let imageResize = selectedImage.resizeWithWidth(width: Constants.Image.maxWith)
-            let compressData = UIImageJPEGRepresentation(imageResize!, Constants.Image.compressionQuality)
+            let compressData = imageResize!.jpegData(compressionQuality: Constants.Image.compressionQuality)
             let compressedImage = UIImage(data: compressData!)
             
             delegate.changePhoto(newPhoto: compressedImage!, isFirstPhoto: self.isFirstPhoto)
@@ -179,4 +182,19 @@ extension PopupPhotoViewController: UIImagePickerControllerDelegate {
 extension PopupPhotoViewController: UINavigationControllerDelegate {
     
     
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromUIImagePickerControllerInfoKeyDictionary(_ input: [UIImagePickerController.InfoKey: Any]) -> [String: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromAVMediaType(_ input: AVMediaType) -> String {
+	return input.rawValue
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertFromUIImagePickerControllerInfoKey(_ input: UIImagePickerController.InfoKey) -> String {
+	return input.rawValue
 }

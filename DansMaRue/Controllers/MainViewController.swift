@@ -16,11 +16,22 @@ class MainViewController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //Vérification accessibilité BO
+        RestApiManager.sharedInstance.isDMROnline { (isDMROnline) in
+            if !isDMROnline {
+                let alert = UIAlertController(title: Constants.AlertBoxTitle.information, message: Constants.AlertBoxMessage.maintenance, preferredStyle: UIAlertController.Style.alert)
+                let okBtn = UIAlertAction(title:"Ok" , style: .default, handler: {(_ action: UIAlertAction) -> Void in
+                })
+                alert.addAction(okBtn)
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
+        
         configureTabBarItems()
         //Customisation de la bar de naviguation
         UINavigationBar.appearance().tintColor = .white
         UINavigationBar.appearance().barTintColor = UIColor.pinkDmr()
-        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName:UIColor.white]
+        UINavigationBar.appearance().titleTextAttributes = convertToOptionalNSAttributedStringKeyDictionary([NSAttributedString.Key.foregroundColor.rawValue:UIColor.white])
 
         UITabBar.appearance().tintColor = UIColor.pinkButtonDmr()
         
@@ -51,7 +62,7 @@ class MainViewController: UITabBarController {
             let welcomeViewController = welcomeStoryboard.instantiateViewController(withIdentifier: "WelcomeViewController") as! WelcomeViewController
             welcomeViewController.modalPresentationStyle = .fullScreen
             
-            self.navigationController?.addChildViewController(welcomeViewController)
+            self.navigationController?.addChild(welcomeViewController)
             self.present(welcomeViewController, animated: true, completion: nil)
             
         }
@@ -89,22 +100,32 @@ class MainViewController: UITabBarController {
     func isLatestVersion() {
         VersionsUtils().isLatestVersion(onCompletion: { isUpdateDispo, err in
             if(isUpdateDispo) {
+                //Une MAJ est disponible
                 print("update disponible")
-                self.popupUpdateDialogue()
+                
+                //On vérifie si la MAJ est obligatoire
+                VersionsUtils().isMAJObligatoire(onCompletion: { isMAJObligatoire, err in
+                    if isMAJObligatoire {
+                        print("update obligatoire")
+                        self.popupUpdateObligatoireDialogue()
+                    } else {
+                        print("update non obligatoire")
+                        self.popupUpdateDialogue()
+                    }
+                })
             }
         })
     }
     
     private func popupUpdateDialogue(){
-        let alertMessage = "Une nouvelle version de l'application est disponible sur l'App Store. Souhaitez-vous l'installer ?";
-        let alert = UIAlertController(title: "Nouvelle version disponible", message: alertMessage, preferredStyle: UIAlertControllerStyle.alert)
-        let identifier = Bundle.main.bundleIdentifier!
+        let alertMessage = Constants.AlertBoxMessage.majDisponible
+        let alert = UIAlertController(title: "Nouvelle version disponible", message: alertMessage, preferredStyle: UIAlertController.Style.alert)
         
         let okBtn = UIAlertAction(title: "Oui", style: .default, handler: {(_ action: UIAlertAction) -> Void in
             if let url = URL(string: "itms-apps://itunes.apple.com/us/app/apple-store/id662045577?mt=8"),
                 UIApplication.shared.canOpenURL(url){
                 if #available(iOS 10.0, *) {
-                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                    UIApplication.shared.open(url, options: convertToUIApplicationOpenExternalURLOptionsKeyDictionary([:]), completionHandler: nil)
                 } else {
                     UIApplication.shared.openURL(url)
                 }
@@ -114,6 +135,24 @@ class MainViewController: UITabBarController {
         })
         alert.addAction(okBtn)
         alert.addAction(noBtn)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    private func popupUpdateObligatoireDialogue(){
+        let alertMessage = Constants.AlertBoxMessage.majObligatoire
+        let alert = UIAlertController(title: "Nouvelle version disponible", message: alertMessage, preferredStyle: UIAlertController.Style.alert)
+        
+        let okBtn = UIAlertAction(title: "Mettre à jour", style: .default, handler: {(_ action: UIAlertAction) -> Void in
+            if let url = URL(string: "itms-apps://itunes.apple.com/us/app/apple-store/id662045577?mt=8"),
+                UIApplication.shared.canOpenURL(url){
+                if #available(iOS 10.0, *) {
+                    UIApplication.shared.open(url, options: convertToUIApplicationOpenExternalURLOptionsKeyDictionary([:]), completionHandler: nil)
+                } else {
+                    UIApplication.shared.openURL(url)
+                }
+            }
+        })
+        alert.addAction(okBtn)
         self.present(alert, animated: true, completion: nil)
     }
     
@@ -132,7 +171,7 @@ class MainViewController: UITabBarController {
                         //self.getCategories()
                     }
                     alertController.addAction(okButton)
-                    self.present(alertController, animated: true, completion:nil)
+                    //self.present(alertController, animated: true, completion:nil)
                     
                     
                 }
@@ -147,13 +186,13 @@ class MainViewController: UITabBarController {
             RestApiManager.sharedInstance.getEquipements{(result: Bool) in
                 
                 if !result {
-                    let alertController = UIAlertController(title: Constants.AlertBoxTitle.erreur, message: Constants.AlertBoxMessage.erreurChargementTypes, preferredStyle: .alert)
+                    let alertController = UIAlertController(title: Constants.AlertBoxTitle.erreur, message: Constants.AlertBoxMessage.erreurChargementEquipement, preferredStyle: .alert)
                     // Create try again button
                     let okButton = UIAlertAction(title: Constants.AlertBoxTitle.ok, style: .default) { (action:UIAlertAction!) in
-                        //self.getEquipements()
+                        self.getEquipements()
                     }
                     alertController.addAction(okButton)
-                    self.present(alertController, animated: true, completion:nil)
+                    //self.present(alertController, animated: true, completion:nil)
                     
                 } else {
                     ReferalManager.shared.loadTypeEquipementAndEquipements()
@@ -174,10 +213,10 @@ class MainViewController: UITabBarController {
                     let alertController = UIAlertController(title: Constants.AlertBoxTitle.erreur, message: Constants.AlertBoxMessage.erreurChargementTypes, preferredStyle: .alert)
                     // Create try again button
                     let okButton = UIAlertAction(title: Constants.AlertBoxTitle.ok, style: .default) { (action:UIAlertAction!) in
-                        //self.getCategoriesEquipements()
+                        self.getCategoriesEquipements()
                     }
                     alertController.addAction(okButton)
-                    self.present(alertController, animated: true, completion:nil)
+                    //self.present(alertController, animated: true, completion:nil)
                     
                 }
                 
@@ -217,3 +256,14 @@ class MainViewController: UITabBarController {
 }
 
 
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToOptionalNSAttributedStringKeyDictionary(_ input: [String: Any]?) -> [NSAttributedString.Key: Any]? {
+	guard let input = input else { return nil }
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.Key(rawValue: key), value)})
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToUIApplicationOpenExternalURLOptionsKeyDictionary(_ input: [String: Any]) -> [UIApplication.OpenExternalURLOptionsKey: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (UIApplication.OpenExternalURLOptionsKey(rawValue: key), value)})
+}

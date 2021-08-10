@@ -23,7 +23,7 @@ class RestApiManager: NSObject {
     ///   - coordinates: Coordonnées de l'utilisateur
     ///   - onCompletion: Flux JSON retourné par le service
     func getIncidentsByPosition(coordinates: CLLocationCoordinate2D, onCompletion: @escaping ([Anomalie]) -> Void) {
-        let route = Constants.Services.apiBaseUrl + "sira/" + Constants.Services.apiUrl
+        let route = Constants.Services.apiBaseUrl + Constants.Services.apiUrl
         
         let guid = User.shared.uid ?? ""
         
@@ -47,9 +47,16 @@ class RestApiManager: NSObject {
                                 for marker in incident {
                                     // Create anomalie
                                     var photoCloseUrl = ""
+                                    var photoFarUrl = ""
                                     if let pictures = marker["pictures"].dictionary {
-                                        if let pictureUrl = pictures["incident_picture"]?.stringValue {
-                                            photoCloseUrl = pictureUrl
+                                        if let pictureClose = pictures["close"]?.arrayValue {
+                                            if pictureClose.count > 0 {
+                                                photoCloseUrl = pictureClose[0].stringValue
+                                            } else if let pictureFar = pictures["far"]?.arrayValue {
+                                                if pictureFar.count > 0 {
+                                                    photoFarUrl = pictureFar[0].stringValue
+                                                }
+                                            }
                                         }
                                     }
                                     let state = marker["state"].stringValue
@@ -58,7 +65,7 @@ class RestApiManager: NSObject {
                                     
                                     // On affiche dans la liste que les anos en cours
                                     
-                                    let anomalie = Anomalie(id: marker["id"].stringValue, address: marker["address"].stringValue, latitude: Double(marker["lat"].floatValue), longitude: Double(marker["lng"].floatValue), categorieId: categorieId, descriptive: marker["descriptive"].stringValue, priorityId: marker["priorityId"].stringValue, anomalieStatus: status, photoCloseUrl: photoCloseUrl, photoFarUrl: nil, photoDoneUrl: nil)
+                                    let anomalie = Anomalie(id: marker["id"].stringValue, address: marker["address"].stringValue, latitude: Double(marker["lat"].floatValue), longitude: Double(marker["lng"].floatValue), categorieId: categorieId, descriptive: marker["descriptive"].stringValue, priorityId: marker["priorityId"].stringValue, anomalieStatus: status, photoCloseUrl: photoCloseUrl, photoFarUrl: photoFarUrl, photoDoneUrl: nil, number: marker["numero"].stringValue)
                                     
                                     anomalie.isIncidentFollowedByUser = marker["isIncidentFollowedByUser"].boolValue
                                     anomalie.alias = marker["alias"].stringValue
@@ -75,6 +82,58 @@ class RestApiManager: NSObject {
                             }
                         }
                     }
+                }
+            }
+            
+        })
+        
+    }
+    
+    /// Méthode permettant de rechercher une anomalies via son numéro.
+    ///
+    /// - Parameters:
+    ///   - number: Numéro de l'anomalie
+    ///   - onCompletion: Flux JSON retourné par le service
+    func getIncidentsByNumber(number: String, onCompletion: @escaping ([String : JSON]) -> Void) {
+        let route = Constants.Services.apiBaseUrl + "signalement/getAnomalieByNumber/" + number.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+        self.makeHTTPGetRequest(path: route, header: ["":""] , onCompletion: {json, err in
+            if let jsonDict = json.dictionary {
+                onCompletion(jsonDict)
+            } else {
+                onCompletion(["erreurBO":"L’application est actuellement indisponible."])
+            }
+        })
+    }
+    
+    /// Méthode permettant de rechercher toutes les anomalies Ramen à proximiter des coordonnées spécifiées.
+    ///
+    /// - Parameters:
+    ///   - coordinates: Coordonnées de l'utilisateur
+    ///   - onCompletion: Flux JSON retourné par le service
+    func getDossierRamenByPosition(coordinates: CLLocationCoordinate2D, onCompletion: @escaping ([Anomalie]) -> Void) {
+        let route = Constants.Services.apiBaseUrl + "signalement/getDossiersCourrantsByGeomWithLimit"
+        
+        let bodyString = "{\"latitude\":\(coordinates.latitude),\"longitude\":\(coordinates.longitude)}"
+        
+        let headerList = [
+            "Content-Type": "application/json;"
+        ]
+        
+        makeHTTPPostRequest(isJson: false, path: route, body: bodyString, header: headerList, onCompletion: { json, err in
+            if let jsonArray = json.array {
+                var anomalies = [Anomalie]()
+                for item in jsonArray {
+                    if let jsonDict = item.dictionary {
+                        // Create anomalie
+                        // On affiche dans la liste que les anos en cours
+                        let anomalie = Anomalie(id: jsonDict["id"]?.stringValue, address: (jsonDict["adresse"]?.stringValue)!, latitude: Double((jsonDict["lat"]?.floatValue)!), longitude: Double((jsonDict["lng"]?.floatValue)!), categorieId: nil, descriptive: nil, priorityId: nil, anomalieStatus: AnomalieStatus.Ouvert, photoCloseUrl: nil, photoFarUrl: nil, photoDoneUrl: nil, number: "")
+                        
+                        anomalie.source = AnomalieSource(rawValue: "ramen") ?? .ramen
+                        anomalie.alias = "Demande d'enlèvement des objets encombrants"
+                        
+                        anomalies.append(anomalie)
+                    }
+                    onCompletion(anomalies)
                 }
             }
             
@@ -139,7 +198,7 @@ class RestApiManager: NSObject {
                                 let state = marker["state"]?.stringValue ?? "O"
                                 let status = AnomalieStatus(rawValue: state) ?? .Ouvert
                                 // On affiche l'anomalie sélectionée dans la liste
-                                let selectedAnomaly = Anomalie(id: marker["id"]?.stringValue, address: (marker["address"]?.stringValue)!, latitude: Double((marker["lat"]?.floatValue)!), longitude: Double((marker["lng"]?.floatValue)!), categorieId: marker["categoryId"]?.stringValue, descriptive: marker["descriptive"]?.stringValue, priorityId: marker["priorityId"]?.stringValue, anomalieStatus: status, photoCloseUrl: photoCloseUrl, photoFarUrl: photoFarUrl, photoDoneUrl: photoDoneUrl)
+                                let selectedAnomaly = Anomalie(id: marker["id"]?.stringValue, address: (marker["address"]?.stringValue)!, latitude: Double((marker["lat"]?.floatValue)!), longitude: Double((marker["lng"]?.floatValue)!), categorieId: marker["categoryId"]?.stringValue, descriptive: marker["descriptive"]?.stringValue, priorityId: marker["priorityId"]?.stringValue, anomalieStatus: status, photoCloseUrl: photoCloseUrl, photoFarUrl: photoFarUrl, photoDoneUrl: photoDoneUrl, number: marker["numero"]?.stringValue)
                                 
                                 let source = AnomalieSource(rawValue: (marker["source"]?.stringValue)!) ?? .dmr
                                 selectedAnomaly.source = source
@@ -241,7 +300,7 @@ class RestApiManager: NSObject {
                                 let state = marker["state"]?.stringValue ?? "O"
                                 let status = AnomalieStatus(rawValue: state) ?? .Ouvert
                                 // On affiche l'anomalie sélectionée dans la liste
-                                let selectedAnomaly = AnomalieEquipement(id: marker["id"]?.stringValue, address: (marker["address"]?.stringValue)!, latitude: Double((marker["lat"]?.floatValue)!), longitude: Double((marker["lng"]?.floatValue)!), categorieId: marker["categoryId"]?.stringValue, descriptive: marker["descriptive"]?.stringValue, priorityId: marker["priorityId"]?.stringValue, anomalieStatus: status, photoCloseUrl: photoCloseUrl, photoFarUrl: photoFarUrl, photoDoneUrl: photoDoneUrl)
+                                let selectedAnomaly = AnomalieEquipement(id: marker["id"]?.stringValue, address: (marker["address"]?.stringValue)!, latitude: Double((marker["lat"]?.floatValue)!), longitude: Double((marker["lng"]?.floatValue)!), categorieId: marker["categoryId"]?.stringValue, descriptive: marker["descriptive"]?.stringValue, priorityId: marker["priorityId"]?.stringValue, anomalieStatus: status, photoCloseUrl: photoCloseUrl, photoFarUrl: photoFarUrl, photoDoneUrl: photoDoneUrl, number: "")
                                 
                                 selectedAnomaly.source = .dmr
                                 
@@ -281,9 +340,9 @@ class RestApiManager: NSObject {
     func getCategories(onCompletion: @escaping (Bool) -> Void) {
         let route = Constants.Services.apiBaseUrl + Constants.Services.apiUrl
         let version = (ReferalManager.shared.fileExists(filename: ReferalManager.FileName.CATEGORIE)) ?UserDefaults.standard.double(forKey: Constants.Key.categorieVersion) : 0
+        let currentAppVersion: String = Bundle.main.version
         
-        
-        let bodyNoJson = "jsonStream=[{\"request\":\"getCategories\",\"curVersion\":\"\(version)\"}]"
+        let bodyNoJson = "jsonStream=[{\"request\":\"getCategories\",\"curVersion\":\"\(version)\",\"curVersionMobileProd\":\"\(currentAppVersion)\"}]"
         
         let headerList = [
             "Content-Type": "application/x-www-form-urlencoded",
@@ -305,11 +364,9 @@ class RestApiManager: NSObject {
                                 
                                 // Chargement de la liste en cache
                                 if let categories = answer["categories"]?.dictionary {
-                                    
                                     ReferalManager.shared.saveToJsonFile(json: JSON(categories), intoFilename: ReferalManager.FileName.CATEGORIE)
                                     // Sauvegarde de la version
-                                    UserDefaults.standard.set(version, forKey: Constants.Key.categorieVersion)
-                                    
+                                    UserDefaults.standard.set(version, forKey: Constants.Key.categorieVersion)                                    
                                 }
                                 
                             }
@@ -360,9 +417,9 @@ class RestApiManager: NSObject {
                             if let incidentId = answer["incidentId"]?.stringValue {
                                 print("Creation de l'incident \(incidentId)")
                                 // Suppression de l'anomalie dans la liste des brouillons
-                                AnomalieBrouillon.shared.remove(anomalie: anomalie)
+                                AnomalieBrouillon.shared.removeWithoutPhotos(anomalie: anomalie)
                                 anomalie.anomalieStatus = AnomalieStatus.Ouvert
-                                
+                                let idInit = anomalie.id
                                 anomalie.id = incidentId
                                 
                                 // Upload photo 1 - close
@@ -370,12 +427,24 @@ class RestApiManager: NSObject {
                                     self.uploadPhoto(baseUrl: route, incidentId: anomalie.id, type: "close", photo: photo) { (result: Bool) in
                                         if result {
                                             print("Upload de la photo 1 effectué ...")
+                                            //suppression photo 1
+                                            let docDir = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+                                            let image1URL = docDir.appendingPathComponent("\(idInit)/\(Constants.Image.draftPhoto1)")
+                                            if FileManager.default.fileExists(atPath: image1URL.path) {
+                                                try! FileManager.default.removeItem(at: image1URL)
+                                            }
                                             
                                             // Upload photo 2 - far
                                             if let photo = anomalie.photo2 {
                                                 self.uploadPhoto(baseUrl: route, incidentId: anomalie.id, type: "far", photo: photo) { (result: Bool) in
                                                     if result {
                                                         print("Upload de la photo 2 effectué ...")
+                                                        //suppression photo 2
+                                                        let docDir = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+                                                        let image2URL = docDir.appendingPathComponent("\(idInit)/\(Constants.Image.draftPhoto2)")
+                                                        if FileManager.default.fileExists(atPath: image2URL.path) {
+                                                            try! FileManager.default.removeItem(at: image2URL)
+                                                        }
                                                         self.appelWorkflow(baseUrl: route, incidentId: anomalie.id, onCompletion: { (result: Bool) in
                                                             print("Workflow lancé...")
                                                             onCompletion(result)
@@ -418,7 +487,7 @@ class RestApiManager: NSObject {
         let route = "\(baseUrl)/photo/"
         let uuid = UIDevice.current.identifierForVendor?.uuidString ?? "-1"
 
-        let data = UIImageJPEGRepresentation(photo, Constants.Image.compressionQuality)
+        let data = photo.jpegData(compressionQuality: Constants.Image.compressionQuality)
         
         let headerList = [
             "Content-Type": "image/jpeg",
@@ -672,11 +741,14 @@ class RestApiManager: NSObject {
     /// - Parameters:
     ///   - guid: Identifiant du compte parisien
     ///   - onCompletion: Liste des anomalies suivies
-    func getIncidentsByUser(guid: String, onCompletion: @escaping ([Anomalie]) -> Void) {
+    func getIncidentsByUser(guid: String, isIncidentSolved: Bool, onCompletion: @escaping ([Anomalie]) -> Void) {
         let route = Constants.Services.apiBaseUrl + Constants.Services.apiUrl
         
+        // R retourne uniquement anomalies Résolus
+        // O retourne anomalies ouvertes
+        let paramFilterIncidentStatus = isIncidentSolved ? "R" : "O"
         
-        let bodyNoJson = "jsonStream=[{\"request\":\"getIncidentsByUser\", \"guid\":\"\(guid)\"}]"
+        let bodyNoJson = "jsonStream=[{\"request\":\"getIncidentsByUser\", \"guid\":\"\(guid)\", \"filterIncidentStatus\":\"\(paramFilterIncidentStatus)\"}]"
         
         let headerList = [
             "Content-Type": "application/x-www-form-urlencoded",
@@ -705,10 +777,11 @@ class RestApiManager: NSObject {
                                     let state = incident["state"].stringValue
                                     let status = AnomalieStatus(rawValue: state) ?? .Ouvert
                                     let categorieId = incident["categoryId"].stringValue
+                                    let number = incident["numero"].stringValue
                                     
                                     // On affiche dans la liste que les anos en cours
                                     
-                                    let anomalie = Anomalie(id: incident["id"].stringValue, address: incident["address"].stringValue, latitude: Double(incident["lat"].floatValue), longitude: Double(incident["lng"].floatValue), categorieId: categorieId, descriptive: incident["descriptive"].stringValue, priorityId: incident["priorityId"].stringValue, anomalieStatus: status, photoCloseUrl: photoCloseUrl, photoFarUrl: nil, photoDoneUrl: nil)
+                                    let anomalie = Anomalie(id: incident["id"].stringValue, address: incident["address"].stringValue, latitude: Double(incident["lat"].floatValue), longitude: Double(incident["lng"].floatValue), categorieId: categorieId, descriptive: incident["descriptive"].stringValue, priorityId: incident["priorityId"].stringValue, anomalieStatus: status, photoCloseUrl: photoCloseUrl, photoFarUrl: nil, photoDoneUrl: nil, number: number)
                                     
                                     anomalie.alias = incident["alias"].stringValue
                                     anomalie.followers = incident["followers"].intValue
@@ -774,7 +847,7 @@ class RestApiManager: NSObject {
                                     
                                     // On affiche dans la liste que les anos en cours
                                     
-                                    let anomalie = AnomalieEquipement(id: incident["id"].stringValue, address: incident["address"].stringValue, latitude: Double(incident["lat"].floatValue), longitude: Double(incident["lng"].floatValue), categorieId: categorieId, descriptive: incident["descriptive"].stringValue, priorityId: incident["priorityId"].stringValue, anomalieStatus: status, photoCloseUrl: photoCloseUrl, photoFarUrl: nil, photoDoneUrl: nil)
+                                    let anomalie = AnomalieEquipement(id: incident["id"].stringValue, address: incident["address"].stringValue, latitude: Double(incident["lat"].floatValue), longitude: Double(incident["lng"].floatValue), categorieId: categorieId, descriptive: incident["descriptive"].stringValue, priorityId: incident["priorityId"].stringValue, anomalieStatus: status, photoCloseUrl: photoCloseUrl, photoFarUrl: nil, photoDoneUrl: nil, number : "")
                                     
                                     anomalie.alias = incident["alias"].stringValue
                                     anomalie.followers = incident["followers"].intValue
@@ -916,7 +989,7 @@ class RestApiManager: NSObject {
         
         print("Authentification : Récupération du profil de l'utilisateur \(guid)")
         
-        let route = Constants.Services.apiBaseUrl + "sira/identitystore"
+        let route = Constants.Services.apiBaseUrl + "signalement/identitystore"
         
         let bodyNoJson = "jsonStream={\"guid\":\"\(guid)\"}"
         
@@ -941,12 +1014,65 @@ class RestApiManager: NSObject {
                         User.shared.lastName = user["name"]?.stringValue
                         User.shared.firstName = user["firstname"]?.stringValue
                         User.shared.email = user["mail"]?.stringValue
+                        User.shared.isAgent = user["isAgent"]?.boolValue
                     }
                 }
             }
             
             
             onCompletion(status)
+        })
+    }
+    
+    /// Methode permettant de retourner les informations du profil de l'utilisateur
+    ///
+    /// - Parameters:
+    ///   - onCompletion: True si status = 0, false sinon
+    func checkVersion( onCompletion: @escaping (String) -> Void) {
+        let route = Constants.Services.apiBaseUrl + Constants.Services.apiUrl
+        let bodyNoJson = "jsonStream=[{\"request\":\"checkVersion\"}]"
+        let headerList = [
+            "Content-Type": "application/x-www-form-urlencoded",
+            ]
+        
+        makeHTTPPostRequest(isJson: false, path: route, body: bodyNoJson, header: headerList, onCompletion: { json, err in
+            
+            print("Récupération de la dernière version obligatoire")
+            var lastVersionObligatoire = ""
+            
+            if let jsonArray = json.array {
+                for item in jsonArray {
+                    if let jsonDict = item.dictionary {
+                        if let answer = jsonDict["answer"]?.dictionary {
+                            if let resultLastVersionObligatoire = answer["iosDerniereVersionObligatoire"]?.stringValue {
+                                print("lastVersionObligatoire ..... \(resultLastVersionObligatoire)")
+                                lastVersionObligatoire = resultLastVersionObligatoire
+                            }
+                        }
+                    }
+                }
+            }            
+            onCompletion(lastVersionObligatoire)
+        })
+    }
+    
+    /// Methode permettant de récuperer le message provenant du BO
+    ///
+    /// - Parameters:
+    ///   - onCompletion: True si status = 0, false sinon
+    func getOpeningMessage( onCompletion: @escaping (String) -> Void ) {
+        print("Appel du BO pour récupération du message d'ouverture")
+            
+        let route = Constants.Services.apiBaseUrl + "signalement/isDmrOnline"
+        var messageBO = ""
+            
+        self.makeHTTPGetRequest(path: route, header: ["":""] , onCompletion: {json, err in
+            if let jsonDict = json.dictionary {
+                if let message_information = jsonDict["message_information"]?.stringValue {
+                    messageBO = message_information
+                }
+            }
+            onCompletion(messageBO)
         })
     }
     
@@ -1205,7 +1331,7 @@ class RestApiManager: NSObject {
                                     let categorieId = incident["categoryId"].stringValue
                                     
                                     // On affiche dans la liste que les anos en cours
-                                    let anomalie = AnomalieEquipement(id: incident["id"].stringValue, address: equipement.adresse, latitude: equipement.latitude, longitude: equipement.longitude, categorieId: categorieId, descriptive: incident["descriptive"].stringValue, priorityId: incident["priorityId"].stringValue, anomalieStatus: status, photoCloseUrl: photoCloseUrl, photoFarUrl: photoFarUrl, photoDoneUrl: photoDoneUrl)
+                                    let anomalie = AnomalieEquipement(id: incident["id"].stringValue, address: equipement.adresse, latitude: equipement.latitude, longitude: equipement.longitude, categorieId: categorieId, descriptive: incident["descriptive"].stringValue, priorityId: incident["priorityId"].stringValue, anomalieStatus: status, photoCloseUrl: photoCloseUrl, photoFarUrl: photoFarUrl, photoDoneUrl: photoDoneUrl, number: "")
                                     
                                     anomalie.isIncidentFollowedByUser = incident["isIncidentFollowedByUser"].boolValue
                                     anomalie.alias = incident["alias"].stringValue
@@ -1232,6 +1358,19 @@ class RestApiManager: NSObject {
     }
     
     
+    /// Méthode permettant de tester si le BO est accessible
+    func isDMROnline(onCompletion: @escaping (Bool) -> Void) {
+        let route = Constants.Services.apiBaseUrl + "signalement/isDmrOnline"
+        
+        self.makeHTTPGetRequest(path: route, header: ["":""], onCompletion: {
+            json, err in
+            var isOnline = false
+            if let jsonDict = json.dictionary {
+                isOnline = ((jsonDict["online"]) != nil)
+            }
+            onCompletion(isOnline as Bool)
+        })
+    }
     
     
     // MARK: Perform a HEAD Request

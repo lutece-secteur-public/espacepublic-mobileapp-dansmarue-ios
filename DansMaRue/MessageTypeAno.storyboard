@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Message Type Ano View Controller-->
+        <scene sceneID="ghy-Xt-Ie0">
+            <objects>
+                <viewController storyboardIdentifier="MessageTypeAnoViewController" id="exX-nv-bcE" customClass="MessageTypeAnoViewController" customModule="DansMaRue" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="g3o-87-02R">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Lorem ipsum dolor sit er elit lamet, consecteta" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Mn3-WV-xrG">
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="Mn3-WV-xrG" firstAttribute="leading" secondItem="Mz6-bI-XNt" secondAttribute="leading" id="ThS-La-QEs"/>
+                            <constraint firstItem="Mn3-WV-xrG" firstAttribute="centerX" secondItem="g3o-87-02R" secondAttribute="centerX" id="cad-uX-pR7"/>
+                            <constraint firstItem="Mn3-WV-xrG" firstAttribute="top" secondItem="Mz6-bI-XNt" secondAttribute="top" id="jWQ-cF-P6R"/>
+                            <constraint firstItem="Mn3-WV-xrG" firstAttribute="bottom" secondItem="Mz6-bI-XNt" secondAttribute="bottom" id="qGT-Za-57q"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Mz6-bI-XNt"/>
+                    </view>
+                    <connections>
+                        <outlet property="typeAnoTextView" destination="Mn3-WV-xrG" id="h9H-e5-vrU"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="JhM-ec-bde" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="285" y="-342.5"/>
+        </scene>
+    </scenes>
+</document>

@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Juz-gn-K1F">
-    <device id="retina4_0" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Juz-gn-K1F">
+    <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
-        <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -29,26 +25,26 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_anomaly_picture" translatesAutoresizingMaskIntoConstraints="NO" id="hhX-nG-nir">
-                                <rect key="frame" x="0.0" y="20" width="320" height="264"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="264"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="264" id="3fY-pI-YuG"/>
                                 </constraints>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rez-Fx-Fw4">
-                                <rect key="frame" x="0.0" y="284" width="320" height="187"/>
+                                <rect key="frame" x="0.0" y="264" width="320" height="207"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="il y a 2 jours" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3ud-sW-unt">
-                                        <rect key="frame" x="15" y="15" width="64.5" height="15"/>
+                                        <rect key="frame" x="15" y="15" width="69" height="30"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="15" id="feN-mu-bsD"/>
+                                            <constraint firstAttribute="height" constant="30" id="feN-mu-bsD"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="12"/>
                                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Graffiti sur un immeuble, un mur ou un commerce" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Gw-5m-K5M">
-                                        <rect key="frame" x="10" y="38" width="300" height="64"/>
+                                        <rect key="frame" x="10" y="53" width="300" height="64"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="64" id="IuR-zU-ziQ"/>
                                         </constraints>
@@ -57,19 +53,19 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12 concerné(e)s" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oj8-OF-sxk">
-                                        <rect key="frame" x="10" y="160" width="100" height="17"/>
+                                        <rect key="frame" x="10" y="180" width="106" height="17"/>
                                         <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="14"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1 félicitation(s)" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fxg-Xy-Ac4">
-                                        <rect key="frame" x="222" y="160" width="90" height="17"/>
+                                        <rect key="frame" x="212.5" y="180" width="99.5" height="17"/>
                                         <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="14"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OV3-GI-Ify">
-                                        <rect key="frame" x="10" y="110" width="300" height="42"/>
+                                        <rect key="frame" x="10" y="125" width="300" height="47"/>
                                         <string key="text">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. </string>
                                         <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="14"/>
                                         <nil key="textColor"/>
@@ -95,7 +91,7 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uIL-LP-huo">
-                                <rect key="frame" x="276" y="40" width="28" height="26"/>
+                                <rect key="frame" x="276" y="20" width="28" height="25"/>
                                 <state key="normal" image="edit_button">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -104,12 +100,12 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="14ème" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Xv-qq-902">
-                                <rect key="frame" x="10" y="260" width="36.5" height="14"/>
+                                <rect key="frame" x="10" y="240" width="38.5" height="14"/>
                                 <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="12"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rr0-m8-RhX" customClass="UIButton_Solved" customModule="DansMaRue" customModuleProvider="target">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rr0-m8-RhX" customClass="UIButton_Solved" customModule="DansMaRue" customModuleProvider="target">
                                 <rect key="frame" x="15" y="496" width="290" height="57"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="57" id="i2n-FL-zKE"/>
@@ -120,7 +116,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IEx-Je-sD1">
-                                <rect key="frame" x="274" y="86" width="30" height="133"/>
+                                <rect key="frame" x="274" y="65" width="30" height="134"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="30" id="fh9-Ma-jAa"/>
                                 </constraints>
@@ -130,7 +126,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aFq-Q7-Znd">
-                                <rect key="frame" x="16" y="85" width="30" height="134"/>
+                                <rect key="frame" x="16" y="65" width="30" height="134"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="30" id="AGV-ZG-h1c"/>
                                 </constraints>
@@ -138,14 +134,14 @@
                                     <action selector="seePreviousPhoto:" destination="Juz-gn-K1F" eventType="touchUpInside" id="joF-Vf-Xwo"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sQf-kS-2ap">
-                                <rect key="frame" x="60" y="40" width="200" height="28"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sQf-kS-2ap">
+                                <rect key="frame" x="60" y="20" width="200" height="28"/>
                                 <color key="backgroundColor" red="0.32549019610000002" green="0.68235294120000001" blue="0.61176470589999998" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="200" id="w9s-Wf-asS"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="13"/>
-                                <state key="normal" title="Cette anomalie a été résolue">
+                                <state key="normal" title="Cette anomalie a été clôturée">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
@@ -163,13 +159,13 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rue du Cloître-Saint-Merri" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ToL-si-eot">
-                                <rect key="frame" x="10" y="239" width="300" height="17"/>
+                                <rect key="frame" x="10" y="219" width="300" height="17"/>
                                 <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="14"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tb3-bq-2JA" customClass="UIButton_CloseAnomalie" customModule="DansMaRue" customModuleProvider="target">
-                                <rect key="frame" x="16" y="40" width="25" height="24"/>
+                                <rect key="frame" x="16" y="20" width="25" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="25" id="Asf-tg-b9O"/>
                                 </constraints>
@@ -181,7 +177,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ctT-SE-09b">
-                                <rect key="frame" x="254" y="253" width="56" height="56"/>
+                                <rect key="frame" x="254" y="233" width="56" height="56"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="56" id="AFG-JA-lg3"/>
                                     <constraint firstAttribute="width" constant="56" id="zfh-2o-4O6"/>
@@ -191,7 +187,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cette anomalie est en cours de résolution" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uUo-Gk-PvA" customClass="PaddingLabel" customModule="DansMaRue" customModuleProvider="target">
-                                <rect key="frame" x="60" y="40" width="200" height="30.5"/>
+                                <rect key="frame" x="60" y="20" width="200" height="31.5"/>
                                 <color key="backgroundColor" red="0.96862745098039216" green="0.49803921568627452" blue="0.40784313725490196" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="13"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

@@ -10,6 +10,7 @@ import UIKit
 import GoogleMaps
 import GooglePlaces
 import SwiftyJSON
+import Mapbox
 
 class MapViewController: UIViewController {
     
@@ -52,6 +53,7 @@ class MapViewController: UIViewController {
             locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
             mapContainerView.isMyLocationEnabled = true
             mapContainerView.settings.myLocationButton = true
+            locationManager.startUpdatingLocation();
         } else if CLLocationManager.authorizationStatus() == .denied {
             // L'utilisateur refuse la location. Affichage d'une alert
             // Open the settings of your app
@@ -69,8 +71,20 @@ class MapViewController: UIViewController {
         
         uberActionLabel.isHidden = true
 
-        // Add button to switch anomaly
-        addSwitchButton()
+        // Add button to switch anomaly if equipement is available
+        DispatchQueue.global().async {
+            RestApiManager.sharedInstance.getEquipements{(result: Bool) in
+                if result {
+                    self.addSwitchButton()
+                }
+            }
+        }
+        
+        let url = URL(string: "mapbox://styles/mapbox/streets-v11")
+        let mapView = MGLMapView(frame: CGRect(x: 0, y: 0, width: 0, height: 0), styleURL: url)
+        mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        mapView.setCenter(CLLocationCoordinate2D(latitude: 59.31, longitude: 18.06), zoomLevel: 9, animated: false)
+        view.addSubview(mapView)
     }
     
 
@@ -79,9 +93,8 @@ class MapViewController: UIViewController {
         addBottomSheetView()
         
         // Raffraichissement de la liste des anomalies
-        if ContextManager.shared.typeContribution == .outdoor {
+        if ContextManager.shared.typeContribution == .outdoor && MapsUtils.addressLabel == "" {
             if let location = MapsUtils.userLocation() {
-                
                 retrieve(currentLocation: location, addMarker: true) { (result: Bool) in }
             }
         } else if ContextManager.shared.typeContribution == .indoor, let equipement = ContextManager.shared.equipementSelected {
@@ -104,11 +117,12 @@ class MapViewController: UIViewController {
             
             // 2- Add bottomSheetVC as a child view and set its delegate
             bottomSheetVC?.uberDelegate = self
+            bottomSheetVC?.delegate = self
         }
         bottomSheetVC?.partialView = self.mapContainerView.frame.origin.y + self.mapContainerView.frame.height
-        self.addChildViewController(bottomSheetVC!)
+        self.addChild(bottomSheetVC!)
         self.view.addSubview((bottomSheetVC?.view)!)
-        bottomSheetVC?.didMove(toParentViewController: self)
+        bottomSheetVC?.didMove(toParent: self)
         
         // 3- Adjust bottomSheet frame and initial position.
         bottomSheetVC?.view.frame = CGRect(x: 0, y: self.view.frame.maxY, width: view.frame.width, height: view.frame.height)
@@ -131,6 +145,12 @@ class MapViewController: UIViewController {
             
             searchBar.tintColor = UIColor.white
             searchBar.isTranslucent = false
+            if #available(iOS 13.0, *) {
+                searchBar.searchTextField.backgroundColor=UIColor.white
+                searchBar.searchTextField.tintColor=UIColor.black
+            }
+            
+            searchBar.layer.cornerRadius = 10;
             self.setNavigationTitleView(withSearchBar: searchBar)
             
         }
@@ -175,44 +195,69 @@ class MapViewController: UIViewController {
     ///
     func setNavigationTitleView(withSearchBar searchBar: UISearchBar) {
         if #available(iOS 11.0, *) {
-            // For iOS 11+, fix size to 44 for navigationbar
+            // For iOS 11+, fix size to 32 for navigationbar
             //searchBar.heightAnchor.constraint(equalToConstant: 44).isActive = true
             let searchBarContainer = SearchBarContainerView(customSearchBar: searchBar)
-            searchBarContainer.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 44)
+            searchBarContainer.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 32)
             self.navigationItem.titleView = searchBarContainer
         } else {
             searchBar.sizeToFit()
             self.navigationItem.titleView = searchBar
         }
+        
+        let menuBtn = UIButton(type: .custom)
+        menuBtn.frame = CGRect(x: 0.0, y: 0.0, width: 44, height: 44)
+        menuBtn.setImage(UIImage(named:Constants.Image.favorite), for: .normal)
+        menuBtn.addTarget(self, action: #selector(addTapped), for:.touchDown)
+        let menuBarItem = UIBarButtonItem(customView: menuBtn)
+        
+        let currWidth = menuBarItem.customView?.widthAnchor.constraint(equalToConstant: 25)
+        currWidth?.isActive = true
+        let currHeight = menuBarItem.customView?.heightAnchor.constraint(equalToConstant: 25)
+        currHeight?.isActive = true
+        
+        self.navigationItem.rightBarButtonItem = menuBarItem
+    }
+    
+    @objc func addTapped() {
+        let manageAddressVC = UIStoryboard(name: Constants.StoryBoard.manageAddress, bundle: nil).instantiateInitialViewController() as! ManageAddressViewController
+        manageAddressVC.delegate = self
+        self.navigationController?.pushViewController(manageAddressVC, animated: true)
     }
 
     /// Ajout d'un bouton sur la carte permettant de sélectionner le type de contribution
     func addSwitchButton() {
         
-        if UIDevice().userInterfaceIdiom == .phone {
-            switch UIScreen.main.nativeBounds.height {
-            case 2436:
-                //Iphone x - position du switchButton plus basse
-                switchButton = UIButton(frame: CGRect(x: 15, y: 100, width: self.view.frame.size.width - 30, height: 40))
-            default:
-                switchButton = UIButton(frame: CGRect(x: 15, y: 80, width: self.view.frame.size.width - 30, height: 40))
+        //Si equipement est lancé, on ajoute le bouton de selection du type
+        DispatchQueue.global().async {
+            RestApiManager.sharedInstance.getEquipements{(result: Bool) in
+                if result {                    
+                    if UIDevice().userInterfaceIdiom == .phone {
+                        switch UIScreen.main.nativeBounds.height {
+                        case 2436:
+                            //Iphone x - position du switchButton plus basse
+                            self.switchButton = UIButton(frame: CGRect(x: 15, y: 100, width: self.view.frame.size.width - 30, height: 40))
+                        default:
+                            self.switchButton = UIButton(frame: CGRect(x: 15, y: 80, width: self.view.frame.size.width - 30, height: 40))
+                        }
+                    }
+                    
+                    self.switchButton?.layer.cornerRadius = 20
+                    self.switchButton?.layer.borderWidth = 0
+                    
+                    self.switchButton?.setTitle(Constants.LabelMessage.defaultTypeContributionLabel, for: .normal)
+                    
+                    self.switchButton?.setTitleColor(UIColor.white, for: UIControl.State.normal)
+                    
+                    self.switchButton?.backgroundColor = UIColor.pinkButtonDmr()
+                    self.switchButton?.alpha = 0.8
+                    
+                    self.switchButton?.addTarget(self, action: #selector(MapViewController.switchButtonAction(_: )), for: .touchUpInside)
+                    
+                    self.view.addSubview(self.switchButton!)
+                }
             }
         }
-        
-        switchButton?.layer.cornerRadius = 20
-        switchButton?.layer.borderWidth = 0
-        
-        switchButton?.setTitle(Constants.LabelMessage.defaultTypeContributionLabel, for: .normal)
-        
-        switchButton?.setTitleColor(UIColor.white, for: UIControlState.normal)
-        
-        switchButton?.backgroundColor = UIColor.pinkButtonDmr()
-        switchButton?.alpha = 0.8
-        
-        switchButton?.addTarget(self, action: #selector(MapViewController.switchButtonAction(_: )), for: .touchUpInside)
-        
-        self.view.addSubview(switchButton!)
-        
     }
 
     // MARK: - Other Methods
@@ -220,7 +265,7 @@ class MapViewController: UIViewController {
         mapContainerView.mapType = GMSMapViewType.terrain
         
         // Permet de décaler les donnees Google (Logo, icone, ...)
-        let mapInsets = UIEdgeInsetsMake(0.0, 0.0, 30.0, 0.0)
+        let mapInsets = UIEdgeInsets.init(top: 0.0, left: 0.0, bottom: 30.0, right: 0.0)
         mapContainerView.padding = mapInsets
         mapContainerView.delegate = self
         
@@ -229,7 +274,7 @@ class MapViewController: UIViewController {
     /// Action sur la bouton de type de contribution.
     /// Ouverture d'un nouvel écran permettant de sélectionner le type de contribution
     ///
-    func switchButtonAction(_:Any) {
+    @objc func switchButtonAction(_:Any) {
         let typeContributionView = UIStoryboard(name: Constants.StoryBoard.typeContribution, bundle: nil).instantiateInitialViewController() as! TypeContributionViewController
         typeContributionView.delegate = self
         self.navigationController?.pushViewController(typeContributionView, animated: true)
@@ -278,28 +323,12 @@ class MapViewController: UIViewController {
     ///Demande à l'utilisateur l'accès au service de localisation
     ///
     private func requestAuthorization() {
-        let alertController = UIAlertController (title: Constants.AlertBoxTitle.locationDisabled, message: Constants.AlertBoxMessage.locationDisabled, preferredStyle: UIAlertControllerStyle.alert)
+        let alertController = UIAlertController (title: Constants.AlertBoxTitle.locationDisabled, message: Constants.AlertBoxMessage.locationDisabled, preferredStyle: UIAlertController.Style.alert)
         
-        let settingsAction = UIAlertAction(title: Constants.AlertBoxTitle.parametres, style: UIAlertActionStyle.default) { (_) -> Void in
-            
-            if #available(iOS 10.0, *) {
-                let settingsUrl = NSURL(string: "App-Prefs:root=Privacy&path=LOCATION")
-                if let url = settingsUrl {
-                    UIApplication.shared.openURL(url as URL)
-                }
-            } else {
-                let settingsUrl = NSURL(string: "prefs:root=LOCATION_SERVICES")
-                if let url = settingsUrl {
-                    UIApplication.shared.openURL(url as URL)
-                }
-            }
-            
-        }
+        let okBtn = UIAlertAction(title:"OK" , style: .default, handler: {(_ action: UIAlertAction) -> Void in
+        })
         
-        let cancelAction = UIAlertAction(title: Constants.AlertBoxTitle.annuler, style: UIAlertActionStyle.default, handler: nil)
-        alertController.addAction(settingsAction)
-        alertController.addAction(cancelAction)
-        
+        alertController.addAction(okBtn)
         
         self.present(alertController, animated: true, completion: nil)
         
@@ -322,7 +351,7 @@ class MapViewController: UIViewController {
     ///   - location: Coordonnées de la position de l'utilisateur
     ///   - addMarker: Flag indiquant si le marqueur de position doit etre rajouter
     ///   - onCompletion: true : si la recherche a aboutie, false sinon
-    func retrieve(currentLocation location:CLLocationCoordinate2D, addMarker: Bool, address: String="", onCompletion: @escaping (Bool) -> Void) {
+    func retrieve(currentLocation location:CLLocationCoordinate2D, addMarker: Bool, address: String="", cp: String="", onCompletion: @escaping (Bool) -> Void) {
         self.mapContainerView.clear()
         
         if ContextManager.shared.typeContribution == .outdoor {
@@ -342,21 +371,41 @@ class MapViewController: UIViewController {
                 }
                 
                 if ContextManager.shared.typeContribution == .outdoor {
+                    var anomaliesBottomSheet = [Anomalie]()
+                    
                     // Cas du mode Espace public. On recherche les anomalies à proximite
                     DispatchQueue.global().async {
-                        
                         RestApiManager.sharedInstance.getIncidentsByPosition(coordinates: location) { (anomalies: [Anomalie]) in
-                            
                             if ContextManager.shared.typeContribution == .outdoor {
                                 DispatchQueue.main.async {
-                                    var anomaliesBottomSheet = [Anomalie]()
                                     
                                     for anomalie in anomalies {
                                         // Ajout du GMSMarker sur la map
                                         self.addMarkerAnomalie(anomalie: anomalie)
                                         
+                                        if anomalie.anomalieStatus != .Resolu && !anomaliesBottomSheet.contains(anomalie) {
+                                            anomaliesBottomSheet.append(anomalie)
+                                        }
+                                    }
+                                    
+                                    NotificationCenter.default.post(name: self.anomalieNotification, object: anomaliesBottomSheet)
+                                    onCompletion(true)
+                                }
+                            }
+                        }
+                    }
+                    
+                    // Cas du mode Espace public. On recherche les anomalies Ramen à proximite
+                   DispatchQueue.global().async {
+                        RestApiManager.sharedInstance.getDossierRamenByPosition(coordinates: location) { (anomalies: [Anomalie]) in
+                            if ContextManager.shared.typeContribution == .outdoor {
+                                DispatchQueue.main.async {
+                                    for anomalie in anomalies {
+                                        // Ajout du GMSMarker sur la map
+                                        self.addMarkerAnomalie(anomalie: anomalie)
                                         
-                                        if anomalie.anomalieStatus != .Resolu {
+                                        
+                                        if anomalie.anomalieStatus != .Resolu && !anomaliesBottomSheet.contains(anomalie) {
                                             anomaliesBottomSheet.append(anomalie)
                                         }
                                     }
@@ -402,22 +451,63 @@ class MapViewController: UIViewController {
                 print("MyLocation is \(location)")
                 MapsUtils.set(userLocation: location)
                 let nc = NotificationCenter.default
+                
                 if("" != address) {
                     addressFound.firstResult()?.setValue(address.components(separatedBy: ",")[0], forKey: "thoroughfare")
-                }                
+                }
+                
+                if("" != cp) {
+                    addressFound.firstResult()?.setValue(cp, forKey: "postalCode")
+                }
+                
                 nc.post(name: self.addressNotification, object: addressFound.firstResult(), userInfo: ["":""])
             }
         } else {
             // Device en mode déconnecté
             MapsUtils.set(userLocation: location)
             let nc = NotificationCenter.default
-            nc.post(name: self.addressNotification, object: location)
+            
+            //nc.post(name: self.addressNotification, object: location)
             self.mapContainerView.clear()
             NotificationCenter.default.post(name: self.anomalieNotification, object: [Anomalie]())
             
             onCompletion(false)
         }
         
+    }
+    
+    /// Methode permettant de récuperer le n° d'une adresse
+    ///
+    /// - Parameter street: l'adresse complete
+    func getStreetNumber(adresse : String) -> String {
+        var number = ""
+        var hasValue = false
+        
+        // Loops thorugh the street
+        for char in adresse {
+            let str = String(char)
+            // Checks if the char is a number
+            if (Int(str) != nil){
+                // If it is it appends it to number
+                number+=str
+                // Here we set the hasValue to true, beacause the street number will come in one order
+                hasValue = true
+            }
+            else{
+                if(hasValue){
+                    break
+                }
+            }
+        }
+        return number
+    }
+    
+    /// Methode permettant de vérifier si une adresse a un numero de rue
+    ///
+    /// - Parameter street: l'adresse complete
+    func isAddressHasNumber(adresse: String) -> Bool {
+        let str = String(adresse.prefix(1))
+        return Int(str) != nil
     }
     
     /// Methode permettant de recherche les informations d'un équipement avec anomalies et mise à jour de la bottomsheet
@@ -619,7 +709,7 @@ extension MapViewController: UberDelegate {
             uberPin.image = UIImage(named: Constants.Image.pinNoir)
             uberPin.center = self.mapContainerView.center
             self.view.addSubview(uberPin)
-            self.view.bringSubview(toFront: uberPin)
+            self.view.bringSubviewToFront(uberPin)
             self.uberPinVisible = true
             uberActionLabel.isHidden = false
         } else {
@@ -649,8 +739,36 @@ extension MapViewController: GMSAutocompleteResultsViewControllerDelegate {
             mapView.animate(to: camera)
         }
         // Recherche de l'adresse et des anomalies a proximite
-        retrieve(currentLocation: place.coordinate, addMarker: true, address: place.formattedAddress!) { (result: Bool) in }
         
+        var numRue = ""
+        var rue = ""
+        var cp = ""
+        
+        for component in place.addressComponents! {
+            if component.types[0] == "street_number" {
+                numRue = component.name
+            }
+            if component.types[0] == "route" {
+                rue = component.name
+            }
+            if component.types[0] == "postal_code" {
+                cp = component.name
+            }
+        }
+        let adresse = numRue + " " + rue + ", " + cp + " Paris, France"
+        
+        retrieve(currentLocation: place.coordinate, addMarker: true, address: adresse, cp: cp) { (result: Bool) in }
+        
+    }
+    
+    func centerCameraToPosition(currentLocation location:CLLocationCoordinate2D) {
+        if let mapView = mapContainerView {
+            // Positionnement de la caméra au centre du marker
+            let camera = GMSCameraPosition.camera(withLatitude: location.latitude,
+                                                  longitude: location.longitude,
+                                                  zoom: Constants.Maps.zoomLevel_50m)
+            mapView.animate(to: camera)
+        }
     }
     
     func resultsController(_ resultsController: GMSAutocompleteResultsViewController,
@@ -667,6 +785,8 @@ extension MapViewController: GMSAutocompleteResultsViewControllerDelegate {
     func didUpdateAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
+    
+    
 }
 
 extension MapViewController: EquipementDelegate {

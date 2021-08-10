@@ -16,7 +16,7 @@ protocol UberDelegate: NSObjectProtocol {
     func shouldDisplayUberPin(yesWeCan: Bool)
 }
 
-class BottomSheetViewController: UIViewController {
+class BottomSheetViewController: UIViewController, UITextFieldDelegate {
 
     //MARK: - IBOutlets
     @IBOutlet weak var bottomSheetTableView: UITableView!
@@ -43,14 +43,23 @@ class BottomSheetViewController: UIViewController {
             }
         }
     }
+    
+    weak var delegate: MapViewController!
+    let anomalieNotification = Notification.Name(rawValue:Constants.NoticationKey.anomaliesChanged)
+    
+    var hidemanageFavoriteBtns = false
 
     var addAnomalyBtn: UIButton?
+    var searchAnomalyBtn: UIButton?
     var followAnomalyBtn: UIButton?
     var unfollowAnomalyBtn: UIButton?
     var congratulateAnomalyBtn: UIButton?
+    var addFavoriteBtn: UIButton?
+    var removeFavoriteBtn: UIButton?
     
     let imgAddAnomaly = UIImage(named: Constants.Image.createAnomalie)
     let imgAddAnomalySelected = UIImage(named: Constants.Image.createAnomalieSelected)
+    let imgSearchAnomalie = UIImage(named: Constants.Image.searchAnomalie)
     let imgFollowAnomaly = UIImage(named:  Constants.Image.follow)
     let imgFollowAnomalySelected = UIImage(named:  Constants.Image.followSelected)
     let imgFollowAnomalyDisabled = UIImage(named:  Constants.Image.followDisabled)
@@ -59,6 +68,8 @@ class BottomSheetViewController: UIViewController {
     let imgCongratulateAnomaly = UIImage(named:  Constants.Image.congratulate)
     let imgCongratulateAnomalySelected = UIImage(named:  Constants.Image.congratulateSelected)
     let imgCongratulateAnomalyDisabled = UIImage(named:  Constants.Image.congratulateDisabled)
+    let imgAddAddressFavorite = UIImage(named: Constants.Image.favoritePlus)
+    let imgRemoveddressFavorite = UIImage(named: Constants.Image.favoriteCheck)
 
     var otherMalfunctionsArray = [Anomalie]()
     var currentStatus: BottomSheetStatus = .none
@@ -101,6 +112,39 @@ class BottomSheetViewController: UIViewController {
             self.view.addSubview(addAnomalyBtn!)
         }
         
+        if searchAnomalyBtn == nil {
+            searchAnomalyBtn = self.initSearchButton()
+            searchAnomalyBtn?.setImage(imgSearchAnomalie, for: .normal)
+            searchAnomalyBtn?.addTarget(self, action: #selector(self.tapSearchAnomaly(sender:)), for: .touchUpInside)
+            searchAnomalyBtn?.accessibilityLabel = Constants.LabelMessage.searchAnomaly
+            
+            self.view.addSubview(searchAnomalyBtn!)
+        }
+        
+        if addFavoriteBtn == nil {
+            addFavoriteBtn = initButtonManageFavorite(isAddFavorite: true)
+            addFavoriteBtn?.setImage(imgAddAddressFavorite, for: .normal)
+            addFavoriteBtn?.accessibilityLabel = Constants.LabelMessage.addAdresseFavorite
+            
+            let tapGestureRecognizer = MyTapGesture(target: self, action: #selector(self.addOrRemoveFavorite(recognizer:)))
+            tapGestureRecognizer.addFavorite = true
+            addFavoriteBtn?.addGestureRecognizer(tapGestureRecognizer)
+            
+            self.view.addSubview(addFavoriteBtn!)
+        }
+        
+        if removeFavoriteBtn == nil {
+            removeFavoriteBtn = initButtonManageFavorite(isAddFavorite: true)
+            removeFavoriteBtn?.setImage(imgRemoveddressFavorite, for: .normal)
+            removeFavoriteBtn?.accessibilityLabel = Constants.LabelMessage.removeAdresseFavorite
+            
+            let tapGestureRecognizer = MyTapGesture(target: self, action: #selector(self.addOrRemoveFavorite(recognizer:)))
+            tapGestureRecognizer.addFavorite = false
+            removeFavoriteBtn?.addGestureRecognizer(tapGestureRecognizer)
+            
+            self.view.addSubview(removeFavoriteBtn!)
+        }
+        
         if followAnomalyBtn == nil {
             followAnomalyBtn = self.initButton()
             followAnomalyBtn?.setImage(imgFollowAnomaly, for: .normal)
@@ -140,13 +184,20 @@ class BottomSheetViewController: UIViewController {
         button.layer.borderWidth = 0
         button.tintColor = .white
         button.backgroundColor = .clear
-        button.imageEdgeInsets = UIEdgeInsetsMake(-10, -10, -10, -10)
+        button.imageEdgeInsets = UIEdgeInsets.init(top: -10, left: -10, bottom: -10, right: -10)
+        
+        return button
+    }
+    
+    func initSearchButton() -> UIButton {
+        let button = UIButton(frame: CGRect(x:self.view.frame.width - 70, y:-170, width:65, height:65))
+        button.isUserInteractionEnabled = true
         
         return button
     }
     
     //MARK: - Bottom sheet methods
-    func panGesture(_ recognizer: UIPanGestureRecognizer) {
+    @objc func panGesture(_ recognizer: UIPanGestureRecognizer) {
         
         let translation = recognizer.translation(in: self.view)
         let velocity = recognizer.velocity(in: self.view)
@@ -208,6 +259,7 @@ class BottomSheetViewController: UIViewController {
         
         addAnomalyBtn?.isHidden = true
         congratulateAnomalyBtn?.isEnabled = true
+        hidemanageFavoriteBtns = true
         
         if selectAnomalie?.anomalieStatus == .Resolu {
             followAnomalyBtn?.isHidden = true
@@ -258,18 +310,20 @@ class BottomSheetViewController: UIViewController {
                 }
             }
         } else {
-            DispatchQueue.global().async {
-                
-                RestApiManager.sharedInstance.getIncidentById(idSignalement: anomalie.id, source: source){ (anomalie: Anomalie) in
-                    DispatchQueue.main.async {
-                        let anomalyDetailStoryboard = UIStoryboard(name: Constants.StoryBoard.detailAnomaly, bundle: nil)
-                        let anomalyDetailViewController = anomalyDetailStoryboard.instantiateViewController(withIdentifier: Constants.ViewControllerIdentifier.detailAnomaly) as! AnomalyDetailViewController
-                        anomalyDetailViewController.selectedAnomaly = anomalie
-                        // Gestion du mode d'affichage de l'écran de détail en fonction du status de l'anomalie
-                        anomalyDetailViewController.currentAnomalyState = (anomalie.anomalieStatus == .Resolu ? .solved : .notsolved)
-                        self.present(anomalyDetailViewController, animated: true, completion: nil)
-                        anomalyDetailViewController.customNavigationDelegate = self
-                        
+            //Si ano DMR, on affiche le détail
+            if source == AnomalieSource.dmr {
+                DispatchQueue.global().async {
+                    RestApiManager.sharedInstance.getIncidentById(idSignalement: anomalie.id, source: source){ (anomalie: Anomalie) in
+                        DispatchQueue.main.async {
+                            let anomalyDetailStoryboard = UIStoryboard(name: Constants.StoryBoard.detailAnomaly, bundle: nil)
+                            let anomalyDetailViewController = anomalyDetailStoryboard.instantiateViewController(withIdentifier: Constants.ViewControllerIdentifier.detailAnomaly) as! AnomalyDetailViewController
+                            anomalyDetailViewController.selectedAnomaly = anomalie
+                            // Gestion du mode d'affichage de l'écran de détail en fonction du status de l'anomalie
+                            anomalyDetailViewController.currentAnomalyState = (anomalie.anomalieStatus == .Resolu ? .solved : .notsolved)
+                            self.present(anomalyDetailViewController, animated: true, completion: nil)
+                            anomalyDetailViewController.customNavigationDelegate = self
+                            
+                        }
                     }
                 }
             }
@@ -277,10 +331,78 @@ class BottomSheetViewController: UIViewController {
         
     }
     
-    func displaySelectedAnomaly(_ sender:AnyObject){
+    @objc func addOrRemoveFavorite(recognizer: MyTapGesture){
+        var favorite : [String] = getFavoritesAddress()
+        //Récupération de l'adresse et des coordonées
+        let addressWithCoordonate = MapsUtils.fullAddress() + Constants.Key.separatorAdresseCoordonate + String(MapsUtils.userLocation()!.latitude) + "-" + String(MapsUtils.userLocation()!.longitude)
+        
+        //Ajout d'une adresse aux favoris
+        if(recognizer.addFavorite) {
+            //Vérification si l'adresse est dans Paris
+            if MapsUtils.postalCode.hasPrefix(Constants.prefix75) {
+                favorite.append(addressWithCoordonate)
+            } else {
+                //Si hors de Paris, affichage d'une popup d'erreur
+                let alertController = UIAlertController(title: Constants.AlertBoxTitle.adresseHorsParis, message: Constants.AlertBoxMessage.adresseHorsParis, preferredStyle: .alert)
+                
+                let OKAction = UIAlertAction(title: Constants.AlertBoxTitle.ok, style: UIAlertAction.Style.default, handler: nil)
+                alertController.addAction(OKAction)
+                
+                // Present Dialog message
+                self.present(alertController, animated: true, completion:nil)
+            }
+        } else {
+            //Suppression si adresse et coordonnées égaux
+            if let index = favorite.index(of: addressWithCoordonate) {
+                favorite.remove(at: index)
+            } else {
+                //Suppression si coordonnées ou adresse égaux
+                for fav in favorite {
+                    var isAlreadyInFavorites = false
+                    let favArr = fav.components(separatedBy: Constants.Key.separatorAdresseCoordonate)
+                    
+                    //Vérification sur le nom de l'adresse
+                    if favArr[0] == MapsUtils.fullAddress() {
+                        isAlreadyInFavorites = true
+                    }
+                    
+                    //Vérification sur les coordonnées
+                    if String(MapsUtils.userLocation()!.latitude) + "-" + String(MapsUtils.userLocation()!.longitude) == favArr[1] {
+                        isAlreadyInFavorites = true
+                    }
+                    
+                    if isAlreadyInFavorites {
+                        let index = favorite.index(of: fav)
+                        favorite.remove(at: index!)
+                    }
+                }
+            }
+        }
+        let defaults = UserDefaults.standard
+        defaults.set(favorite, forKey: "favoritesAddressArray")
+        bottomSheetTableView.reloadData()
+    }
+    
+    //Retourne les adresses favorites de l'utilisateur
+    func getFavoritesAddress() -> [String] {
+        let defaults = UserDefaults.standard
+        var favorite : [String] = []
+        
+        //Récupération des favoris dans les UserDefaults
+        if let favoritesArray = defaults.stringArray(forKey: "favoritesAddressArray") {
+            favorite = favoritesArray
+        }
+        return favorite
+    }
+    
+    @objc func displaySelectedAnomaly(_ sender:AnyObject){
         if let myAnomalie = selectAnomalie {
             getDetailsAnomalies(anomalie: myAnomalie, source: myAnomalie.source)
         }
+    }
+    
+    @objc func hideUberPin(_ sender:AnyObject){
+        setUberPinHidden(true)
     }
     
     func setUberPinHidden(_ isHidden: Bool) {
@@ -335,6 +457,7 @@ class BottomSheetViewController: UIViewController {
                 followAnomalyBtn?.isHidden = true
                 unfollowAnomalyBtn?.isHidden = true
                 congratulateAnomalyBtn?.isHidden = true
+                hidemanageFavoriteBtns = false
             }
             
             addAnomalyBtn?.setImage(imgAddAnomalySelected, for: .normal)
@@ -344,7 +467,7 @@ class BottomSheetViewController: UIViewController {
 
             UIView.animate(withDuration: duration) { [weak self] in
                 let frame = self?.view.frame
-                self?.view.frame = CGRect(x: 0, y: UIScreen.main.bounds.height - 225, width: frame!.width, height: frame!.height)
+                self?.view.frame = CGRect(x: 0, y: UIScreen.main.bounds.height - 255, width: frame!.width, height: frame!.height)
             }
         case .full:
             currentStatus = .full
@@ -361,6 +484,7 @@ class BottomSheetViewController: UIViewController {
             followAnomalyBtn?.isHidden = true
             unfollowAnomalyBtn?.isHidden = true
             congratulateAnomalyBtn?.isHidden = true
+            hidemanageFavoriteBtns = true
             
             UIView.animate(withDuration: duration) { [weak self] in
                 let frame = self?.view.frame
@@ -382,6 +506,7 @@ class BottomSheetViewController: UIViewController {
             followAnomalyBtn?.isHidden = true
             unfollowAnomalyBtn?.isHidden = true
             congratulateAnomalyBtn?.isHidden = true
+            hidemanageFavoriteBtns = false
             
             addAnomalyBtn?.setImage(imgAddAnomaly, for: .normal)
             followAnomalyBtn?.setImage(imgFollowAnomaly, for: .normal)
@@ -395,7 +520,7 @@ class BottomSheetViewController: UIViewController {
             
             UIView.animate(withDuration: duration) { [weak self] in
                 let frame = self?.view.frame
-                self?.view.frame = CGRect(x: 0, y: (self?.partialView)!, width: frame!.width, height: frame!.height)
+                self?.view.frame = CGRect(x: 0, y: (self?.partialView)!, width: frame!.width, height: frame!.height + 40)
             }
         }
         
@@ -419,13 +544,13 @@ class BottomSheetViewController: UIViewController {
             let addAnomalyViewController = addAnomalyStoryboard.instantiateViewController(withIdentifier: Constants.ViewControllerIdentifier.addAnomaly) as! AddAnomalyViewController
             addAnomalyViewController.typeContribution = ContextManager.shared.typeContribution
             self.navigationController?.navigationBar.tintColor = UIColor.white
-            self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.white]
+            self.navigationController?.navigationBar.titleTextAttributes = convertToOptionalNSAttributedStringKeyDictionary([NSAttributedString.Key.foregroundColor.rawValue:UIColor.white])
             self.navigationController?.pushViewController(addAnomalyViewController, animated: true)
         }
         
     }
 
-    func tapAddAnomaly(sender: UIButton) {
+    @objc func tapAddAnomaly(sender: UIButton) {
         if ContextManager.shared.typeContribution == .indoor {
             if ContextManager.shared.equipementSelected == nil {
                 let alertController = UIAlertController.init(title: Constants.AlertBoxTitle.attention, message: ContextManager.shared.typeEquipementSelected?.msgAlertNoEquipement, preferredStyle: .alert)
@@ -443,7 +568,100 @@ class BottomSheetViewController: UIViewController {
         }
     }
     
-    func tapFollowAnomaly(sender: UIButton) {
+    @objc func tapSearchAnomaly(sender: UIButton) {
+        showSearchPopup(erreur: "")
+    }
+    
+    func showSearchPopup ( erreur : String) {
+        //Popup de recherche
+        
+        var message = ""
+        //Ajout du message d'erreur si il y en a un
+        if erreur != "" {
+            message = "\n" + erreur + "\n\n\n"
+        }
+        let alertController = UIAlertController(title: Constants.AlertBoxTitle.searchAnomaly, message: message + Constants.AlertBoxMessage.searchAnomaly, preferredStyle: .alert)
+        
+        //Textfield pour la saisie du numéro
+        alertController.addTextField { [weak self] (textField) in
+           textField.delegate = self
+            textField.placeholder = "n° : "
+        }
+        
+        // Boutton rechercher
+        let SearchAction = UIAlertAction.init(title: Constants.LabelMessage.searchAnomaly, style: .default, handler: { (action: UIAlertAction!) in
+            let textField = alertController.textFields![0] as UITextField
+            
+            //Recherche
+            self.searchAnomalyByNumber(number: textField.text!)
+        })
+        
+        // Boutton annuler
+        let cancelBtn = UIAlertAction(title:"Annuler" , style: .default, handler: {(_ action: UIAlertAction) -> Void in
+        })
+        
+        alertController.addAction(SearchAction)
+        alertController.addAction(cancelBtn)
+        
+         self.present(alertController, animated: true, completion:nil)
+    }
+    
+    /// Méthode de recherche d'anomalie par numéro
+    ///
+    /// - Parameters:
+    ///   - number: numéro de l'anomalie
+    func searchAnomalyByNumber (number: String) {
+        let pattern = "[BSGAbsga][2][0-9]{3}[A-La-l][0-9]+$"
+        let result = number.range(of: pattern, options:.regularExpression)
+        
+        //Le format ne correspond pas
+        if result == nil {
+            //Affichage du message d'erreur
+            print("Erreur lors la saisie du numéro")
+            showSearchPopup(erreur: "Numéro incorrect")
+        } else {
+            //Lancement de la recherche
+            RestApiManager.sharedInstance.getIncidentsByNumber(number: number) { (jsonDict) in
+                if let answer = jsonDict["answer"]?.dictionary {
+                    if let incident = answer["incident"]?.arrayValue {
+                        let marker = incident [0]
+                        RestApiManager.sharedInstance.getIncidentById(idSignalement: marker["id"].stringValue, source: AnomalieSource.dmr){ (anomalie: Anomalie) in
+                            DispatchQueue.main.async {
+                                var anomaliesBottomSheet = [Anomalie]()
+                                DispatchQueue.main.async {
+                                        // Ajout du GMSMarker sur la map
+                                        self.delegate.addMarkerAnomalie(anomalie: anomalie)
+                                        
+                                        if anomalie.anomalieStatus != .Resolu && !anomaliesBottomSheet.contains(anomalie) {
+                                            anomaliesBottomSheet.append(anomalie)
+                                        }
+                                    NotificationCenter.default.post(name: self.anomalieNotification, object: anomaliesBottomSheet)
+                                    
+                                    //Zoom sur l'anomalie
+                                    let currentLocation = CLLocationCoordinate2D(latitude: anomalie.latitude, longitude: anomalie.longitude)
+                                    self.delegate.mapContainerView.clear()
+                                    self.delegate.centerCameraToPosition(currentLocation: currentLocation)
+                                }
+                            }
+                        }
+                    }
+                }
+                else if let answer = jsonDict["error_message"]?.stringValue {
+                    self.showSearchPopup(erreur: answer)
+                }
+                else if let answer = jsonDict["erreurBO"]?.stringValue {
+                    self.showSearchPopup(erreur: answer)
+                }
+            }
+        }
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange,
+        replacementString string: String) -> Bool {
+        return textField.text!.count <= 12 || ( string == "")
+    }
+ 
+    @objc func tapFollowAnomaly(sender: UIButton) {
         if (!User.shared.isLogged){
             //Redirection vers le Compte Parisien
             let compteParisienVC = UIStoryboard(name: Constants.StoryBoard.compteParisien, bundle: nil).instantiateViewController(withIdentifier: Constants.ViewControllerIdentifier.compteParisien)
@@ -473,7 +691,7 @@ class BottomSheetViewController: UIViewController {
         }
     }
     
-    func tapUnfollowAnomaly(sender: UIButton) {
+    @objc func tapUnfollowAnomaly(sender: UIButton) {
         if let anomalie = selectAnomalie {
             DispatchQueue.global().async {
                 RestApiManager.sharedInstance.unfollow(anomalie: anomalie, onCompletion: { (result: Bool) in
@@ -497,7 +715,7 @@ class BottomSheetViewController: UIViewController {
         
     }
     
-    func tapCongratulateAnomaly(sender: UIButton) {
+    @objc func tapCongratulateAnomaly(sender: UIButton) {
         if(!User.shared.isLogged){
             let compteParisienVC = UIStoryboard(name: Constants.StoryBoard.compteParisien, bundle: nil).instantiateViewController(withIdentifier: Constants.ViewControllerIdentifier.compteParisien)
             self.navigationController?.present(compteParisienVC, animated: true)
@@ -591,7 +809,7 @@ extension BottomSheetViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch indexPath.row {
         case RowId.description:
-            return 68
+            return 100
         case RowId.uberMode:
             // Cette ligne est visible uniquement pour les anomalies outdoor ou lors de la sélection d'un équipement indoor
             return (ContextManager.shared.typeContribution == .indoor && ContextManager.shared.equipementSelected == nil) ? 0 : 68
@@ -657,7 +875,7 @@ extension BottomSheetViewController: UITableViewDataSource {
                 titleLabel.text = MapsUtils.addressLabel
                 
                 if ContextManager.shared.typeContribution == .outdoor || self.selectEquipement == nil {
-                    titleLabel.text = MapsUtils.addressLabel
+                    titleLabel.text = MapsUtils.addressLabel + "\n" + MapsUtils.boroughLabel
                 } else if ContextManager.shared.typeContribution == .indoor {
                     titleLabel.text = selectEquipement?.name
                 }
@@ -692,6 +910,7 @@ extension BottomSheetViewController: UITableViewDataSource {
             }
             
             precisionLabel.textColor = UIColor.pinkDmr()
+            bottomSheetTableView.isScrollEnabled = false
         case RowId.labelAnomaly:
             customCell = tableView.dequeueReusableCell(withIdentifier: "otherMalfunctionTitleCell")
             
@@ -713,7 +932,9 @@ extension BottomSheetViewController: UITableViewDataSource {
             otherMalfunctionMainTitle.numberOfLines = 0
                         
             let otherMalfunctionAddress = customCell?.viewWithTag(403) as! UILabel
-            otherMalfunctionAddress.text = otherMalfunction.address
+            otherMalfunctionAddress.lineBreakMode = .byClipping
+            otherMalfunctionAddress.numberOfLines=0
+            otherMalfunctionAddress.text = otherMalfunction.address + "\n" + otherMalfunction.number
             
             let otherMalfunctionImageView = customCell?.viewWithTag(401) as! UIImageView
             let imageURL =  (otherMalfunction.source == .ramen) ? URL(string: Constants.Image.ramen) : (URL(string: otherMalfunction.firstImageUrl) ?? URL(string: Constants.Image.noImage))
@@ -742,10 +963,9 @@ extension BottomSheetViewController: UITableViewDataSource {
             geolocMainTitle.text = myAnomalie.alias
             
             // Affichage de l'adresse
-            let addressLbl:UILabel = addLabel(withText: myAnomalie.address, andTag: 103)
-            addressLbl.frame = CGRect(x: geolocMainTitle.frame.origin.x, y: 40, width: geolocMainTitle.frame.width, height: geolocMainTitle.frame.height)
-            
-            customCell.addSubview(addressLbl)
+            let geolocSubtitle = customCell.viewWithTag(103) as! UILabel
+            geolocSubtitle.text = myAnomalie.address
+            geolocSubtitle.isHidden = false
             
             if !self.buttomSheetFullView {
                 let imageURL = URL(string: myAnomalie.firstImageUrl) ?? URL(string: Constants.Image.noImage)
@@ -822,6 +1042,10 @@ extension BottomSheetViewController: UITableViewDataSource {
         
         geolocImageView.image = UIImage(named: Constants.Image.iconGeolocation)
         geolocImageView.contentMode = .center
+        geolocImageView.isUserInteractionEnabled = true
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.hideUberPin(_:)))
+        geolocImageView.addGestureRecognizer(tapGestureRecognizer)
         
         if let myAddress = selectedAddress {
             if let firstAddressLine = myAddress.thoroughfare {
@@ -852,6 +1076,33 @@ extension BottomSheetViewController: UITableViewDataSource {
             if let locality = myAddress.locality {
                 MapsUtils.locality = locality
             }
+            
+            //Gestion de l'affichage du btn de gestion de favoris
+            let favorites : [String] = getFavoritesAddress()
+            var isAlreadyInFavorites = false
+            for favorite in favorites {
+                let favArr = favorite.components(separatedBy: Constants.Key.separatorAdresseCoordonate)
+                
+                //Vérification sur le nom de l'adresse
+                if favArr[0] == MapsUtils.fullAddress() {
+                    isAlreadyInFavorites = true
+                }
+                
+                //Vérification sur les coordonnées
+                if String(MapsUtils.userLocation()!.latitude) + "-" + String(MapsUtils.userLocation()!.longitude) == favArr[1] {
+                    isAlreadyInFavorites = true
+                }
+            }
+            
+            if hidemanageFavoriteBtns {
+                addFavoriteBtn?.isHidden = true
+                removeFavoriteBtn?.isHidden = true
+            } else {
+                addFavoriteBtn?.isHidden = isAlreadyInFavorites
+                removeFavoriteBtn?.isHidden = !isAlreadyInFavorites
+            }
+            
+            
         } else {
             geolocMainTitle.text = ""
             
@@ -864,6 +1115,16 @@ extension BottomSheetViewController: UITableViewDataSource {
                 MapsUtils.locality = ""
             }
         }
+    }
+    
+    private func initButtonManageFavorite( isAddFavorite: Bool) -> UIButton
+    {
+        let button = UIButton(frame: CGRect(x:self.view.frame.width - 55, y:+45, width:33, height:33))
+        //button.backgroundColor = .clear
+        //button.imageEdgeInsets = UIEdgeInsets.init(top: -10, left: -10, bottom: -10, right: -10)
+        button.isUserInteractionEnabled = true
+        
+        return button
     }
     
     private func addLabel(withText: String, andTag newTag: Int) -> UILabel {
@@ -906,8 +1167,20 @@ extension BottomSheetViewController: CustomNavigationDelegate {
         addAnomalyViewController.currentAnomalie = anomalySelected
         self.parent?.navigationController?.navigationBar.isHidden = false
         self.parent?.navigationController?.navigationBar.tintColor = UIColor.white
-        self.parent?.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.white]
+        self.parent?.navigationController?.navigationBar.titleTextAttributes = convertToOptionalNSAttributedStringKeyDictionary([NSAttributedString.Key.foregroundColor.rawValue:UIColor.white])
         self.parent?.navigationController?.pushViewController(addAnomalyViewController, animated: true)
     }
     
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToOptionalNSAttributedStringKeyDictionary(_ input: [String: Any]?) -> [NSAttributedString.Key: Any]? {
+	guard let input = input else { return nil }
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.Key(rawValue: key), value)})
+}
+
+//Class tapeGesture perso pour envoyre l'id en param
+class MyTapGesture: UITapGestureRecognizer {
+    var address = String()
+    var addFavorite = Bool()
 }

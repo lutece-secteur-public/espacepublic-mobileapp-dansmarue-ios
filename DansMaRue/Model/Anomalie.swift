@@ -95,8 +95,10 @@ class Anomalie : NSObject, NSCoding {
         return DateUtils.date(fromDate: date, hour: hour)
     }
     
+    var number: String
+    
     //MARK: Initialization
-    init(address: String, latitude: Double, longitude: Double, categorieId: String?, descriptive: String?, priorityId: String?, photo1: UIImage?, photo2: UIImage?, anomalieStatus: AnomalieStatus, mailUser: String?) {
+    init(address: String, latitude: Double, longitude: Double, categorieId: String?, descriptive: String?, priorityId: String?, photo1: UIImage?, photo2: UIImage?, anomalieStatus: AnomalieStatus, mailUser: String?, number: String?) {
         // Initialize stored properties.
         self.id = ""
         self.address = address
@@ -126,10 +128,11 @@ class Anomalie : NSObject, NSCoding {
         self.source = .dmr
         self.alias = ""
         self.resolvedAuthorization = false
+        self.number = number ?? ""
 
     }
     
-    init(id: String?, address: String, latitude: Double, longitude: Double, categorieId: String?, descriptive: String?, priorityId: String?, anomalieStatus: AnomalieStatus, photoCloseUrl: String?, photoFarUrl: String?, photoDoneUrl: String?) {
+    init(id: String?, address: String, latitude: Double, longitude: Double, categorieId: String?, descriptive: String?, priorityId: String?, anomalieStatus: AnomalieStatus, photoCloseUrl: String?, photoFarUrl: String?, photoDoneUrl: String?, number: String?) {
         // Initialize stored properties.
         self.id = id ?? ""
         self.address = address
@@ -159,6 +162,7 @@ class Anomalie : NSObject, NSCoding {
         self.source = .dmr
         self.alias = ""
         self.resolvedAuthorization = false
+        self.number = number ?? ""
     }
 
  
@@ -207,6 +211,7 @@ class Anomalie : NSObject, NSCoding {
             self.alias = "Type non précisé"
         }
         self.resolvedAuthorization = false
+        self.number = ""
     }
     
     func archive() -> Data {
@@ -222,7 +227,7 @@ class Anomalie : NSObject, NSCoding {
         var uuid : String
         if !(self.id.isEmpty) {
             uuid = (self.id)
-            AnomalieBrouillon.shared.remove(anomalie: self)
+            AnomalieBrouillon.shared.removeWithoutPhotos(anomalie: self)
         } else {
             uuid = UUID().uuidString
             self.id = uuid
@@ -241,13 +246,13 @@ class Anomalie : NSObject, NSCoding {
             
             // Enregistrement photo1
             let image1URL = documentsDirectory.appendingPathComponent("\(uuid)/\(Constants.Image.draftPhoto1)")
-            let image1Data = UIImageJPEGRepresentation(photo1, Constants.Image.compressionQuality)
+            let image1Data = photo1.jpegData(compressionQuality: Constants.Image.compressionQuality)
             try! image1Data?.write(to: image1URL)
             
             if let photo2 = self.photo2 {
                 // Enregistrement photo2
                 let image2URL = documentsDirectory.appendingPathComponent("\(uuid)/\(Constants.Image.draftPhoto2)")
-                let image2Data = UIImageJPEGRepresentation(photo2, Constants.Image.compressionQuality)!
+                let image2Data = photo2.jpegData(compressionQuality: Constants.Image.compressionQuality)!
                 try! image2Data.write(to: image2URL)
             }
         }
@@ -266,12 +271,12 @@ class AnomalieEquipement: Anomalie {
         aCoder.encode(equipementId, forKey: "equipementId")
     }
     
-    override init(address: String, latitude: Double, longitude: Double, categorieId: String?, descriptive: String?, priorityId: String?, photo1: UIImage?, photo2: UIImage?, anomalieStatus: AnomalieStatus, mailUser: String?) {
-        super.init(address: address, latitude: latitude, longitude: longitude, categorieId: categorieId, descriptive: descriptive, priorityId: priorityId, photo1: photo1, photo2: photo2, anomalieStatus: anomalieStatus, mailUser: mailUser)
+    override init(address: String, latitude: Double, longitude: Double, categorieId: String?, descriptive: String?, priorityId: String?, photo1: UIImage?, photo2: UIImage?, anomalieStatus: AnomalieStatus, mailUser: String?, number: String?) {
+        super.init(address: address, latitude: latitude, longitude: longitude, categorieId: categorieId, descriptive: descriptive, priorityId: priorityId, photo1: photo1, photo2: photo2, anomalieStatus: anomalieStatus, mailUser: mailUser, number: number)
     }
     
-    override init(id: String?, address: String, latitude: Double, longitude: Double, categorieId: String?, descriptive: String?, priorityId: String?, anomalieStatus: AnomalieStatus, photoCloseUrl: String?, photoFarUrl: String?, photoDoneUrl: String?) {
-        super.init(id: id, address: address, latitude: latitude, longitude: longitude, categorieId: categorieId, descriptive: descriptive, priorityId: priorityId, anomalieStatus: anomalieStatus, photoCloseUrl: photoCloseUrl, photoFarUrl: photoFarUrl, photoDoneUrl: photoDoneUrl)
+    override init(id: String?, address: String, latitude: Double, longitude: Double, categorieId: String?, descriptive: String?, priorityId: String?, anomalieStatus: AnomalieStatus, photoCloseUrl: String?, photoFarUrl: String?, photoDoneUrl: String?, number: String?) {
+        super.init(id: id, address: address, latitude: latitude, longitude: longitude, categorieId: categorieId, descriptive: descriptive, priorityId: priorityId, anomalieStatus: anomalieStatus, photoCloseUrl: photoCloseUrl, photoFarUrl: photoFarUrl, photoDoneUrl: photoDoneUrl, number: number)
     }
     
     required init(coder decoder: NSCoder) {
@@ -384,6 +389,14 @@ final class AnomalieBrouillon {
         
         anomalies.removeValue(forKey: anomalie.id)
         
+        saveAnomalies()
+    }
+    
+    /// Méthode permettant de supprimer une anomalie de la liste des brouillons et de la supprimer du device, sans supprimer les photos
+    ///
+    /// - Parameter anomalie: Instance de l'anomalie à supprimer
+    func removeWithoutPhotos(anomalie: Anomalie) {
+        anomalies.removeValue(forKey: anomalie.id)
         saveAnomalies()
     }
     

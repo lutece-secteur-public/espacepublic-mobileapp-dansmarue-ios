@@ -43,6 +43,11 @@ final class ReferalManager {
                 type.name = value[TypeAnomalie.PropertyKey.name].stringValue
                 type.alias = value[TypeAnomalie.PropertyKey.alias].string ?? type.name
                 type.parentId = value[TypeAnomalie.PropertyKey.parentId].stringValue
+                type.isAgent = value[TypeAnomalie.PropertyKey.isAgent].boolValue
+                
+                if value[TypeAnomalie.PropertyKey.horsDMR].boolValue {
+                    type.messageBO = value[TypeAnomalie.PropertyKey.messageHorsDMR].stringValue
+                }
                 
                 var childrens = [String]()
                 for children in (value[TypeAnomalie.PropertyKey.childrensId].arrayValue) {

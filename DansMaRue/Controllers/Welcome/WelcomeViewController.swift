@@ -22,7 +22,7 @@ class WelcomeViewController: UIViewController {
         let sliderContainerView = welcomePageContentViewController.view
         sliderContainerView?.frame = CGRect(x: 0, y: 0, width: self.sliderView.frame.size.width, height: self.sliderView.frame.size.height)
         self.sliderView.addSubview(sliderContainerView!)
-        self.addChildViewController(welcomePageContentViewController)
+        self.addChild(welcomePageContentViewController)
         startButton.layer.cornerRadius = 8
         
     }

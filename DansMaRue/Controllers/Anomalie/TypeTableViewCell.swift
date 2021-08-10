@@ -13,6 +13,7 @@ class TypeTableViewCell: UITableViewCell {
     //MARK: - Properties
     @IBOutlet weak var typeLabel: UILabel!
     @IBOutlet weak var typeImage: UIImageView!
+    @IBOutlet weak var typeFavorite: UIImageView!
     
 
     override func awakeFromNib() {

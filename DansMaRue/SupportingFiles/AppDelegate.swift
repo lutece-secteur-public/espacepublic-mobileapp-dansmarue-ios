@@ -12,6 +12,7 @@ import GooglePlaces
 import Fabric
 import Crashlytics
 import UserNotifications
+import Firebase
 //import TTGSnackbar
 
 //import AdtagLocationDetection
@@ -26,7 +27,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     var adtagPlaceManager: AdtagPlaceDetectionManager?
     var myNotificationDelegate: MyNotificationDelegate?*/
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+        // Use Firebase library to configure APIs
+        FirebaseApp.configure()
+        
         // Override point for customization after application launch.
         UIApplication.shared.statusBarStyle = UIStatusBarStyle.lightContent
         Fabric.with([Crashlytics.self])
@@ -74,7 +79,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
         
         if let option = launchOptions {
-            if let info = option[UIApplicationLaunchOptionsKey.remoteNotification] as? NSDictionary {
+            if let info = option[UIApplication.LaunchOptionsKey.remoteNotification] as? NSDictionary {
                 
                 var typeContribution : TypeContribution = .outdoor
                 if let type = info["type"] as? String {
@@ -89,6 +94,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 
             }
         }
+        
+        showOpeningMessage()
+        
         return true
     }
     
@@ -109,6 +117,93 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+        
+        VersionsUtils().isLatestVersion(onCompletion: { isUpdateDispo, err in
+            if(isUpdateDispo) {
+                //Une MAJ est disponible
+                print("update disponible")
+                
+                //On vérifie si la MAJ est obligatoire
+                VersionsUtils().isMAJObligatoire(onCompletion: { isMAJObligatoire, err in
+                    if isMAJObligatoire {
+                        print("update obligatoire")
+                        self.popupUpdateObligatoireDialogue()
+                    } else {
+                        print("update non obligatoire")
+                        self.popupUpdateDialogue()
+                    }
+                })
+            }
+        })
+        
+        /*let VC = MainViewController()
+        VC.isLatestVersion()*/
+    }
+    
+    // Affiche un message provenant du BO
+    private func showOpeningMessage() {
+        RestApiManager.sharedInstance.getOpeningMessage { messageBO in
+            if(messageBO != "") {
+                //Récupération du titre et du message
+                let messageBOArr = messageBO.components(separatedBy: ".")
+                
+                var titrePopup = "Information"
+                var textPopup = ""
+                
+                if (messageBOArr.count>1) {
+                    titrePopup = messageBOArr[0]
+                    textPopup = messageBO.replacingOccurrences(of: messageBOArr[0] + ".", with: "")
+                } else {
+                    //Pas de titre
+                    textPopup = messageBO
+                }
+                
+                let alert = UIAlertController(title: titrePopup , message: textPopup, preferredStyle: UIAlertController.Style.alert)
+                
+                let fermerBtn = UIAlertAction(title: "Fermer", style: .default, handler: {(_ action: UIAlertAction) -> Void in})
+                alert.addAction(fermerBtn)
+                self.window?.rootViewController?.present(alert, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    private func popupUpdateDialogue(){
+        let alertMessage = Constants.AlertBoxMessage.majDisponible
+        let alert = UIAlertController(title: "Nouvelle version disponible", message: alertMessage, preferredStyle: UIAlertController.Style.alert)
+        
+        let okBtn = UIAlertAction(title: "Oui", style: .default, handler: {(_ action: UIAlertAction) -> Void in
+            if let url = URL(string: "itms-apps://itunes.apple.com/us/app/apple-store/id662045577?mt=8"),
+                UIApplication.shared.canOpenURL(url){
+                if #available(iOS 10.0, *) {
+                    UIApplication.shared.open(url, options: convertToUIApplicationOpenExternalURLOptionsKeyDictionary([:]), completionHandler: nil)
+                } else {
+                    UIApplication.shared.openURL(url)
+                }
+            }
+        })
+        let noBtn = UIAlertAction(title:"Non" , style: .default, handler: {(_ action: UIAlertAction) -> Void in
+        })
+        alert.addAction(okBtn)
+        alert.addAction(noBtn)
+        self.window?.rootViewController?.present(alert, animated: true, completion: nil)
+    }
+    
+    private func popupUpdateObligatoireDialogue(){
+        let alertMessage = Constants.AlertBoxMessage.majObligatoire
+        let alert = UIAlertController(title: "Nouvelle version disponible", message: alertMessage, preferredStyle: UIAlertController.Style.alert)
+        
+        let okBtn = UIAlertAction(title: "Mettre à jour", style: .default, handler: {(_ action: UIAlertAction) -> Void in
+            if let url = URL(string: "itms-apps://itunes.apple.com/us/app/apple-store/id662045577?mt=8"),
+                UIApplication.shared.canOpenURL(url){
+                if #available(iOS 10.0, *) {
+                    UIApplication.shared.open(url, options: convertToUIApplicationOpenExternalURLOptionsKeyDictionary([:]), completionHandler: nil)
+                } else {
+                    UIApplication.shared.openURL(url)
+                }
+            }
+        })
+        alert.addAction(okBtn)
+        self.window?.rootViewController?.present(alert, animated: true, completion: nil)
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
@@ -192,7 +287,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             
             activityIndicator.center = container.center
             activityIndicator.hidesWhenStopped = true
-            activityIndicator.activityIndicatorViewStyle = .whiteLarge
+            activityIndicator.style = .whiteLarge
             activityIndicator.backgroundColor = UIColor.lightGreyDmr()
             container.addSubview(activityIndicator)
             rootView.addSubview(container)
@@ -207,12 +302,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 container.removeFromSuperview()
                 
                 if typeContribution == .outdoor {
-                    let anomalie = Anomalie(id: anomalieId, address: "", latitude: 0, longitude: 0, categorieId: "", descriptive: "", priorityId: "", anomalieStatus: .Brouillon, photoCloseUrl: nil, photoFarUrl: nil, photoDoneUrl: nil)
+                    let anomalie = Anomalie(id: anomalieId, address: "", latitude: 0, longitude: 0, categorieId: "", descriptive: "", priorityId: "", anomalieStatus: .Brouillon, photoCloseUrl: nil, photoFarUrl: nil, photoDoneUrl: nil, number: "")
                     
                     NotificationCenter.default.post(name: Notification.Name(rawValue: Constants.NoticationKey.pushNotification), object: anomalie)
                 } else {
                     
-                    let anomalie = AnomalieEquipement(id: anomalieId, address: "", latitude: 0, longitude: 0, categorieId: "", descriptive: "", priorityId: "", anomalieStatus: .Brouillon, photoCloseUrl: nil, photoFarUrl: nil, photoDoneUrl: nil)
+                    let anomalie = AnomalieEquipement(id: anomalieId, address: "", latitude: 0, longitude: 0, categorieId: "", descriptive: "", priorityId: "", anomalieStatus: .Brouillon, photoCloseUrl: nil, photoFarUrl: nil, photoDoneUrl: nil, number: "")
                     
                     NotificationCenter.default.post(name: Notification.Name(rawValue: Constants.NoticationKey.pushNotification), object: anomalie)
                 }
@@ -222,3 +317,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     }
 }
 
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToUIApplicationOpenExternalURLOptionsKeyDictionary(_ input: [String: Any]) -> [UIApplication.OpenExternalURLOptionsKey: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (UIApplication.OpenExternalURLOptionsKey(rawValue: key), value)})
+}
