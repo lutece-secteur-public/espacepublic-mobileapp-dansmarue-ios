@@ -88,6 +88,7 @@ extension ManageFavoritesViewController: UITableViewDataSource, UITableViewDeleg
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let isAgent = User.shared.isAgent
         let cellIdentifier = "TypeFavoritesTableViewCell"
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? TypeFavoritesTableViewCell  else {
@@ -95,7 +96,13 @@ extension ManageFavoritesViewController: UITableViewDataSource, UITableViewDeleg
         }
         
         if let typeAnomalie = ReferalManager.shared.getTypeAnomalie(withId: items[indexPath.row]){
-            cell.typeLabel.text = typeAnomalie.alias
+            if ( !typeAnomalie.isAgent || (typeAnomalie.isAgent && (isAgent != nil && isAgent!) ) ) {
+                cell.typeLabel.text = typeAnomalie.name
+            } else {
+                cell.typeLabel.text = typeAnomalie.name
+                cell.typeLabel.textColor = UIColor.lightGray
+                cell.isUserInteractionEnabled = false
+            }
         }
         
         return cell

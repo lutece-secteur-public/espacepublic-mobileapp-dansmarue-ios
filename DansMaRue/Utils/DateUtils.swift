@@ -40,8 +40,12 @@ class DateUtils {
     class func date(fromDate date: String, hour: String) -> Date {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = formatDateHour
-        return dateFormatter.date(from: "\(date) \(hour)")!
-
+        if let dateformated = dateFormatter.date(from: "\(date) \(hour)") {
+            return dateformated
+        }
+        else {
+            return Date()
+        }
     }
     
     class func displayDuration(fromDate date: String, hour: String) -> String {

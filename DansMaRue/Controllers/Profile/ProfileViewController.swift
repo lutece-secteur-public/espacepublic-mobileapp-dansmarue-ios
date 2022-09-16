@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import SafariServices
+import WebKit
 
 class ProfileViewController: UIViewController {
 
@@ -18,6 +20,7 @@ class ProfileViewController: UIViewController {
     // Array [Drafts, Not Solved, Solved]
     let malfunctionSections = ["Brouillons", "En cours", "Clôturées"]
     var isPremierAffichageFormConnexion = true;
+    var anomalieByRow = [Int: Anomalie]()
     
     var vSpinner : UIView?
     
@@ -25,10 +28,13 @@ class ProfileViewController: UIViewController {
     //MARK: - IBOutlets
     @IBOutlet weak var malfunctionTypeSegmentedControl: UISegmentedControl!
     @IBOutlet weak var malfunctionTableView: UITableView!
+    @IBOutlet weak var subTitle: UILabel!
     
     //MARK: - View lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.title = Constants.TabBarTitle.monEspace
+        subTitle.text = Constants.LabelMessage.mesAnomalies
 
         malfunctionTableView.tableFooterView = UIView()
         
@@ -36,25 +42,17 @@ class ProfileViewController: UIViewController {
         self.navigationController?.navigationBar.barTintColor = UIColor.pinkDmr()
         self.navigationController?.navigationBar.titleTextAttributes = convertToOptionalNSAttributedStringKeyDictionary([NSAttributedString.Key.foregroundColor.rawValue:UIColor.white])
 
+        if #available(iOS 13.0, *) {
+           let appearance = UINavigationBarAppearance()
+           appearance.configureWithOpaqueBackground()
+           appearance.backgroundColor = UIColor.pinkButtonDmr()
+           appearance.titleTextAttributes = convertToOptionalNSAttributedStringKeyDictionary([NSAttributedString.Key.foregroundColor.rawValue:UIColor.white])!
+           self.navigationController?.navigationBar.standardAppearance = appearance;
+           self.navigationController?.navigationBar.scrollEdgeAppearance = self.navigationController?.navigationBar.standardAppearance
+       }
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        self.navigationItem.title = ""
-        if User.shared.isLogged {
-            if let firstName = User.shared.firstName, let lastName = User.shared.lastName {
-                self.navigationItem.title = "\(firstName) \(lastName)"
-            }
-        } else if(!isPremierAffichageFormConnexion) {
-            //affichage de la carte
-            isPremierAffichageFormConnexion=true;
-            self.tabBarController?.selectedIndex = 0
-        } else {
-            // Connexion de l'utilisateur
-            isPremierAffichageFormConnexion=false
-            let compteParisienVC = UIStoryboard(name: Constants.StoryBoard.compteParisien, bundle: nil).instantiateViewController(withIdentifier: Constants.ViewControllerIdentifier.compteParisien)
-            self.navigationController?.present(compteParisienVC, animated: true)
-        }
-        
         self.malfunctionDraftArray = [Anomalie] (AnomalieBrouillon.shared.anomalies.values)
         self.malfunctionDraftArray.sort(by: { $0.dateHour.compare($1.dateHour) == .orderedDescending })
 
@@ -77,6 +75,7 @@ class ProfileViewController: UIViewController {
 
     //MARK: - IBActions
     @IBAction func changeMalfunctionFilter(_ sender: Any) {
+
         switch malfunctionTypeSegmentedControl.selectedSegmentIndex
         {
         case 0:
@@ -333,7 +332,7 @@ extension ProfileViewController: UITableViewDelegate {
     
 }
 
-extension ProfileViewController: UITableViewDataSource {
+extension ProfileViewController: UITableViewDataSource, SFSafariViewControllerDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch currentFilter
@@ -446,8 +445,12 @@ extension ProfileViewController: UITableViewDataSource {
         let malfunctionAddress = malfunctionCell.viewWithTag(104) as! UILabel
         let malfunctionSecondTitle = malfunctionCell.viewWithTag(105) as! UILabel
         let malfunctionTypeTitle = malfunctionCell.viewWithTag(106) as! UILabel
+        let responsableQuartier = malfunctionCell.viewWithTag(107) as! AnomalieUIButton
 
         var anomalie: Anomalie
+        responsableQuartier.isHidden = true
+        responsableQuartier.addTarget(self,action: #selector(self.redirectToSolen(sender:)),for: .touchUpInside)
+        responsableQuartier.setTitle("", for: .normal)
         
         if section == 0 {
             anomalie = malfunctionDraftArray[row]
@@ -466,6 +469,9 @@ extension ProfileViewController: UITableViewDataSource {
             let imageURL = URL(string: anomalie.firstImageUrl) ?? URL(string: Constants.Image.noImage)
             let placeholder = anomalie.imageCategorie
             malfunctionImage.sd_setImage(with: imageURL, placeholderImage: placeholder, options: .allowInvalidSSLCertificates)
+            responsableQuartier.isHidden = false
+            responsableQuartier.anomalie = anomalie
+            anomalieByRow[row] = anomalie
         }
         
         
@@ -484,8 +490,48 @@ extension ProfileViewController: UITableViewDataSource {
         
         malfunctionTypeTitle.textColor = UIColor.orangeDmr()
     }
+    
+    @objc
+    private func redirectToSolen(sender: AnomalieUIButton) {
+        let anomalie = sender.anomalie
+        let latitude = anomalie.latitude
+        let longitude = anomalie.longitude
+        
+        let contentController = WKUserContentController()
+        let scriptSource = "javascript:document.getElementById('username').value='" + User.shared.email! + "';document.getElementById('password').value='" + User.shared.password! + "';document.getElementsByName('Submit')[0].click()";
+        let script = WKUserScript(source: scriptSource, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
+        contentController.addUserScript(script)
+
+        let config = WKWebViewConfiguration()
+        config.userContentController = contentController
+
+        let webView = WKWebView(frame: .zero, configuration: config)
+        view.addSubview(webView)
+
+        if #available(iOS 11.0, *) {
+            let layoutGuide = view.safeAreaLayoutGuide
+            webView.translatesAutoresizingMaskIntoConstraints = false
+            webView.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor).isActive = true
+            webView.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor).isActive = true
+            webView.topAnchor.constraint(equalTo: layoutGuide.topAnchor).isActive = true
+            webView.bottomAnchor.constraint(equalTo: layoutGuide.bottomAnchor).isActive = true
+        } else {
+            webView.translatesAutoresizingMaskIntoConstraints = false
+            webView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+            webView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+            webView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+            webView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        }
+
+        if let url = URL(string: "\(Constants.Services.solenUrl)" + "&id_dmr=" + anomalie.number + "&Y=" + String(latitude) + "&X=" + String(longitude))
+        {
+            webView.load(URLRequest(url: url))
+        }
+    }
 
 }
+
+
 
 extension ProfileViewController: CustomNavigationDelegate {
     

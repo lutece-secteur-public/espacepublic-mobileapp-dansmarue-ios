@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
-    <device id="retina6_1" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -30,7 +28,7 @@
                                     <constraint firstAttribute="width" secondItem="bfI-RC-ly1" secondAttribute="height" multiplier="247:257" id="IRT-Wq-XWb"/>
                                 </constraints>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo vert 16112018.png" translatesAutoresizingMaskIntoConstraints="NO" id="2p3-NF-FQN">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Icone_BP.png" translatesAutoresizingMaskIntoConstraints="NO" id="2p3-NF-FQN">
                                 <rect key="frame" x="297.5" y="744" width="87.5" height="87"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="87" id="Fgy-8Z-omb"/>
@@ -70,9 +68,9 @@
         </scene>
     </scenes>
     <resources>
-        <image name="launchImage" width="180" height="320"/>
-        <image name="logo vert 16112018.png" width="2076" height="2206"/>
-        <image name="logo_dansMaRue" width="171" height="186"/>
+        <image name="Icone_BP.png" width="507.1199951171875" height="530.4000244140625"/>
+        <image name="launchImage" width="180.5" height="320.5"/>
+        <image name="logo_dansMaRue" width="171.5" height="186"/>
         <image name="ramen_mobile.png" width="203" height="67"/>
     </resources>
 </document>

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TypeAnomalie : NSObject {
+class TypeAnomalie : NSObject, NSCopying {
     
     //MARK: Properties
     var categorieId: String
@@ -56,6 +56,26 @@ class TypeAnomalie : NSObject {
         self.imageFromWS = UIImage()
         self.isAgent = false
         self.messageBO = ""
+    }
+    
+    init(categorieId: String, parentId: String, name: String, alias: String, childrensId: [String], imageFromWS: UIImage, isAgent: Bool, messageBO: String) {
+        self.categorieId = categorieId
+        self.parentId = parentId
+        self.name = name
+        self.alias = alias
+        self.childrensId = childrensId
+        self.imageFromWS = imageFromWS
+        self.isAgent = isAgent
+        self.messageBO = messageBO
+       }
+    
+    func copy(with zone: NSZone? = nil) -> Any {
+        let copy = TypeAnomalie(categorieId: categorieId, parentId: parentId, name: name, alias: alias, childrensId: childrensId, imageFromWS: imageFromWS, isAgent: isAgent, messageBO: messageBO)
+        return copy
+    }
+        
+    override func isEqual(_ object: Any?) -> Bool {
+        return categorieId == (object as? TypeAnomalie)?.categorieId
     }
 
 }

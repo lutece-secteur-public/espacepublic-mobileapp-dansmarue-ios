@@ -148,6 +148,11 @@ class MapViewController: UIViewController {
             if #available(iOS 13.0, *) {
                 searchBar.searchTextField.backgroundColor=UIColor.white
                 searchBar.searchTextField.tintColor=UIColor.black
+                let appearance = UINavigationBarAppearance()
+                appearance.configureWithOpaqueBackground()
+                appearance.backgroundColor = UIColor.pinkButtonDmr()
+                self.navigationController?.navigationBar.standardAppearance = appearance;
+                self.navigationController?.navigationBar.scrollEdgeAppearance = self.navigationController?.navigationBar.standardAppearance
             }
             
             searchBar.layer.cornerRadius = 10;

@@ -13,13 +13,15 @@ class TypeAnomalieViewController: UIViewController {
 
     //MARK: Properties
     var types = [TypeAnomalie]()
+    var typesSearch = [TypeAnomalie]()
     var typeAnomalie = TypeAnomalie()
     weak var delegate: AddAnomalyViewController!
+    var searching:Bool? = false
     
     //MARK: IBOutlet
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var searchBar: UISearchBar!
     
-   
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -87,7 +89,13 @@ class TypeAnomalieViewController: UIViewController {
         } else if typeAnomalie.isRootCategorie {
             loadRootTypes()
             typeAnomalie = TypeAnomalie()
-            self.navigationItem.title = Constants.LabelMessage.type
+            let label = UILabel()
+            label.backgroundColor = .clear
+            label.numberOfLines = 0
+            label.textColor = .white
+            label.text = Constants.LabelMessage.type
+            label.font = UIFont.boldSystemFont(ofSize: 16.0)
+            self.navigationItem.titleView = label
         } else {
             if delegate.typeContribution == .indoor {
                 guard let typeEquipementId = ContextManager.shared.typeEquipementSelected?.typeEquipementId else { return }
@@ -114,8 +122,12 @@ class TypeAnomalieViewController: UIViewController {
 }
 
 extension TypeAnomalieViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {        
-        typeAnomalie = types[indexPath.row]
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if searching! {
+            typeAnomalie = typesSearch[indexPath.row]
+        } else {
+            typeAnomalie = types[indexPath.row]
+        }
         
         if typeAnomalie.childrensId.isEmpty {
             //Si type d'ano avec message
@@ -133,7 +145,13 @@ extension TypeAnomalieViewController: UITableViewDelegate {
                 _ = navigationController?.popViewController(animated: true)
             }
         } else {
-            self.navigationItem.title = typeAnomalie.name
+            let label = UILabel()
+            label.backgroundColor = .clear
+            label.numberOfLines = 0
+            label.textColor = .white
+            label.text = typeAnomalie.name
+            label.font = UIFont.boldSystemFont(ofSize: 16.0)
+            self.navigationItem.titleView = label
             self.reloadData(childrens: typeAnomalie.childrensId)
         }
         
@@ -162,7 +180,12 @@ extension TypeAnomalieViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return types.count
+        if !searching! {
+            return types.count
+        }
+        else {
+            return typesSearch.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -172,43 +195,51 @@ extension TypeAnomalieViewController: UITableViewDataSource {
             fatalError("The dequeued cell is not an instance of TypeTableViewCell.")
         }
         
-        let typeAnomalie = types[indexPath.row]
-        
-        cell.typeLabel.text = typeAnomalie.name
-        cell.typeLabel.lineBreakMode = .byWordWrapping
-        cell.typeLabel.numberOfLines = 0
-        
-        cell.typeImage.image = typeAnomalie.image
-        
-        //Gestion des favoris si on est sur le dernier niveau d'ano
-        if typeAnomalie.childrensId.isEmpty {
-            //Check si le type est enregistré en favoris
-            var favorite : [String] = []
-            let defaults = UserDefaults.standard
-          
-            // Tap gesture
-            let recognizer = MyTapGesture(target: self, action: #selector(TypeAnomalieViewController.addOrRemoveFavorite(recognizer:)))
-            recognizer.categorieId = typeAnomalie.categorieId
+        if !searching! {
+            let typeAnomalie = types[indexPath.row]
             
-            if let favoritesArray = defaults.stringArray(forKey: "favoritesArray") {
-                favorite = favoritesArray
-            }
+            cell.typeLabel.text = typeAnomalie.name
+            cell.typeLabel.lineBreakMode = .byWordWrapping
+            cell.typeLabel.numberOfLines = 0
             
-            //Le type est déjà dans les favoris -> suppression
-            if (favorite.contains(typeAnomalie.categorieId)) {
-                cell.typeFavorite.image = UIImage(named:Constants.Image.favoriteCheck)
-                recognizer.addFavorite = false
+            cell.typeImage.image = typeAnomalie.image
+            
+            //Gestion des favoris si on est sur le dernier niveau d'ano
+            if typeAnomalie.childrensId.isEmpty {
+                //Check si le type est enregistré en favoris
+                var favorite : [String] = []
+                let defaults = UserDefaults.standard
+              
+                // Tap gesture
+                let recognizer = MyTapGesture(target: self, action: #selector(TypeAnomalieViewController.addOrRemoveFavorite(recognizer:)))
+                recognizer.categorieId = typeAnomalie.categorieId
+                
+                if let favoritesArray = defaults.stringArray(forKey: "favoritesArray") {
+                    favorite = favoritesArray
+                }
+                
+                //Le type est déjà dans les favoris -> suppression
+                if (favorite.contains(typeAnomalie.categorieId)) {
+                    cell.typeFavorite.image = UIImage(named:Constants.Image.favoriteCheck)
+                    recognizer.addFavorite = false
+                } else {
+                    //Ajout au favoris
+                    cell.typeFavorite.image = UIImage(named:Constants.Image.favoriteUncheck)
+                    recognizer.addFavorite = true
+                }
+                // Add tap gesture recognizer to favorite image
+                cell.typeFavorite.addGestureRecognizer(recognizer)
             } else {
-                //Ajout au favoris
-                cell.typeFavorite.image = UIImage(named:Constants.Image.favoriteUncheck)
-                recognizer.addFavorite = true
+                cell.typeFavorite.image = nil
             }
-            // Add tap gesture recognizer to favorite image
-            cell.typeFavorite.addGestureRecognizer(recognizer)
         } else {
+            let typeAnomalie = typesSearch[indexPath.row]
+            cell.typeLabel.text = typeAnomalie.name
+            cell.typeLabel.lineBreakMode = .byWordWrapping
+            cell.typeLabel.numberOfLines = 0
             cell.typeFavorite.image = nil
+            cell.typeImage.image = nil
         }
-        
         return cell
     }
     
@@ -239,5 +270,28 @@ extension TypeAnomalieViewController: UITableViewDataSource {
         var categorieId = String()
         var addFavorite = Bool()
     }
+    
+}
+extension TypeAnomalieViewController : UISearchBarDelegate{
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        
+        if searchText.count >= 3
+        {
+            searching = true
+            
+            typesSearch.removeAll()
+            
+            let typesSelected = ReferalManager.shared.getAnomalieThatContainsText(type: searchText)
+            if typesSelected != nil {
+                typesSearch = typesSelected!
+            }
+            tableView.reloadData()
+        } else{
+            searching = false
+            tableView.reloadData()
+        }
+        
+    }
+    
     
 }

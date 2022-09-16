@@ -37,8 +37,15 @@ class MainViewController: UITabBarController {
         
         //Chargement des catégories/Types d'anomalies outdoor
         getCategories()
+        
         //Chargement des types équipements et équipements
         getEquipements()
+        
+        //Chargement des actualites
+        getActualites()
+        
+        //Chargement des aides
+        getAides()
         
         //Ckeck si une MAJ est disponible
         isLatestVersion()
@@ -177,6 +184,22 @@ class MainViewController: UITabBarController {
                 }
                 
                 
+            }
+        }
+    }
+    
+    func getActualites() {
+        DispatchQueue.global().async {
+            RestApiManager.sharedInstance.getActualites{(result: Bool) in
+                ReferalManager.shared.loadActualite()
+            }
+        }
+    }
+    
+    func getAides() {
+        DispatchQueue.global().async {
+            RestApiManager.sharedInstance.getAides{(result: Bool) in
+                ReferalManager.shared.loadAides()
             }
         }
     }

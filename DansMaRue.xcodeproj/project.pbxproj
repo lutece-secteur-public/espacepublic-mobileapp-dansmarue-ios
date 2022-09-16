@@ -56,10 +56,15 @@
 		910172D323030FBE00892887 /* TypeFavoritesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 910172D223030FBE00892887 /* TypeFavoritesTableViewCell.swift */; };
 		910172D5230453B300892887 /* ManageAddress.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 910172D4230453B300892887 /* ManageAddress.storyboard */; };
 		910172D72304547100892887 /* ManageAddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 910172D62304547100892887 /* ManageAddressViewController.swift */; };
+		91286B1528240F86005F45F8 /* UIButton+AnomalieDMR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91286B1428240F86005F45F8 /* UIButton+AnomalieDMR.swift */; };
 		916883BE247BBE37000D373E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 916883BD247BBE36000D373E /* GoogleService-Info.plist */; };
+		91705AEC282411880089878A /* ProfileAidesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91705AEA282411880089878A /* ProfileAidesViewController.swift */; };
+		91705AED282411880089878A /* ProfileActualitesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91705AEB282411880089878A /* ProfileActualitesViewController.swift */; };
+		91705AF0282411DE0089878A /* Actualite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91705AEE282411DE0089878A /* Actualite.swift */; };
+		91705AF1282411DE0089878A /* Aide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91705AEF282411DE0089878A /* Aide.swift */; };
+		918729B02858815100436E05 /* Icone_BP.png in Resources */ = {isa = PBXBuildFile; fileRef = 918729AF2858815100436E05 /* Icone_BP.png */; };
 		919023BD234383E300A0E8E2 /* MessageTypeAno.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 919023BC234383E300A0E8E2 /* MessageTypeAno.storyboard */; };
 		919023BF2343846900A0E8E2 /* MessageTypeAnoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 919023BE2343846900A0E8E2 /* MessageTypeAnoViewController.swift */; };
-		919C629E21ECBE9800FC9C61 /* logo vert 16112018.png in Resources */ = {isa = PBXBuildFile; fileRef = 919C629D21ECBE9800FC9C61 /* logo vert 16112018.png */; };
 		919C62A021ECBEBA00FC9C61 /* ramen_mobile.png in Resources */ = {isa = PBXBuildFile; fileRef = 919C629F21ECBEBA00FC9C61 /* ramen_mobile.png */; };
 		9CE533E17D9B18486A08A7A6 /* Pods_DansMaRue.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8980F8BE717E1116B830107E /* Pods_DansMaRue.framework */; };
 		CD0508BB1E8124E90013334A /* UIDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0508BA1E8124E90013334A /* UIDevice.swift */; };
@@ -166,10 +171,15 @@
 		910172D223030FBE00892887 /* TypeFavoritesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeFavoritesTableViewCell.swift; sourceTree = "<group>"; };
 		910172D4230453B300892887 /* ManageAddress.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ManageAddress.storyboard; sourceTree = "<group>"; };
 		910172D62304547100892887 /* ManageAddressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageAddressViewController.swift; sourceTree = "<group>"; };
+		91286B1428240F86005F45F8 /* UIButton+AnomalieDMR.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIButton+AnomalieDMR.swift"; path = "Extensions/UIButton+AnomalieDMR.swift"; sourceTree = "<group>"; };
 		916883BD247BBE36000D373E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		91705AEA282411880089878A /* ProfileAidesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileAidesViewController.swift; path = Controllers/Profile/ProfileAidesViewController.swift; sourceTree = "<group>"; };
+		91705AEB282411880089878A /* ProfileActualitesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileActualitesViewController.swift; path = Controllers/Profile/ProfileActualitesViewController.swift; sourceTree = "<group>"; };
+		91705AEE282411DE0089878A /* Actualite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Actualite.swift; path = Model/Actualite.swift; sourceTree = "<group>"; };
+		91705AEF282411DE0089878A /* Aide.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Aide.swift; path = Model/Aide.swift; sourceTree = "<group>"; };
+		918729AF2858815100436E05 /* Icone_BP.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icone_BP.png; sourceTree = "<group>"; };
 		919023BC234383E300A0E8E2 /* MessageTypeAno.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MessageTypeAno.storyboard; sourceTree = "<group>"; };
 		919023BE2343846900A0E8E2 /* MessageTypeAnoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageTypeAnoViewController.swift; sourceTree = "<group>"; };
-		919C629D21ECBE9800FC9C61 /* logo vert 16112018.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo vert 16112018.png"; sourceTree = "<group>"; };
 		919C629F21ECBEBA00FC9C61 /* ramen_mobile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ramen_mobile.png; sourceTree = "<group>"; };
 		BCAA5B9EF47F2D99361C3992 /* Pods-DansMaRueTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DansMaRueTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DansMaRueTests/Pods-DansMaRueTests.release.xcconfig"; sourceTree = "<group>"; };
 		CD0508BA1E8124E90013334A /* UIDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIDevice.swift; path = Extensions/UIDevice.swift; sourceTree = "<group>"; };
@@ -243,6 +253,7 @@
 		28577FCD1E8AB542006F7478 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				91286B1428240F86005F45F8 /* UIButton+AnomalieDMR.swift */,
 				28535CC41FD5BA6500D17E99 /* Bundle+DMR.swift */,
 				28577FCE1E8AB542006F7478 /* UIButton+DMR.swift */,
 				28577FCF1E8AB542006F7478 /* UIColor+DMR.swift */,
@@ -328,6 +339,8 @@
 		28DD78B51E8D214200633D2B /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				91705AEE282411DE0089878A /* Actualite.swift */,
+				91705AEF282411DE0089878A /* Aide.swift */,
 				28DD78B61E8D217000633D2B /* TypeAnomalie.swift */,
 				28DD78B81E8D613F00633D2B /* Anomalie.swift */,
 				CD50DE6A1E9B67A000719305 /* Priority.swift */,
@@ -341,8 +354,8 @@
 		919C629821ECBDF500FC9C61 /* img */ = {
 			isa = PBXGroup;
 			children = (
+				918729AF2858815100436E05 /* Icone_BP.png */,
 				919C629F21ECBEBA00FC9C61 /* ramen_mobile.png */,
-				919C629D21ECBE9800FC9C61 /* logo vert 16112018.png */,
 			);
 			path = img;
 			sourceTree = "<group>";
@@ -476,6 +489,8 @@
 		E7E5AAB91EA0EC6D00BD2608 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				91705AEA282411880089878A /* ProfileAidesViewController.swift */,
+				91705AEB282411880089878A /* ProfileActualitesViewController.swift */,
 				E7E5AAC11EA0F0E500BD2608 /* ProfileViewController.swift */,
 				E7E5AAC31EA0FB2100BD2608 /* ProfileSettingsViewController.swift */,
 				E7E5AAC51EA0FDDC00BD2608 /* ProfilePreferencesViewController.swift */,
@@ -624,7 +639,7 @@
 				28CBD7231E9027CB00BBFB87 /* PopupPhoto.storyboard in Resources */,
 				E7A62A511EA8E22C0023A4D3 /* AnomalyDetail.storyboard in Resources */,
 				916883BE247BBE37000D373E /* GoogleService-Info.plist in Resources */,
-				919C629E21ECBE9800FC9C61 /* logo vert 16112018.png in Resources */,
+				918729B02858815100436E05 /* Icone_BP.png in Resources */,
 				E7D3112D1E7C407500B2F0F6 /* Montserrat-SemiBold.otf in Resources */,
 				910172D5230453B300892887 /* ManageAddress.storyboard in Resources */,
 				910172CF2302F12A00892887 /* ManageFavorites.storyboard in Resources */,
@@ -766,6 +781,7 @@
 				28FE2C7B1FA73DB900C86D4D /* TypeContributionViewController.swift in Sources */,
 				CD052ACE1E7AF68400571E6C /* AppDelegate.swift in Sources */,
 				E7E5AAC41EA0FB2100BD2608 /* ProfileSettingsViewController.swift in Sources */,
+				91286B1528240F86005F45F8 /* UIButton+AnomalieDMR.swift in Sources */,
 				28535CC51FD5BA6600D17E99 /* Bundle+DMR.swift in Sources */,
 				28DD78A81E8D076C00633D2B /* WelcomeViewController.swift in Sources */,
 				910172D12302F26300892887 /* ManageFavoritesViewController.swift in Sources */,
@@ -793,9 +809,12 @@
 				28DD78991E8B0D2600633D2B /* UIView+DMR.swift in Sources */,
 				28DD78AC1E8D07A400633D2B /* AddAnomalyViewController.swift in Sources */,
 				28DD78B71E8D217000633D2B /* TypeAnomalie.swift in Sources */,
+				91705AED282411880089878A /* ProfileActualitesViewController.swift in Sources */,
+				91705AEC282411880089878A /* ProfileAidesViewController.swift in Sources */,
 				E7A62A531EA8E24D0023A4D3 /* AnomalyDetailViewController.swift in Sources */,
 				28538B73202497D300C370BB /* ReferalManager.swift in Sources */,
 				28DD78AF1E8D08E600633D2B /* TypeTableViewCell.swift in Sources */,
+				91705AF0282411DE0089878A /* Actualite.swift in Sources */,
 				286B46F21FB216C600FA49BD /* EquipementSearchTableViewController.swift in Sources */,
 				288C59731EBA37FB00A9EC5B /* DateUtils.swift in Sources */,
 				28DD78AD1E8D07A400633D2B /* ModifyAddressViewController.swift in Sources */,
@@ -811,6 +830,7 @@
 				28DD78B41E8D1B2C00633D2B /* TypeAnomalieViewController.swift in Sources */,
 				28577FD11E8AB542006F7478 /* UIColor+DMR.swift in Sources */,
 				28CBD7251E902C9800BBFB87 /* PopupPhotoViewController.swift in Sources */,
+				91705AF1282411DE0089878A /* Aide.swift in Sources */,
 				28DD7FC41F8B739E00EF8993 /* UIImage+DMR.swift in Sources */,
 				48BA5DF7203DC26C004F9490 /* VersionsUtils.swift in Sources */,
 				4822FD7C2050184200184932 /* MyNotificationDelegate.swift in Sources */,

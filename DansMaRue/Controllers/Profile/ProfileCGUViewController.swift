@@ -12,12 +12,14 @@ class ProfileCGUViewController: UIViewController {
 
     //MARK: - IBOutlets
     @IBOutlet weak var cguDescriptionTextView: UITextView!
-        
+    @IBOutlet weak var subTitle: UILabel!
+    
     //MARK: - View lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = Constants.LabelMessage.cgu
+        self.title = Constants.TabBarTitle.monEspace
+        subTitle.text = Constants.LabelMessage.cgu
         
         let cguText = Constants.LabelMessage.cguText1 + "<br><br>" + Constants.LabelMessage.cguText2 + "<br>" + Constants.LabelMessage.cguText3 + "<br><br>" + Constants.LabelMessage.cguText4 + "<br><br>" + Constants.LabelMessage.cguText5 + "<br><br>" + Constants.LabelMessage.cguText6 + "<br><br>" + Constants.LabelMessage.cguText7 + "<br><br>" + Constants.LabelMessage.cguText8 + "<br><br>" + Constants.LabelMessage.cguText9 + "<br><br>" + Constants.LabelMessage.cguText10 + "<br><br>" + Constants.LabelMessage.cguText11
         

@@ -380,6 +380,82 @@ class RestApiManager: NSObject {
         })
         
     }
+    
+    /// Méthode permettant de récupérer la liste des actualités
+    ///
+    /// - Parameter onCompletion: Flux JSON retourné par le service
+    func getActualites(onCompletion: @escaping (Bool) -> Void) {
+        let version = (ReferalManager.shared.fileExists(filename: ReferalManager.FileName.ACTUALITE)) ?UserDefaults.standard.integer(forKey: Constants.Key.actualitesVersion) : 0
+        
+        let route = Constants.Services.apiBaseUrl + "signalement/getActualite/" + String(version)
+        
+        self.makeHTTPGetRequest(path: route, header: ["":""], onCompletion: {
+            json, err in
+            
+            print("Retrieve all actualites")
+            var result = false
+            
+            if let jsonDict = json.dictionary {
+                if let answer = jsonDict["answer"]?.dictionary {
+                    if let version = answer["version"]?.doubleValue {
+                        print("version actualites..... \(version)")
+                        result = true
+                        
+                        // Chargement de la liste en cache
+                        if let actualites = answer["actualites"] {
+                            if actualites.array?.count ?? 0 > 0 {
+                                ReferalManager.shared.saveToJsonFile(json: JSON(actualites), intoFilename: ReferalManager.FileName.ACTUALITE)
+                                // Sauvegarde de la version
+                                UserDefaults.standard.set(version, forKey: Constants.Key.actualitesVersion)
+                            }
+                        }
+                        
+                    }
+                    
+                }
+            }
+            
+            onCompletion(result)
+        })
+    }
+    
+    /// Méthode permettant de récupérer la liste des aides
+    ///
+    /// - Parameter onCompletion: Flux JSON retourné par le service
+    func getAides(onCompletion: @escaping (Bool) -> Void) {
+        let version = (ReferalManager.shared.fileExists(filename: ReferalManager.FileName.AIDE)) ?UserDefaults.standard.integer(forKey: Constants.Key.aidesVersion) : 0
+        
+        let route = Constants.Services.apiBaseUrl + "signalement/getAide/" + String(version)
+        
+        self.makeHTTPGetRequest(path: route, header: ["":""], onCompletion: {
+            json, err in
+            
+            print("Retrieve all aide")
+            var result = false
+            
+            if let jsonDict = json.dictionary {
+                if let answer = jsonDict["answer"]?.dictionary {
+                    if let version = answer["version"]?.doubleValue {
+                        print("version aides..... \(version)")
+                        result = true
+                        
+                        // Chargement de la liste en cache
+                        if let aides = answer["aides"] {
+                            if aides.array?.count ?? 0 > 0 {
+                                ReferalManager.shared.saveToJsonFile(json: JSON(aides), intoFilename: ReferalManager.FileName.AIDE)
+                                // Sauvegarde de la version
+                                UserDefaults.standard.set(version, forKey: Constants.Key.aidesVersion)
+                            }
+                        }
+                        
+                    }
+                    
+                }
+            }
+            
+            onCompletion(result)
+        })
+    }
 
     /// Méthode permettant d'enregistrer une anomalie.
     ///
@@ -1013,7 +1089,6 @@ class RestApiManager: NSObject {
                     if let user = answer["user"]?.dictionary {
                         User.shared.lastName = user["name"]?.stringValue
                         User.shared.firstName = user["firstname"]?.stringValue
-                        User.shared.email = user["mail"]?.stringValue
                         User.shared.isAgent = user["isAgent"]?.boolValue
                     }
                 }
@@ -1372,7 +1447,6 @@ class RestApiManager: NSObject {
         })
     }
     
-    
     // MARK: Perform a HEAD Request
     private func makeHTTPHeadRequest(path: String, header: [String: String], onCompletion: @escaping (_ result: Int)->()){
         let request = NSMutableURLRequest(url: NSURL(string: path)! as URL)
@@ -1396,7 +1470,9 @@ class RestApiManager: NSObject {
     private func makeHTTPGetRequest(path: String, header: [String: String], onCompletion: @escaping ServiceResponse) {
         let request = NSMutableURLRequest(url: NSURL(string: path)! as URL)
         for header in header {
-            request.addValue(header.value, forHTTPHeaderField: header.key)
+            if header.key != "" {
+                request.addValue(header.value, forHTTPHeaderField: header.key)
+            }
         }
         
         let session = URLSession(configuration: URLSessionConfiguration.default, delegate: self, delegateQueue: OperationQueue.main)

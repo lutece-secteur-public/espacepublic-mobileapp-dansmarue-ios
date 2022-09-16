@@ -12,7 +12,7 @@ class DescriptiveAnomalyViewController: UIViewController {
 
     // MARK: - Attributs
     var defaultDescriptive: String?
-    let maxLength = 155
+    let maxLength = 250
 
     //MARK: - IBOutlets
     @IBOutlet var labelCounter: UILabel!

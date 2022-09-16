@@ -36,13 +36,17 @@ struct Constants {
         static let apiBaseUrl = env(dev: "",
                                     stg: "",
                                     prod: "")
-        static let apiUrl = "signalement/api"
+        static let apiUrl = ""
 
         static let apiBaseUrlEquipement = env(dev: "",
                                     stg: "",
                                     prod: "")
         
         static let authBaseUrl = env(dev: "",
+                                     stg: "",
+                                     prod: "")
+        
+        static let solenUrl = env(dev: "",
                                      stg: "",
                                      prod: "")
         
@@ -59,6 +63,7 @@ struct Constants {
         static let urlRegiserCompteParisien = ""
         
         static let urlDisplayProfile = ""
+        static let urlDeleteAccount = ""
         
     }
     
@@ -74,6 +79,12 @@ struct Constants {
         static let categorieList = "categorieList"
         static let categorieItems = "categorieItems"
         static let categorieIdSelect = "categorieIdSelect"
+        
+        static let actualitesVersion = "actualitesVersion"
+        static let actualitesList = "actualitesList"
+        
+        static let aidesVersion = "aidesVersion"
+        static let aidesList = "aidesList"
         
         static let categorieEquipementVersion = "categorieEquipementVersion"
         static let categorieEquipementItems = "categorieEquipementItems"
@@ -117,6 +128,7 @@ struct Constants {
         static let noImage = "no_image"
         static let createAnomalie = "create_anomalie"
         static let searchAnomalie = "search_anomalie"
+        static let showAnomalies = "show_anomalies"
         static let createAnomalieSelected = "create_anomalie_selected"
         static let follow = "follow"
         static let followSelected = "follow_selected"
@@ -191,8 +203,8 @@ struct Constants {
         
         static let adresseInvalide = "Vous êtes actuellement géolocalisé en dehors de Paris. L’application DansMaRue permet de signaler des anomalies uniquement dans Paris."
         static let locationDisabled = "Pour utiliser le suivi, veuillez activer le GPS dans Paramètres > \nConfidentialité > Services de localisation."
-        static let followMalfunction = "Vous suivez maintenant ce signalement."
-        static let unfollowMalfunction = "Vous ne suivez plus ce signalement."
+        static let followMalfunction = "Vous suivez maintenant cette anomalie."
+        static let unfollowMalfunction = "Vous ne suivez plus cette anomalie."
         static let congratulate = "Merci d'avoir transmis vos félicitations aux agents ! "
         static let modificationPreferences = "Pour modifier les préférences, utilisez le menu Réglages."
         static let erreur = "Erreur d'authentification. \nVeuillez corriger"
@@ -218,16 +230,17 @@ struct Constants {
         
         static let addAnomaly = "Ajouter une autre anomalie"
         static let searchAnomaly = "Rechercher"
+        static let showAnomaly = "Voir les anomalies signalées"
         static let preciserPosition = "Préciser la position de l'anomalie"
         static let otherAnomalieLabel = "Autres anomalies autour de moi"
         static let otherAnomalieEquipementLabel = "Autres anomalies dans l'équipement"
         static let noDraft = "Vous n'avez pas de brouillon"
         static let noNotSolved = "Vous n'avez pas encore signalé d'anomalie"
         static let noSolved = "Vous n'avez pas encore d'anomalie résolue"
-        static let cgu = "CGU"
-        static let cguText1 = "L’application DansMaRue Paris fonctionne uniquement à Paris. Elle utilise certaines fonctionnalités de votre smartphone (GPS et connexion 3G/4G) qui nécessitent une bonne connexion."
+        static let cgu = "Conditions générales d'utilisation"
+        static let cguText1 = "L’application DansMaRue Paris fonctionne uniquement à Paris. Elle utilise certaines fonctionnalités de votre smartphone (GPS et connexion 3G/4G/5G) qui nécessitent une bonne connexion."
         static let cguText2 = "Afin d’assurer la remontée rapide, précise, fiable d’une anomalie sur l’espace public et faciliter sa prise en charge par les services municipaux et leurs partenaires, il est demandé à l’utilisateur de :"
-        static let cguText3="<ul><li>de choisir dans une nomenclature fermée la nature de l’anomalie,</li><li>de préciser l’adresse exacte en corrigeant éventuellement la géolocalisation proposée automatiquement en indiquant dès que possible un numéro et une rue <a href='http://phraseanet-videos.apps.paris.fr/permalink/v1/5/4807/preview/02bis_DMR_mobile_4geoloc.mp4?token=P1uNYcDeYdvASXSMu4q8BSezJRnHR4DsVT5cIglWXsxjUL2lByN4RlKNFScGY2N0'>Cliquez ici pour voir une vidéo et comprendre les modalités de géolocalisation offertes par l’application</a></li><li>de joindre une ou plusieurs photo(s) de l’anomalie,</li><li>d’ajouter une description complémentaire utile et courte (155 caractères maximum).</li></ul>"
+        static let cguText3="<ul><li>de choisir dans une nomenclature fermée la nature de l’anomalie,</li><li>de préciser l’adresse exacte en corrigeant éventuellement la géolocalisation proposée automatiquement en indiquant dès que possible un numéro et une rue <a href='http://phraseanet-videos.apps.paris.fr/permalink/v1/5/4807/preview/02bis_DMR_mobile_4geoloc.mp4?token=P1uNYcDeYdvASXSMu4q8BSezJRnHR4DsVT5cIglWXsxjUL2lByN4RlKNFScGY2N0'>Cliquez ici pour voir une vidéo et comprendre les modalités de géolocalisation offertes par l’application</a></li><li>de joindre une ou plusieurs photo(s) de l’anomalie,</li><li>d’ajouter une description complémentaire utile et courte (250 caractères maximum).</li></ul>"
         static let cguText4="Le dispositif DansMaRue a pour objectif de faciliter la communication entre les Parisien-nes, la Ville de Paris et ses partenaires et prestataires."
         static let cguText5="Les informations transmises par les utilisateurs via le dispositif doivent être considérées comme des documents de travail qui aideront la Ville de Paris et ses partenaires et prestataires à organiser leur activité. Ils déterminent au cas par cas les actions à mettre en place."
         static let cguText6="La Ville de Paris et ses partenaires et prestataires s’engagent, dans un délai d’un mois, à prendre les mesures appropriées et à informer tout contributeur qui aura laissé ses coordonnées."
@@ -237,8 +250,13 @@ struct Constants {
         static let cguText10="Pour toute question ou remarque, vous pouvez écrire à dansmarue_app@paris.fr"
         static let cguText11="Les informations ne sont pas traitées de manière instantanée. Les situations présentant un caractère dangereux et nécessitant la mise en œuvre de mesures de protection rapides doivent continuer à faire l’objet d’une déclaration auprès des services d’urgence."
         static let about = "À Propos"
-        static let aboutText = "L'application DansMaRue PARIS est un service de la Ville de Paris qui fonctionne uniquement à Paris. Elle utilise certaines fonctionnalités de votre smartphone (GPS et connexion 3G/4G) qui nécessitent une bonne connexion. Si vous rencontrez des difficultés techniques liées à l'usage de l'application, n'hésitez pas à nous en informer via l'adresse mail DansMaRue_App@paris.fr\n\nLes informations ne sont pas traitées de manière instantanée. Les situations présentant un caractère dangereux et nécessitant la mise en oeuvre de mesures de protection rapides doivent continuer à faire l'objet d'une déclaration auprès des services d'urgence."
+        static let aboutText = "L'application DansMaRue PARIS est un service de la Ville de Paris qui fonctionne uniquement à Paris. Elle utilise certaines fonctionnalités de votre smartphone (GPS et connexion 3G/4G/5G) qui nécessitent une bonne connexion. Si vous rencontrez des difficultés techniques liées à l'usage de l'application, n'hésitez pas à nous en informer via l'adresse mail DansMaRue_App@paris.fr\n\nLes informations ne sont pas traitées de manière instantanée. Les situations présentant un caractère dangereux et nécessitant la mise en oeuvre de mesures de protection rapides doivent continuer à faire l'objet d'une déclaration auprès des services d'urgence."
+        static let monProfil = "Mon profil"
+        static let actualites = "Actualités"
+        static let aide = "Aide et conseils d’utilisation"
         static let voirProfile = "Voir mon profil complet"
+        static let suppressionCompteMonParis = "Supprimer mon compte \"MonParis\""
+        static let mesAnomalies = "Mes anomalies"
         static let type = "Type"
         static let select = "Sélectionner"
         static let photo = "Photo (obligatoire)"
@@ -327,8 +345,11 @@ struct Constants {
         static let bottomSheet = "BottomSheetViewController"
         static let map = "MapViewController"
         static let profileAbout = "ProfileAboutViewController"
+        static let profileActualites = "ProfileActualitesViewController"
+        static let profileAide = "ProfileAidesViewController"
         static let profileCgu = "ProfileCGUViewController"
         static let profileDetail = "ProfileDetailViewController"
+        static let profile = "ProfileViewController"
         static let modifyAddress = "modifyAddress"
         static let thanks = "Thanks"
         static let mail = "Mail"
@@ -342,6 +363,16 @@ struct Constants {
         static let carte = "Carte"
         static let monEspace = "Mon espace"
         
+    }
+    
+    struct ProfilTableView {
+        static let profil = 0
+        static let anomalies = 1
+        static let actualites = 2
+        static let aides = 3
+        static let preferences = 4
+        static let cgu = 5
+        static let aPropos = 6
     }
     
 }

@@ -46,6 +46,15 @@ class AddAnomalyViewController: UIViewController, UITextFieldDelegate, UIPickerV
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if #available(iOS 13.0, *) {
+           let appearance = UINavigationBarAppearance()
+           appearance.configureWithOpaqueBackground()
+           appearance.backgroundColor = UIColor.pinkButtonDmr()
+           appearance.titleTextAttributes = convertToOptionalNSAttributedStringKeyDictionary([NSAttributedString.Key.foregroundColor.rawValue:UIColor.white])!
+           self.navigationController?.navigationBar.standardAppearance = appearance;
+           self.navigationController?.navigationBar.scrollEdgeAppearance = self.navigationController?.navigationBar.standardAppearance
+       }
+        
         tableViewAddAnomaly.delegate = self
         tableViewAddAnomaly.dataSource = self
         
@@ -214,7 +223,7 @@ class AddAnomalyViewController: UIViewController, UITextFieldDelegate, UIPickerV
              let textField = alertController.textFields![0] as UITextField
              
             //On ajoute le numéro si il est inférieur à 4 chiffres
-            if textField.text != "" && textField.text!.count < 4 && textField.text != "000" {
+            if textField.text != "" && textField.text!.count < 4 && textField.text != "0" && textField.text != "00" && textField.text != "000" {
                 if self.complement != "" {
                     //Si un complément d'adresse est renseigné
                     self.currentAnomalie?.address = textField.text! + self.complement + " " + (self.currentAnomalie?.address)!
@@ -849,5 +858,9 @@ extension AddAnomalyViewController: CloseDelegate {
         
 }
 
-
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToOptionalNSAttributedStringKeyDictionary(_ input: [String: Any]?) -> [NSAttributedString.Key: Any]? {
+    guard let input = input else { return nil }
+    return Dictionary(uniqueKeysWithValues: input.map { key, value in (NSAttributedString.Key(rawValue: key), value)})
+}
 

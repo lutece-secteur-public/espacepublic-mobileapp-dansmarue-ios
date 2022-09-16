@@ -51,6 +51,7 @@ class BottomSheetViewController: UIViewController, UITextFieldDelegate {
 
     var addAnomalyBtn: UIButton?
     var searchAnomalyBtn: UIButton?
+    var showAnomalyBtn: UIButton?
     var followAnomalyBtn: UIButton?
     var unfollowAnomalyBtn: UIButton?
     var congratulateAnomalyBtn: UIButton?
@@ -60,6 +61,7 @@ class BottomSheetViewController: UIViewController, UITextFieldDelegate {
     let imgAddAnomaly = UIImage(named: Constants.Image.createAnomalie)
     let imgAddAnomalySelected = UIImage(named: Constants.Image.createAnomalieSelected)
     let imgSearchAnomalie = UIImage(named: Constants.Image.searchAnomalie)
+    let imgShowAnomalie = UIImage(named: Constants.Image.showAnomalies)
     let imgFollowAnomaly = UIImage(named:  Constants.Image.follow)
     let imgFollowAnomalySelected = UIImage(named:  Constants.Image.followSelected)
     let imgFollowAnomalyDisabled = UIImage(named:  Constants.Image.followDisabled)
@@ -73,7 +75,9 @@ class BottomSheetViewController: UIViewController, UITextFieldDelegate {
 
     var otherMalfunctionsArray = [Anomalie]()
     var currentStatus: BottomSheetStatus = .none
-
+    var initFrameHeight: CGFloat = 0.0
+    var isFirstFullView = true
+    var isScrollEnable = true
 
     
     //MARK: - View lifecycle
@@ -119,6 +123,16 @@ class BottomSheetViewController: UIViewController, UITextFieldDelegate {
             searchAnomalyBtn?.accessibilityLabel = Constants.LabelMessage.searchAnomaly
             
             self.view.addSubview(searchAnomalyBtn!)
+        }
+        
+        if showAnomalyBtn == nil {
+            showAnomalyBtn = self.initShowButton()
+            showAnomalyBtn?.setImage(imgShowAnomalie, for: .normal)
+            showAnomalyBtn?.tag = 55
+            //showAnomalyBtn?.addTarget(self, action: #selector(self.tapSearchAnomaly(sender:)), for: .touchUpInside)
+            showAnomalyBtn?.accessibilityLabel = Constants.LabelMessage.showAnomaly
+            
+            self.view.addSubview(showAnomalyBtn!)
         }
         
         if addFavoriteBtn == nil {
@@ -196,31 +210,52 @@ class BottomSheetViewController: UIViewController, UITextFieldDelegate {
         return button
     }
     
+    func initShowButton() -> UIButton {
+        let frameWidth = self.view.frame.width
+        let btnWidth = self.view.frame.width/2
+        let button = UIButton(frame: CGRect(x:(frameWidth/2-btnWidth/2 ), y:-40, width:btnWidth, height:60))
+        button.isUserInteractionEnabled = true
+        
+        return button
+    }
+    
     //MARK: - Bottom sheet methods
     @objc func panGesture(_ recognizer: UIPanGestureRecognizer) {
         
+        let loc = recognizer.location(in: recognizer.view)
+        let subview = view?.hitTest(loc, with: nil)
+        let objectTapped = subview?.tag
+        print("panGesture \(objectTapped)")
         let translation = recognizer.translation(in: self.view)
         let velocity = recognizer.velocity(in: self.view)
         let y = self.view.frame.minY
-        if ( y + translation.y >= fullView) && (y + translation.y <= partialView ) {
-            self.view.frame = CGRect(x: 0, y: y + translation.y, width: view.frame.width, height: view.frame.height)
-            recognizer.setTranslation(CGPoint.zero, in: self.view)
-        }
         
-        if recognizer.state == .ended {
-            var duration =  velocity.y < 0 ? Double((y - fullView) / -velocity.y) : Double((partialView - y) / velocity.y )
-            
-            duration = duration > 1.3 ? 1 : duration
-            
-            UIView.animate(withDuration: duration, delay: 0.0, options: [.allowUserInteraction], animations: {
-                if  velocity.y >= 0 {
-                    self.animateBottomSheet(withDuration: duration, status: .none)
-                } else {
-                    self.animateBottomSheet(withDuration: duration, status: .full)
-                }
+        let direction = recognizer.velocity(in: view).y
+        print("direction \(direction)")
+        
+        if( !buttomSheetFullView || (buttomSheetFullView && (objectTapped == 0 || objectTapped == nil))) {
+            if ( y + translation.y >= fullView) && (y + translation.y <= partialView ) {
+                self.view.frame = CGRect(x: 0, y: y + translation.y, width: view.frame.width, height: view.frame.height)
+                recognizer.setTranslation(CGPoint.zero, in: self.view)
+            }
+        
+            if recognizer.state == .ended {
+                var duration =  velocity.y < 0 ? Double((y - fullView) / -velocity.y) : Double((partialView - y) / velocity.y )
                 
+                duration = duration > 1.3 ? 1 : duration
                 
-            }, completion: nil)
+                UIView.animate(withDuration: duration, delay: 0.0, options: [.allowUserInteraction], animations: {
+                    if  velocity.y >= 0 {
+                        self.animateBottomSheet(withDuration: duration, status: .none)
+                    } else {
+                        if(objectTapped != 0) {
+                            self.animateBottomSheet(withDuration: duration, status: .full)
+                        }
+                    }
+                    
+                    
+                }, completion: nil)
+            }
         }
     }
     
@@ -429,11 +464,13 @@ class BottomSheetViewController: UIViewController, UITextFieldDelegate {
     ///   - duration: delay de l'animation
     ///   - status: status d'affichage
     func animateBottomSheet(withDuration duration: TimeInterval, status: BottomSheetStatus) {
+        print("******animate******")
         switch status {
         case .selected:
             currentStatus = .selected
             otherCellDisplay = true
             buttomSheetFullView = false
+            showAnomalyBtn?.isHidden = true
             
             if let anomalie = selectAnomalie {
                 // Cas d'une anomalie outdoor
@@ -485,11 +522,18 @@ class BottomSheetViewController: UIViewController, UITextFieldDelegate {
             unfollowAnomalyBtn?.isHidden = true
             congratulateAnomalyBtn?.isHidden = true
             hidemanageFavoriteBtns = true
+            showAnomalyBtn?.isHidden = true
             
+            if(isFirstFullView) {
+                initFrameHeight = self.view.frame.height
+                isFirstFullView = false
+            }
             UIView.animate(withDuration: duration) { [weak self] in
                 let frame = self?.view.frame
-                self?.view.frame = CGRect(x: 0, y: (self?.fullView)!, width: frame!.width, height: frame!.height)
+                self?.view.frame = CGRect(x: 0, y: (self?.fullView)!, width: frame!.width, height: self!.initFrameHeight - 130)
             }
+
+
         default:
             // Dans le cas où on vient du plein écran. On reprend le status du uberPin.
             if currentStatus == .full {
@@ -507,6 +551,7 @@ class BottomSheetViewController: UIViewController, UITextFieldDelegate {
             unfollowAnomalyBtn?.isHidden = true
             congratulateAnomalyBtn?.isHidden = true
             hidemanageFavoriteBtns = false
+            showAnomalyBtn?.isHidden = false
             
             addAnomalyBtn?.setImage(imgAddAnomaly, for: .normal)
             followAnomalyBtn?.setImage(imgFollowAnomaly, for: .normal)
@@ -833,7 +878,7 @@ extension BottomSheetViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
+        print("cellForRowAt \(indexPath.row)")
         var customCell = tableView.dequeueReusableCell(withIdentifier: "localization_cell")
         
         switch indexPath.row {
@@ -910,7 +955,7 @@ extension BottomSheetViewController: UITableViewDataSource {
             }
             
             precisionLabel.textColor = UIColor.pinkDmr()
-            bottomSheetTableView.isScrollEnabled = false
+            bottomSheetTableView.isScrollEnabled = buttomSheetFullView
         case RowId.labelAnomaly:
             customCell = tableView.dequeueReusableCell(withIdentifier: "otherMalfunctionTitleCell")
             
@@ -940,6 +985,11 @@ extension BottomSheetViewController: UITableViewDataSource {
             let imageURL =  (otherMalfunction.source == .ramen) ? URL(string: Constants.Image.ramen) : (URL(string: otherMalfunction.firstImageUrl) ?? URL(string: Constants.Image.noImage))
             
             otherMalfunctionImageView.sd_setImage(with: imageURL!, placeholderImage: otherMalfunction.imageCategorie, options: .allowInvalidSSLCertificates)
+            if(self.currentStatus == .full) {
+                bottomSheetTableView.isScrollEnabled = true
+            } else {
+                bottomSheetTableView.isScrollEnabled = false
+            }
         }
         
         customCell?.selectionStyle = .none
