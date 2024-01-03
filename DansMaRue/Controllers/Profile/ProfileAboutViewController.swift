@@ -9,21 +9,32 @@
 import UIKit
 
 class ProfileAboutViewController: UIViewController {
+    // MARK: - IBOutlets
 
-    //MARK: - IBOutlets
+    @IBOutlet var aboutDescriptionTextView: UITextView!
+    @IBOutlet var subTitle: UILabel!
 
-    @IBOutlet weak var aboutDescriptionTextView: UITextView!
-    @IBOutlet weak var subTitle: UILabel!
-    
-    //MARK: - View lifecycle
+    // MARK: - View lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.title = Constants.TabBarTitle.monEspace
-        subTitle.text = Constants.LabelMessage.about
 
+        title = Constants.TabBarTitle.monEspace
+        navigationItem.titleView?.isAccessibilityElement = true
+        subTitle.text = Constants.LabelMessage.about
+        subTitle.isAccessibilityElement = true
+        subTitle.textColor = UIColor.greyDmr()
+        subTitle.accessibilityLabel = Constants.LabelMessage.about
+        subTitle.accessibilityTraits = .header
+        subTitle.adjustsFontForContentSizeCategory = true
+        subTitle.font = UIFont.preferredFont(forTextStyle: .title2)
+        aboutDescriptionTextView.adjustsFontForContentSizeCategory = true
         aboutDescriptionTextView.text = "Version : \(Bundle.main.version) (\(Bundle.main.build))"
-        aboutDescriptionTextView.font = UIFont(name: (aboutDescriptionTextView.font?.fontName)!, size: 15)
+        aboutDescriptionTextView.font = UIFont.scaledFont(name: "Montserrat-Regular", textSize: 15.0)
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        UIAccessibility.post(notification: UIAccessibility.Notification.screenChanged, argument: navigationItem.titleView)
+    }
 }

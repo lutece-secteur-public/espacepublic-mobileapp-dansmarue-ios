@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -22,43 +22,54 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="launchImage" translatesAutoresizingMaskIntoConstraints="NO" id="EI7-uX-hjm">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="862"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_dansMaRue" translatesAutoresizingMaskIntoConstraints="NO" id="bfI-RC-ly1">
-                                <rect key="frame" x="84" y="117" width="247" height="257"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="bfI-RC-ly1" secondAttribute="height" multiplier="247:257" id="IRT-Wq-XWb"/>
-                                </constraints>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Icone_BP.png" translatesAutoresizingMaskIntoConstraints="NO" id="2p3-NF-FQN">
-                                <rect key="frame" x="297.5" y="744" width="87.5" height="87"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="87" id="Fgy-8Z-omb"/>
-                                </constraints>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ramen_mobile.png" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wCI-Hf-U9g">
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="jvh-Bb-jTe">
+                                <rect key="frame" x="297.5" y="744" width="87" height="87"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Icone_BP.png" translatesAutoresizingMaskIntoConstraints="NO" id="2p3-NF-FQN">
+                                        <rect key="frame" x="0.0" y="0.0" width="87" height="87"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="87" id="LZ1-SE-7UY"/>
+                                            <constraint firstAttribute="width" secondItem="2p3-NF-FQN" secondAttribute="height" multiplier="1:1" id="tlM-yE-db7"/>
+                                        </constraints>
+                                    </imageView>
+                                </subviews>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="yt8-YZ-c7N">
                                 <rect key="frame" x="92" y="631" width="230" height="74"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="74" id="56M-ve-h2X"/>
-                                    <constraint firstAttribute="width" constant="230" id="z6b-BS-tdF"/>
-                                </constraints>
-                            </imageView>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ramen_mobile.png" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wCI-Hf-U9g">
+                                        <rect key="frame" x="0.0" y="0.0" width="230" height="74"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="wCI-Hf-U9g" secondAttribute="height" multiplier="115:37" id="8PF-6e-TPC"/>
+                                            <constraint firstAttribute="width" constant="230" id="x0k-3v-i6V"/>
+                                        </constraints>
+                                    </imageView>
+                                </subviews>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="FwA-0S-UBC">
+                                <rect key="frame" x="117.5" y="131" width="179" height="186"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_dansMaRue" translatesAutoresizingMaskIntoConstraints="NO" id="bfI-RC-ly1">
+                                        <rect key="frame" x="0.0" y="0.0" width="179" height="186"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="bfI-RC-ly1" secondAttribute="height" multiplier="247:257" id="WUv-IE-GGj"/>
+                                        </constraints>
+                                    </imageView>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="2p3-NF-FQN" firstAttribute="leading" secondItem="wCI-Hf-U9g" secondAttribute="trailing" constant="-24.5" id="57K-Op-NOA"/>
-                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="2p3-NF-FQN" secondAttribute="bottom" constant="31" id="EO6-mj-n7T"/>
-                            <constraint firstItem="EI7-uX-hjm" firstAttribute="bottom" secondItem="xb3-aO-Qok" secondAttribute="top" id="FSM-je-tNn"/>
-                            <constraint firstItem="EI7-uX-hjm" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="HnU-om-UOC"/>
-                            <constraint firstItem="bfI-RC-ly1" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" constant="64" id="I6i-vB-qkV"/>
-                            <constraint firstItem="EI7-uX-hjm" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="Kdp-ca-sgH"/>
-                            <constraint firstItem="EI7-uX-hjm" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="Mam-or-Lhc"/>
-                            <constraint firstItem="EI7-uX-hjm" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="O43-nY-QzE"/>
-                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="wCI-Hf-U9g" secondAttribute="bottom" constant="157" id="OSD-Tf-XrT"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="2p3-NF-FQN" secondAttribute="trailing" constant="9" id="P8P-IX-MNO"/>
-                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="EI7-uX-hjm" secondAttribute="bottom" id="TqQ-Jg-FPq"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="bfI-RC-ly1" secondAttribute="trailing" constant="63" id="ibv-0y-zmO"/>
-                            <constraint firstItem="EI7-uX-hjm" firstAttribute="centerX" secondItem="wCI-Hf-U9g" secondAttribute="centerX" id="tgj-wE-0he"/>
-                            <constraint firstAttribute="trailing" secondItem="EI7-uX-hjm" secondAttribute="trailing" id="uEZ-Sy-1aC"/>
-                            <constraint firstItem="bfI-RC-ly1" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="73" id="yUW-hg-JrM"/>
+                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="EI7-uX-hjm" secondAttribute="bottom" id="380-hM-jxb"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="jvh-Bb-jTe" secondAttribute="trailing" constant="9.5" id="5ch-fh-BE9"/>
+                            <constraint firstItem="EI7-uX-hjm" firstAttribute="top" secondItem="FwA-0S-UBC" secondAttribute="bottom" constant="-317" id="GxM-jV-ncR"/>
+                            <constraint firstItem="EI7-uX-hjm" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="LFm-3V-J81"/>
+                            <constraint firstItem="2p3-NF-FQN" firstAttribute="leading" secondItem="wCI-Hf-U9g" secondAttribute="trailing" constant="-24.5" id="OJW-AK-0ck"/>
+                            <constraint firstItem="EI7-uX-hjm" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="aAd-wm-NZy"/>
+                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="jvh-Bb-jTe" secondAttribute="bottom" constant="31" id="c6h-bm-CGG"/>
+                            <constraint firstAttribute="trailing" secondItem="EI7-uX-hjm" secondAttribute="trailing" id="hRQ-fD-dIh"/>
+                            <constraint firstItem="jvh-Bb-jTe" firstAttribute="top" secondItem="yt8-YZ-c7N" secondAttribute="bottom" constant="39" id="kYw-xL-PoC"/>
+                            <constraint firstItem="FwA-0S-UBC" firstAttribute="centerX" secondItem="EI7-uX-hjm" secondAttribute="centerX" id="sMJ-EK-bey"/>
                         </constraints>
                     </view>
                 </viewController>

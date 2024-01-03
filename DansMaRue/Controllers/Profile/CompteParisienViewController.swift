@@ -38,7 +38,7 @@ class CompteParisienViewController: UIViewController, SFSafariViewControllerDele
             
             DispatchQueue.main.async {
                 if result {
-                    TTGSnackbar.init(message: Constants.AlertBoxMessage.authenticationOk, duration: .middle).show()
+                   // TTGSnackbar.init(message: Constants.AlertBoxMessage.authenticationOk, duration: .middle).show()
                     self.backToCompteParisien(self)
                 } else {
                     let alertController = UIAlertController (title: Constants.AlertBoxTitle.erreur, message: Constants.AlertBoxMessage.erreur, preferredStyle: UIAlertController.Style.alert)
@@ -66,7 +66,7 @@ class CompteParisienViewController: UIViewController, SFSafariViewControllerDele
     @IBAction func didTapForgetPwd(_ sender: Any) {
         let urlForgetPassword = Constants.Services.urlForgetPassword
         if let url = URL(string: urlForgetPassword) {
-            let vc = SFSafariViewController(url: url, entersReaderIfAvailable: true)
+            let vc = SFSafariViewController(url: url, entersReaderIfAvailable: false)
             vc.delegate = self
 
             present(vc, animated: true)
@@ -76,7 +76,7 @@ class CompteParisienViewController: UIViewController, SFSafariViewControllerDele
     @IBAction func didTapRegister(_ sender: Any) {
         let urlRegiserCompteParisien = Constants.Services.urlRegiserCompteParisien
         if let url = URL(string: urlRegiserCompteParisien) {
-            let vc = SFSafariViewController(url: url, entersReaderIfAvailable: true)
+            let vc = SFSafariViewController(url: url, entersReaderIfAvailable: false)
             vc.delegate = self
 
             present(vc, animated: true)

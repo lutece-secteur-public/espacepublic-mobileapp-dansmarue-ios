@@ -8,7 +8,7 @@
 
 import UIKit
 
-func env<T>(dev development: T, stg staging: T, prod production:T) -> T {
+func env<T>(dev development: T, stg staging: T, prod production: T) -> T {
     var v: T!
     
     #if ENVIRONMENT_DEBUG
@@ -22,33 +22,37 @@ func env<T>(dev development: T, stg staging: T, prod production:T) -> T {
     return v
 }
 
-struct Constants {
-     
-    
+enum Constants {
     static let fontDmr = "Montserrat"
     static let prefix75 = "75"
     
-    struct Services {
-        
+    enum Services {
         static let langPays = "FR/fr"
-        static let emailServiceFait = ["@paris.fr", "@derichebourg.com"]
+        static let emailServiceFait = [""]
         
         static let apiBaseUrl = env(dev: "",
                                     stg: "",
                                     prod: "")
-        static let apiUrl = ""
-
-        static let apiBaseUrlEquipement = env(dev: "",
-                                    stg: "",
-                                    prod: "")
+        static let apiUrl = "signalement/api"
         
+        static let tokenWS = env(dev: "",
+                                 stg: "",
+                                 prod: "")
+        
+        static let headerKeyTokenWS = ""
+        
+        static let apiBaseUrlEquipement = env(dev: "",
+                                              stg: "",
+                                              prod: "")
+        
+        /
         static let authBaseUrl = env(dev: "",
                                      stg: "",
                                      prod: "")
         
         static let solenUrl = env(dev: "",
-                                     stg: "",
-                                     prod: "")
+                                  stg: "",
+                                  prod: "")
         
         static let authorization = env(
             dev: "",
@@ -64,17 +68,28 @@ struct Constants {
         
         static let urlDisplayProfile = ""
         static let urlDeleteAccount = ""
-        
+        static let urlCGU = ""
+        static let urlConfidentialité = ""
     }
     
-    struct Maps {
+    enum Authentification {
+        static let clientID = ""
+        static let authorizationEndpoint = URL(string: "")!
+        static let tokenEndpoint = URL(string: "")!
+        static let userInfoEndpoint = URL(string: "")!
+        static let logoutEndpoint = ""
+        static let RedirectURI = ""
+        static let userDefault = ""
+    }
+    
+    enum Maps {
         static let parisLatitude = 48.856614
         static let parisLongitude = 2.3522219
         static let zoomLevel: Float = 12.0
-        static let zoomLevel_50m : Float = 17.0
+        static let zoomLevel_50m: Float = 17.0
     }
     
-    struct Key {
+    enum Key {
         static let categorieVersion = "categorieVersion"
         static let categorieList = "categorieList"
         static let categorieItems = "categorieItems"
@@ -102,6 +117,7 @@ struct Constants {
         static let email = "email"
         static let password = "password"
         static let isAgent = "isAgent"
+        static let uid = "uid"
         static let hasAlreadyBeenConnected = "hasAlreadyBeenConnected"
         
         // Constant equipement
@@ -109,10 +125,9 @@ struct Constants {
         static let typeEquipementList = "typeEquipementList"
         
         static let separatorAdresseCoordonate = "***"
-
     }
     
-    struct NoticationKey {
+    enum NoticationKey {
         static let typeAnomalieChanged = "TypeAnomalieChanged"
         static let photo1Changed = "Photo1Changed"
         static let photo2Changed = "Photo2Changed"
@@ -124,7 +139,7 @@ struct Constants {
         static let pushNotification = "pushNotification"
     }
     
-    struct Image {
+    enum Image {
         static let noImage = "no_image"
         static let createAnomalie = "create_anomalie"
         static let searchAnomalie = "search_anomalie"
@@ -174,8 +189,7 @@ struct Constants {
         static let iconEspacePublic = "TypeEspacePublic"
     }
     
-    struct AlertBoxTitle {
-        
+    enum AlertBoxTitle {
         static let adresseInvalide = "Adresse invalide"
         static let searchAnomaly = "Rechercher une anomalie"
         static let locationDisabled = "Localisation désactivée"
@@ -197,10 +211,10 @@ struct Constants {
         static let complementAdresseFacultatif = "Complément d'adresse (facultatif)"
         static let complementAdresse = "Complément d'adresse"
         static let information = "Information"
+        static let messageServiceFait = "Message service fait"
     }
     
-    struct AlertBoxMessage {
-        
+    enum AlertBoxMessage {
         static let adresseInvalide = "Vous êtes actuellement géolocalisé en dehors de Paris. L’application DansMaRue permet de signaler des anomalies uniquement dans Paris."
         static let locationDisabled = "Pour utiliser le suivi, veuillez activer le GPS dans Paramètres > \nConfidentialité > Services de localisation."
         static let followMalfunction = "Vous suivez maintenant cette anomalie."
@@ -213,7 +227,7 @@ struct Constants {
         static let noConnexion = "Vous n'avez aucune connexion."
         static let anomalieResolue = "Vous signalez cette anomalie comme résolue."
         static let erreurChargementTypes = "Suite à un problème réseau, les données nécessaires à la création de votre demande n'ont pas pu être récupérées.\n Merci de recommencer ultérieurement"
-        static let errorSaveLabel = "\nL\'application DansMaRue est actuellement en maintenance.\n\nMerci d\'essayer ultérieurement.\n\n Un brouillon a été sauvegardé dans votre espace"
+        static let errorSaveLabel = "\nNous rencontrons des difficultés à enregistrer cette anomalie. \n\nMerci d\'essayer ultérieurement.\n\n Un brouillon a été sauvegardé dans votre espace"
         static let grantPhoto = "Veuillez accorder l'autorisation d'utiliser la caméra pour pouvoir prendre des photos."
         static let solvedMalfunction = "Vous déclarez ce signalement comme résolu."
         static let optinAutorisation = "Autorisez vous l'application à transmettre vos données de localisation et votre identifiant de téléphone"
@@ -226,29 +240,16 @@ struct Constants {
         static let searchAnomaly = "Renseigner ci-dessous le numéro exact de l’anomalie"
     }
     
-    struct LabelMessage {
-        
+    enum LabelMessage {
         static let addAnomaly = "Ajouter une autre anomalie"
-        static let searchAnomaly = "Rechercher"
-        static let showAnomaly = "Voir les anomalies signalées"
+        static let searchAnomaly = "Rechercher une anomalie par numéro d'identification"
+        static let showAnomaly = "Voir les anomalies déjà signalées"
         static let preciserPosition = "Préciser la position de l'anomalie"
         static let otherAnomalieLabel = "Autres anomalies autour de moi"
         static let otherAnomalieEquipementLabel = "Autres anomalies dans l'équipement"
         static let noDraft = "Vous n'avez pas de brouillon"
         static let noNotSolved = "Vous n'avez pas encore signalé d'anomalie"
         static let noSolved = "Vous n'avez pas encore d'anomalie résolue"
-        static let cgu = "Conditions générales d'utilisation"
-        static let cguText1 = "L’application DansMaRue Paris fonctionne uniquement à Paris. Elle utilise certaines fonctionnalités de votre smartphone (GPS et connexion 3G/4G/5G) qui nécessitent une bonne connexion."
-        static let cguText2 = "Afin d’assurer la remontée rapide, précise, fiable d’une anomalie sur l’espace public et faciliter sa prise en charge par les services municipaux et leurs partenaires, il est demandé à l’utilisateur de :"
-        static let cguText3="<ul><li>de choisir dans une nomenclature fermée la nature de l’anomalie,</li><li>de préciser l’adresse exacte en corrigeant éventuellement la géolocalisation proposée automatiquement en indiquant dès que possible un numéro et une rue <a href='http://phraseanet-videos.apps.paris.fr/permalink/v1/5/4807/preview/02bis_DMR_mobile_4geoloc.mp4?token=P1uNYcDeYdvASXSMu4q8BSezJRnHR4DsVT5cIglWXsxjUL2lByN4RlKNFScGY2N0'>Cliquez ici pour voir une vidéo et comprendre les modalités de géolocalisation offertes par l’application</a></li><li>de joindre une ou plusieurs photo(s) de l’anomalie,</li><li>d’ajouter une description complémentaire utile et courte (250 caractères maximum).</li></ul>"
-        static let cguText4="Le dispositif DansMaRue a pour objectif de faciliter la communication entre les Parisien-nes, la Ville de Paris et ses partenaires et prestataires."
-        static let cguText5="Les informations transmises par les utilisateurs via le dispositif doivent être considérées comme des documents de travail qui aideront la Ville de Paris et ses partenaires et prestataires à organiser leur activité. Ils déterminent au cas par cas les actions à mettre en place."
-        static let cguText6="La Ville de Paris et ses partenaires et prestataires s’engagent, dans un délai d’un mois, à prendre les mesures appropriées et à informer tout contributeur qui aura laissé ses coordonnées."
-        static let cguText7="Pour des raisons de confidentialité et de respect des données personnelles, les photos incluses dans les déclarations d’anomalies comportant une personne identifiable seront supprimées. Les utilisateurs sont donc invités à centrer leurs photos sur les anomalies constatées tout en apportant des précisions utiles dans la zone description. Tout manquement à ces règles d’usage peut empêcher le traitement d’une anomalie ou provoquer son rejet."
-        static let cguText8="Les informations de la zone « Description » susceptibles de porter atteinte à des personnes physiques ou morales seront  supprimées."
-        static let cguText9="Si une anomalie comporte une photo d’une personne identifiable, celle-ci fera l’objet d’une suppression. Dans ce cas, si la description de l’anomalie n’est pas assez précise, il se peut qu’elle ne puisse pas être traitée. Les utilisateurs sont donc invités à centrer leur photo sur l’anomalie constatée en évitant d’y inclure des personnes."
-        static let cguText10="Pour toute question ou remarque, vous pouvez écrire à dansmarue_app@paris.fr"
-        static let cguText11="Les informations ne sont pas traitées de manière instantanée. Les situations présentant un caractère dangereux et nécessitant la mise en œuvre de mesures de protection rapides doivent continuer à faire l’objet d’une déclaration auprès des services d’urgence."
         static let about = "À Propos"
         static let aboutText = "L'application DansMaRue PARIS est un service de la Ville de Paris qui fonctionne uniquement à Paris. Elle utilise certaines fonctionnalités de votre smartphone (GPS et connexion 3G/4G/5G) qui nécessitent une bonne connexion. Si vous rencontrez des difficultés techniques liées à l'usage de l'application, n'hésitez pas à nous en informer via l'adresse mail DansMaRue_App@paris.fr\n\nLes informations ne sont pas traitées de manière instantanée. Les situations présentant un caractère dangereux et nécessitant la mise en oeuvre de mesures de protection rapides doivent continuer à faire l'objet d'une déclaration auprès des services d'urgence."
         static let monProfil = "Mon profil"
@@ -257,12 +258,15 @@ struct Constants {
         static let voirProfile = "Voir mon profil complet"
         static let suppressionCompteMonParis = "Supprimer mon compte \"MonParis\""
         static let mesAnomalies = "Mes anomalies"
-        static let type = "Type"
+        static let type = "Type (obligatoire)"
+        static let typeBackButton = "Type"
         static let select = "Sélectionner"
         static let photo = "Photo (obligatoire)"
         static let ajouter = "Ajouter"
+        static let optionnelDetailsTitle = "Précisions facultatives"
+        static let requiredDetailsTitle = "Informations obligatoires"
         static let description = "Description"
-        static let saisirDetail = "Saisir plus de détails"
+        static let saisirDetail = "Saisir plus de détails en 250 caractères maximum"
         static let priority = "Priorité"
         static let anomalieSolved = "Cette anomalie a été clôturée"
         static let anomalieInProgress = "Cette anomalie est en cours de résolution"
@@ -292,11 +296,15 @@ struct Constants {
         static let reduceBottomSheet = "Réduire la liste des anomalies"
         
         // Favoris
-        static let addAdresseFavorite = "Ajout une adresses aux favoris"
-        static let removeAdresseFavorite = "Supprimer une adresses aux favoris"
+        static let addAdresseFavorite = "Ajouter %@ aux favoris"
+        static let removeAdresseFavorite = "Supprimer %@ des favoris"
+        
+        // Favoris Type
+        static let addTypeFavorite = "Ajouter %@ aux types favoris"
+        static let removeTypeFavorite = "Supprimer %@ des types favoris"
     }
     
-    struct TitleButton {
+    enum TitleButton {
         static let deconnecter = "Se déconnecter"
         static let connecter = "Se connecter"
         static let publier = "Publier"
@@ -305,21 +313,21 @@ struct Constants {
         static let choisirAlbum = "Choisir dans l'album"
         static let feliciter = "Féliciter"
         static let monCompte = "Mon Paris"
-        static let declarerCommeResolue = "Déclarer comme résolue"
+        static let declarerCommeResolue = "Déclarer résolue"
         static let allow = "Autoriser"
         static let refuse = "Refuser"
+        static let close = "Fermer"
     }
     
-    struct PlaceHolder {
+    enum PlaceHolder {
         static let saisirAdresse = "Où est située l'anomalie ?"
         static let password = "Mot de passe"
         static let mail = "Mail"
         static let email = "Email"
-      
+        static let searchType = "Chercher un type"
     }
     
-    struct StoryBoard {
-        
+    enum StoryBoard {
         static let compteParisien = "CompteParisien"
         static let addAnomaly = "AddAnomaly"
         static let detailAnomaly = "AnomalyDetail"
@@ -337,8 +345,7 @@ struct Constants {
         static let messageTypeAno = "MessageTypeAno"
     }
     
-    struct ViewControllerIdentifier {
-        
+    enum ViewControllerIdentifier {
         static let compteParisien = "CompteParisien"
         static let addAnomaly = "AddAnomalyViewController"
         static let detailAnomaly = "AnomalyDetailViewController"
@@ -347,7 +354,6 @@ struct Constants {
         static let profileAbout = "ProfileAboutViewController"
         static let profileActualites = "ProfileActualitesViewController"
         static let profileAide = "ProfileAidesViewController"
-        static let profileCgu = "ProfileCGUViewController"
         static let profileDetail = "ProfileDetailViewController"
         static let profile = "ProfileViewController"
         static let modifyAddress = "modifyAddress"
@@ -357,22 +363,34 @@ struct Constants {
         static let welcome = "WelcomeSliderViewController"
         static let typeContribution = "TypeContributionViewController"
         static let messageTypeAno = "MessageTypeAnoViewController"
-
     }
-    struct TabBarTitle {
+
+    enum TabBarTitle {
         static let carte = "Carte"
         static let monEspace = "Mon espace"
-        
     }
     
-    struct ProfilTableView {
+    enum ProfilTableView {
         static let profil = 0
         static let anomalies = 1
         static let actualites = 2
         static let aides = 3
         static let preferences = 4
         static let cgu = 5
-        static let aPropos = 6
+        static let confidentialite = 6
+        static let aPropos = 7
     }
     
+    enum AccessibilityHint {
+        static let searchBarHint = "Saisissez l'adresse de l'anomalie, champ à autocomplétion activable à partir de la saisie du premier caractère"
+        static let searchBarTypeHint = "Saisissez le type de l'anomalie, champ à autocomplétion activable à partir de la saisie de trois caractères"
+    }
+    
+    enum AccessibilityLabel {
+        static let favoriteAdressButton = "Vos adresses favorites"
+        static let favoriteTypesButton = "Vos types favorites"
+        static let backButton = "Retour"
+        static let editAddress = "Modifier l'adresse"
+        static let typeTitle = "Type"
+    }
 }

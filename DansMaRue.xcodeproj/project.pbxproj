@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		03F3C417C6C9DF06A8AF0C27 /* Pods_DansMaRue.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5372234C0655F8443E128683 /* Pods_DansMaRue.framework */; };
 		2814F5CE1EC1FFAE00156DFE /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2814F5CD1EC1FFAE00156DFE /* User.swift */; };
 		2814F5D21EC9CC8E00156DFE /* ProfileDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2814F5D11EC9CC8E00156DFE /* ProfileDetailViewController.swift */; };
 		2830EFF62034697A008E6B18 /* BottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2830EFF52034697A008E6B18 /* BottomSheetView.swift */; };
@@ -50,7 +51,10 @@
 		28FE2C7D1FA8B57200C86D4D /* getEquipementsOne.json in Resources */ = {isa = PBXBuildFile; fileRef = 28FE2C7C1FA8B57200C86D4D /* getEquipementsOne.json */; };
 		4822FD7C2050184200184932 /* MyNotificationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4822FD7B2050184200184932 /* MyNotificationDelegate.swift */; };
 		48BA5DF7203DC26C004F9490 /* VersionsUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48BA5DF6203DC26B004F9490 /* VersionsUtils.swift */; };
-		6AAF02BD22CB05E198086FA0 /* Pods_DansMaRueTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E014747F2A8DEF09932FFEC /* Pods_DansMaRueTests.framework */; };
+		5E2090D62A4049080041B7B7 /* UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E2090D52A4049080041B7B7 /* UIFont.swift */; };
+		5E7245DA2ABDD139009145C8 /* CustomUIAlertView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5E7245D92ABDD139009145C8 /* CustomUIAlertView.storyboard */; };
+		5E7245DC2ABDD3B2009145C8 /* CustomUIAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E7245DB2ABDD3B2009145C8 /* CustomUIAlertController.swift */; };
+		5EDFCB5F2ABC7BB300866E92 /* FloatingLabelInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EDFCB5E2ABC7BB300866E92 /* FloatingLabelInput.swift */; };
 		910172CF2302F12A00892887 /* ManageFavorites.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 910172CE2302F12A00892887 /* ManageFavorites.storyboard */; };
 		910172D12302F26300892887 /* ManageFavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 910172D02302F26300892887 /* ManageFavoritesViewController.swift */; };
 		910172D323030FBE00892887 /* TypeFavoritesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 910172D223030FBE00892887 /* TypeFavoritesTableViewCell.swift */; };
@@ -66,7 +70,7 @@
 		919023BD234383E300A0E8E2 /* MessageTypeAno.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 919023BC234383E300A0E8E2 /* MessageTypeAno.storyboard */; };
 		919023BF2343846900A0E8E2 /* MessageTypeAnoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 919023BE2343846900A0E8E2 /* MessageTypeAnoViewController.swift */; };
 		919C62A021ECBEBA00FC9C61 /* ramen_mobile.png in Resources */ = {isa = PBXBuildFile; fileRef = 919C629F21ECBEBA00FC9C61 /* ramen_mobile.png */; };
-		9CE533E17D9B18486A08A7A6 /* Pods_DansMaRue.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8980F8BE717E1116B830107E /* Pods_DansMaRue.framework */; };
+		C8378F10CEA74A892A9B369C /* Pods_DansMaRueTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40F1B0F6C216523E55F5C476 /* Pods_DansMaRueTests.framework */; };
 		CD0508BB1E8124E90013334A /* UIDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0508BA1E8124E90013334A /* UIDevice.swift */; };
 		CD0508BD1E826F030013334A /* AddAnomaly.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CD0508BC1E826F030013334A /* AddAnomaly.storyboard */; };
 		CD052AB01E7AED1F00571E6C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD052AAF1E7AED1F00571E6C /* Assets.xcassets */; };
@@ -89,7 +93,6 @@
 		CDC60C6D1EA66B83000E80A5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CDC60C6C1EA66B83000E80A5 /* Main.storyboard */; };
 		E7A62A511EA8E22C0023A4D3 /* AnomalyDetail.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E7A62A501EA8E22C0023A4D3 /* AnomalyDetail.storyboard */; };
 		E7A62A531EA8E24D0023A4D3 /* AnomalyDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A62A521EA8E24D0023A4D3 /* AnomalyDetailViewController.swift */; };
-		E7A62A551EB36D0B0023A4D3 /* ProfileCGUViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A62A541EB36D0B0023A4D3 /* ProfileCGUViewController.swift */; };
 		E7A62A571EB36D340023A4D3 /* ProfileAboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7A62A561EB36D340023A4D3 /* ProfileAboutViewController.swift */; };
 		E7D3112A1E7C407500B2F0F6 /* Montserrat-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = E7D311251E7C407500B2F0F6 /* Montserrat-Bold.otf */; };
 		E7D3112B1E7C407500B2F0F6 /* Montserrat-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = E7D311261E7C407500B2F0F6 /* Montserrat-Light.otf */; };
@@ -114,7 +117,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0A6B345BE2531A9036AC9BDF /* Pods-DansMaRueTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DansMaRueTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DansMaRueTests/Pods-DansMaRueTests.debug.xcconfig"; sourceTree = "<group>"; };
+		06F042F364D47D1CBEA1DD46 /* Pods-DansMaRueTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DansMaRueTests.debug.xcconfig"; path = "Target Support Files/Pods-DansMaRueTests/Pods-DansMaRueTests.debug.xcconfig"; sourceTree = "<group>"; };
+		109E0C2E8FC4143B393180DB /* Pods-DansMaRue.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DansMaRue.release.xcconfig"; path = "Target Support Files/Pods-DansMaRue/Pods-DansMaRue.release.xcconfig"; sourceTree = "<group>"; };
+		12E82EB4E199AB09BE8DEFF0 /* Pods-DansMaRue.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DansMaRue.debug.xcconfig"; path = "Target Support Files/Pods-DansMaRue/Pods-DansMaRue.debug.xcconfig"; sourceTree = "<group>"; };
 		2814F5CD1EC1FFAE00156DFE /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = User.swift; path = Model/User.swift; sourceTree = "<group>"; };
 		2814F5D11EC9CC8E00156DFE /* ProfileDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileDetailViewController.swift; path = Controllers/Profile/ProfileDetailViewController.swift; sourceTree = "<group>"; };
 		2830EFF52034697A008E6B18 /* BottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BottomSheetView.swift; path = Controllers/Map/BottomSheetView.swift; sourceTree = "<group>"; };
@@ -158,14 +163,15 @@
 		28FE2C781FA73CD700C86D4D /* TypeContribution.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = TypeContribution.storyboard; path = Storyboards/TypeContribution.storyboard; sourceTree = "<group>"; };
 		28FE2C7A1FA73DB900C86D4D /* TypeContributionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TypeContributionViewController.swift; path = Controllers/Map/TypeContributionViewController.swift; sourceTree = "<group>"; };
 		28FE2C7C1FA8B57200C86D4D /* getEquipementsOne.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = getEquipementsOne.json; path = Services/getEquipementsOne.json; sourceTree = "<group>"; };
+		40F1B0F6C216523E55F5C476 /* Pods_DansMaRueTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DansMaRueTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4822FD7B2050184200184932 /* MyNotificationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyNotificationDelegate.swift; sourceTree = "<group>"; };
 		48BA5DF6203DC26B004F9490 /* VersionsUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VersionsUtils.swift; path = Utils/VersionsUtils.swift; sourceTree = "<group>"; };
-		4D0E6427873BDC408B820D63 /* Pods-DansMaRue.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DansMaRue.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DansMaRue/Pods-DansMaRue.debug.xcconfig"; sourceTree = "<group>"; };
-		5A59C084EB229C729ABB8B8B /* Pods-DansMaRueTests.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DansMaRueTests.staging.xcconfig"; path = "Pods/Target Support Files/Pods-DansMaRueTests/Pods-DansMaRueTests.staging.xcconfig"; sourceTree = "<group>"; };
-		5E014747F2A8DEF09932FFEC /* Pods_DansMaRueTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DansMaRueTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		6C4ECCEB5272A1BB61F05431 /* Pods-DansMaRue.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DansMaRue.release.xcconfig"; path = "Pods/Target Support Files/Pods-DansMaRue/Pods-DansMaRue.release.xcconfig"; sourceTree = "<group>"; };
-		8980F8BE717E1116B830107E /* Pods_DansMaRue.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DansMaRue.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		8F84B15D8DBA2950D5A2756D /* Pods-DansMaRue.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DansMaRue.staging.xcconfig"; path = "Pods/Target Support Files/Pods-DansMaRue/Pods-DansMaRue.staging.xcconfig"; sourceTree = "<group>"; };
+		4DCB5D8FAD3B90D6EC00DF3C /* Pods-DansMaRueTests.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DansMaRueTests.staging.xcconfig"; path = "Target Support Files/Pods-DansMaRueTests/Pods-DansMaRueTests.staging.xcconfig"; sourceTree = "<group>"; };
+		5372234C0655F8443E128683 /* Pods_DansMaRue.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DansMaRue.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5E2090D52A4049080041B7B7 /* UIFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFont.swift; sourceTree = "<group>"; };
+		5E7245D92ABDD139009145C8 /* CustomUIAlertView.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = CustomUIAlertView.storyboard; path = Storyboards/CustomUIAlertView.storyboard; sourceTree = "<group>"; };
+		5E7245DB2ABDD3B2009145C8 /* CustomUIAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CustomUIAlertController.swift; path = Controllers/CustomUIAlertController.swift; sourceTree = "<group>"; };
+		5EDFCB5E2ABC7BB300866E92 /* FloatingLabelInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FloatingLabelInput.swift; path = Utils/FloatingLabelInput.swift; sourceTree = "<group>"; };
 		910172CE2302F12A00892887 /* ManageFavorites.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ManageFavorites.storyboard; sourceTree = "<group>"; };
 		910172D02302F26300892887 /* ManageFavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageFavoritesViewController.swift; sourceTree = "<group>"; };
 		910172D223030FBE00892887 /* TypeFavoritesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeFavoritesTableViewCell.swift; sourceTree = "<group>"; };
@@ -181,7 +187,8 @@
 		919023BC234383E300A0E8E2 /* MessageTypeAno.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MessageTypeAno.storyboard; sourceTree = "<group>"; };
 		919023BE2343846900A0E8E2 /* MessageTypeAnoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageTypeAnoViewController.swift; sourceTree = "<group>"; };
 		919C629F21ECBEBA00FC9C61 /* ramen_mobile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ramen_mobile.png; sourceTree = "<group>"; };
-		BCAA5B9EF47F2D99361C3992 /* Pods-DansMaRueTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DansMaRueTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DansMaRueTests/Pods-DansMaRueTests.release.xcconfig"; sourceTree = "<group>"; };
+		95CC8D0E7D287776AA0DCC98 /* Pods-DansMaRueTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DansMaRueTests.release.xcconfig"; path = "Target Support Files/Pods-DansMaRueTests/Pods-DansMaRueTests.release.xcconfig"; sourceTree = "<group>"; };
+		A7C8035B04718387FD0900C3 /* Pods-DansMaRue.staging.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DansMaRue.staging.xcconfig"; path = "Target Support Files/Pods-DansMaRue/Pods-DansMaRue.staging.xcconfig"; sourceTree = "<group>"; };
 		CD0508BA1E8124E90013334A /* UIDevice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIDevice.swift; path = Extensions/UIDevice.swift; sourceTree = "<group>"; };
 		CD0508BC1E826F030013334A /* AddAnomaly.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = AddAnomaly.storyboard; path = Storyboards/Anomalie/AddAnomaly.storyboard; sourceTree = "<group>"; };
 		CD052AA51E7AED1F00571E6C /* DansMaRue.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DansMaRue.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -208,7 +215,6 @@
 		CDC60C6C1EA66B83000E80A5 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Storyboards/Main.storyboard; sourceTree = "<group>"; };
 		E7A62A501EA8E22C0023A4D3 /* AnomalyDetail.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = AnomalyDetail.storyboard; path = Storyboards/Anomalie/AnomalyDetail.storyboard; sourceTree = "<group>"; };
 		E7A62A521EA8E24D0023A4D3 /* AnomalyDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AnomalyDetailViewController.swift; path = Controllers/Anomalie/AnomalyDetailViewController.swift; sourceTree = "<group>"; };
-		E7A62A541EB36D0B0023A4D3 /* ProfileCGUViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileCGUViewController.swift; path = Controllers/Profile/ProfileCGUViewController.swift; sourceTree = "<group>"; };
 		E7A62A561EB36D340023A4D3 /* ProfileAboutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProfileAboutViewController.swift; path = Controllers/Profile/ProfileAboutViewController.swift; sourceTree = "<group>"; };
 		E7D311251E7C407500B2F0F6 /* Montserrat-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Montserrat-Bold.otf"; path = "Fonts/Montserrat-Bold.otf"; sourceTree = "<group>"; };
 		E7D311261E7C407500B2F0F6 /* Montserrat-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Montserrat-Light.otf"; path = "Fonts/Montserrat-Light.otf"; sourceTree = "<group>"; };
@@ -227,7 +233,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9CE533E17D9B18486A08A7A6 /* Pods_DansMaRue.framework in Frameworks */,
+				03F3C417C6C9DF06A8AF0C27 /* Pods_DansMaRue.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -235,7 +241,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6AAF02BD22CB05E198086FA0 /* Pods_DansMaRueTests.framework in Frameworks */,
+				C8378F10CEA74A892A9B369C /* Pods_DansMaRueTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -263,6 +269,7 @@
 				288C59691EB3836500A9EC5B /* String+DMR.swift */,
 				28D77ADB1F161B1600FFDDE0 /* PaddingLabel+DMR.swift */,
 				28DD7FC31F8B739E00EF8993 /* UIImage+DMR.swift */,
+				5E2090D52A4049080041B7B7 /* UIFont.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -360,17 +367,26 @@
 			path = img;
 			sourceTree = "<group>";
 		};
-		BF5924E65EAC55368B9BF765 /* Pods */ = {
+		BAD938BB09DAD746A035EDA6 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				4D0E6427873BDC408B820D63 /* Pods-DansMaRue.debug.xcconfig */,
-				6C4ECCEB5272A1BB61F05431 /* Pods-DansMaRue.release.xcconfig */,
-				0A6B345BE2531A9036AC9BDF /* Pods-DansMaRueTests.debug.xcconfig */,
-				BCAA5B9EF47F2D99361C3992 /* Pods-DansMaRueTests.release.xcconfig */,
-				8F84B15D8DBA2950D5A2756D /* Pods-DansMaRue.staging.xcconfig */,
-				5A59C084EB229C729ABB8B8B /* Pods-DansMaRueTests.staging.xcconfig */,
+				12E82EB4E199AB09BE8DEFF0 /* Pods-DansMaRue.debug.xcconfig */,
+				A7C8035B04718387FD0900C3 /* Pods-DansMaRue.staging.xcconfig */,
+				109E0C2E8FC4143B393180DB /* Pods-DansMaRue.release.xcconfig */,
+				06F042F364D47D1CBEA1DD46 /* Pods-DansMaRueTests.debug.xcconfig */,
+				4DCB5D8FAD3B90D6EC00DF3C /* Pods-DansMaRueTests.staging.xcconfig */,
+				95CC8D0E7D287776AA0DCC98 /* Pods-DansMaRueTests.release.xcconfig */,
 			);
-			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		BE4EF99076C547E8D43BC79C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5372234C0655F8443E128683 /* Pods_DansMaRue.framework */,
+				40F1B0F6C216523E55F5C476 /* Pods_DansMaRueTests.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		CD0508B71E8124180013334A /* Utils */ = {
@@ -381,6 +397,7 @@
 				28DD78A01E8C51B900633D2B /* ReachabilityUtils.swift */,
 				288C59721EBA37FB00A9EC5B /* DateUtils.swift */,
 				28B30FAC1F9F971E0011831A /* ContextManager.swift */,
+				5EDFCB5E2ABC7BB300866E92 /* FloatingLabelInput.swift */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -391,9 +408,9 @@
 				CD052AA71E7AED1F00571E6C /* DansMaRue */,
 				CD052ABC1E7AED1F00571E6C /* DansMaRueTests */,
 				CD052AA61E7AED1F00571E6C /* Products */,
-				BF5924E65EAC55368B9BF765 /* Pods */,
-				F301A058DCE46FEBA110893D /* Frameworks */,
 				28535CC31FD5B9E300D17E99 /* Recovered References */,
+				BAD938BB09DAD746A035EDA6 /* Pods */,
+				BE4EF99076C547E8D43BC79C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 			usesTabs = 0;
@@ -448,6 +465,7 @@
 				CD052AD71E7AF6E100571E6C /* Profile.storyboard */,
 				CDC60C681EA655CC000E80A5 /* CompteParisien.storyboard */,
 				28FE2C781FA73CD700C86D4D /* TypeContribution.storyboard */,
+				5E7245D92ABDD139009145C8 /* CustomUIAlertView.storyboard */,
 			);
 			name = Storyboards;
 			sourceTree = "<group>";
@@ -470,6 +488,7 @@
 				28DD78A91E8D07A400633D2B /* Anomalie */,
 				28DD78A21E8D076C00633D2B /* Welcome */,
 				CD052AD91E7AF72B00571E6C /* MainViewController.swift */,
+				5E7245DB2ABDD3B2009145C8 /* CustomUIAlertController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -495,7 +514,6 @@
 				E7E5AAC31EA0FB2100BD2608 /* ProfileSettingsViewController.swift */,
 				E7E5AAC51EA0FDDC00BD2608 /* ProfilePreferencesViewController.swift */,
 				CDC60C6A1EA65619000E80A5 /* CompteParisienViewController.swift */,
-				E7A62A541EB36D0B0023A4D3 /* ProfileCGUViewController.swift */,
 				E7A62A561EB36D340023A4D3 /* ProfileAboutViewController.swift */,
 				2814F5D11EC9CC8E00156DFE /* ProfileDetailViewController.swift */,
 			);
@@ -514,15 +532,6 @@
 			name = Map;
 			sourceTree = "<group>";
 		};
-		F301A058DCE46FEBA110893D /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				8980F8BE717E1116B830107E /* Pods_DansMaRue.framework */,
-				5E014747F2A8DEF09932FFEC /* Pods_DansMaRueTests.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -530,13 +539,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CD052AC21E7AED1F00571E6C /* Build configuration list for PBXNativeTarget "DansMaRue" */;
 			buildPhases = (
-				EE594E599E9E4DF30818D416 /* [CP] Check Pods Manifest.lock */,
+				BAE6C04B359651DC6E438738 /* [CP] Check Pods Manifest.lock */,
+				5E1C45BC2A3B6DC700737BFA /* ShellScript */,
 				CD052AA11E7AED1E00571E6C /* Sources */,
 				CD052AA21E7AED1E00571E6C /* Frameworks */,
 				CD052AA31E7AED1E00571E6C /* Resources */,
-				BDEC07101AC65D4DC23F9FBE /* [CP] Embed Pods Frameworks */,
-				054F17B96F4BE719F82F2110 /* [CP] Copy Pods Resources */,
 				CDE0AA281E9E46F9006EA9FB /* ShellScript */,
+				ABF501BB90D7926F02D59133 /* [CP] Embed Pods Frameworks */,
+				67DAB7FE97541D3B2C891ED4 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -551,7 +561,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CD052AC51E7AED1F00571E6C /* Build configuration list for PBXNativeTarget "DansMaRueTests" */;
 			buildPhases = (
-				5AEFD07159E4B4318B99685A /* [CP] Check Pods Manifest.lock */,
+				3ABF7053BAB130B2633ED6EB /* [CP] Check Pods Manifest.lock */,
 				CD052AB51E7AED1F00571E6C /* Sources */,
 				CD052AB61E7AED1F00571E6C /* Frameworks */,
 				CD052AB71E7AED1F00571E6C /* Resources */,
@@ -636,6 +646,7 @@
 				289FCA131E9AD46F00318373 /* DescriptiveAnomaly.storyboard in Resources */,
 				CD052AD81E7AF6E100571E6C /* Profile.storyboard in Resources */,
 				28DD78B21E8D0CE300633D2B /* TypeAnomalie.storyboard in Resources */,
+				5E7245DA2ABDD139009145C8 /* CustomUIAlertView.storyboard in Resources */,
 				28CBD7231E9027CB00BBFB87 /* PopupPhoto.storyboard in Resources */,
 				E7A62A511EA8E22C0023A4D3 /* AnomalyDetail.storyboard in Resources */,
 				916883BE247BBE37000D373E /* GoogleService-Info.plist in Resources */,
@@ -664,7 +675,46 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		054F17B96F4BE719F82F2110 /* [CP] Copy Pods Resources */ = {
+		3ABF7053BAB130B2633ED6EB /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-DansMaRueTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5E1C45BC2A3B6DC700737BFA /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "buildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${INFOPLIST_FILE}\")\n\nbuildNumber=$(($buildNumber + 1))\n\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${INFOPLIST_FILE}\"\n";
+		};
+		67DAB7FE97541D3B2C891ED4 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -684,38 +734,24 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DansMaRue/Pods-DansMaRue-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		5AEFD07159E4B4318B99685A /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-DansMaRueTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		BDEC07101AC65D4DC23F9FBE /* [CP] Embed Pods Frameworks */ = {
+		ABF501BB90D7926F02D59133 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-DansMaRue/Pods-DansMaRue-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/AppAuth/AppAuth.framework",
+				"${BUILT_PRODUCTS_DIR}/FirebaseCore/FirebaseCore.framework",
+				"${BUILT_PRODUCTS_DIR}/FirebaseCoreExtension/FirebaseCoreExtension.framework",
+				"${BUILT_PRODUCTS_DIR}/FirebaseCoreInternal/FirebaseCoreInternal.framework",
+				"${BUILT_PRODUCTS_DIR}/FirebaseCrashlytics/FirebaseCrashlytics.framework",
+				"${BUILT_PRODUCTS_DIR}/FirebaseInstallations/FirebaseInstallations.framework",
+				"${BUILT_PRODUCTS_DIR}/FirebaseSessions/FirebaseSessions.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleDataTransport/GoogleDataTransport.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
-				"${PODS_ROOT}/Mapbox-iOS-SDK/dynamic/Mapbox.framework",
-				"${PODS_ROOT}/Mapbox-iOS-SDK/dynamic/Mapbox.framework.dSYM",
-				"${PODS_ROOT}/Mapbox-iOS-SDK/dynamic/8F3E82C3-52DF-39E5-809D-3389B6CBCAD4.bcsymbolmap",
-				"${PODS_ROOT}/Mapbox-iOS-SDK/dynamic/0DC8DAD8-C6D7-343B-ACBF-79B48068D7CC.bcsymbolmap",
-				"${BUILT_PRODUCTS_DIR}/MapboxMobileEvents/MapboxMobileEvents.framework",
 				"${BUILT_PRODUCTS_DIR}/PromisesObjC/FBLPromises.framework",
+				"${BUILT_PRODUCTS_DIR}/PromisesSwift/Promises.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 				"${BUILT_PRODUCTS_DIR}/TTGSnackbar/TTGSnackbar.framework",
@@ -723,13 +759,17 @@
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AppAuth.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCore.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCoreExtension.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCoreInternal.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseCrashlytics.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseInstallations.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FirebaseSessions.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleDataTransport.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mapbox.framework",
-				"${DWARF_DSYM_FOLDER_PATH}/Mapbox.framework.dSYM",
-				"${BUILT_PRODUCTS_DIR}/8F3E82C3-52DF-39E5-809D-3389B6CBCAD4.bcsymbolmap",
-				"${BUILT_PRODUCTS_DIR}/0DC8DAD8-C6D7-343B-ACBF-79B48068D7CC.bcsymbolmap",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MapboxMobileEvents.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBLPromises.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Promises.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TTGSnackbar.framework",
@@ -738,6 +778,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DansMaRue/Pods-DansMaRue-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BAE6C04B359651DC6E438738 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-DansMaRue-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		CDE0AA281E9E46F9006EA9FB /* ShellScript */ = {
@@ -751,25 +813,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Fabric/run\" de2a9cb6ce619d541840b0491f6568489833545f 2c6f683bae3205f23bbfd95a8ef5e6702603c404850f628b5c77cea053e2581b";
-		};
-		EE594E599E9E4DF30818D416 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-DansMaRue-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
+			shellScript = "\"${PODS_ROOT}/Fabric/run\" de2a9cb6ce619d541840b0491f6568489833545f 2c6f683bae3205f23bbfd95a8ef5e6702603c404850f628b5c77cea053e2581b\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -786,6 +830,8 @@
 				28DD78A81E8D076C00633D2B /* WelcomeViewController.swift in Sources */,
 				910172D12302F26300892887 /* ManageFavoritesViewController.swift in Sources */,
 				28DD78A11E8C51B900633D2B /* ReachabilityUtils.swift in Sources */,
+				5E2090D62A4049080041B7B7 /* UIFont.swift in Sources */,
+				5E7245DC2ABDD3B2009145C8 /* CustomUIAlertController.swift in Sources */,
 				2814F5D21EC9CC8E00156DFE /* ProfileDetailViewController.swift in Sources */,
 				910172D72304547100892887 /* ManageAddressViewController.swift in Sources */,
 				919023BF2343846900A0E8E2 /* MessageTypeAnoViewController.swift in Sources */,
@@ -803,7 +849,6 @@
 				28577FD01E8AB542006F7478 /* UIButton+DMR.swift in Sources */,
 				E7E5AAC21EA0F0E500BD2608 /* ProfileViewController.swift in Sources */,
 				28DD78A61E8D076C00633D2B /* WelcomePageContentViewController.swift in Sources */,
-				E7A62A551EB36D0B0023A4D3 /* ProfileCGUViewController.swift in Sources */,
 				CD052ADA1E7AF72B00571E6C /* MainViewController.swift in Sources */,
 				2814F5CE1EC1FFAE00156DFE /* User.swift in Sources */,
 				28DD78991E8B0D2600633D2B /* UIView+DMR.swift in Sources */,
@@ -834,6 +879,7 @@
 				28DD7FC41F8B739E00EF8993 /* UIImage+DMR.swift in Sources */,
 				48BA5DF7203DC26C004F9490 /* VersionsUtils.swift in Sources */,
 				4822FD7C2050184200184932 /* MyNotificationDelegate.swift in Sources */,
+				5EDFCB5F2ABC7BB300866E92 /* FloatingLabelInput.swift in Sources */,
 				E7E5AABF1EA0ECB100BD2608 /* BottomSheetViewController.swift in Sources */,
 				CD0508BB1E8124E90013334A /* UIDevice.swift in Sources */,
 				E7E5AAC61EA0FDDC00BD2608 /* ProfilePreferencesViewController.swift in Sources */,
@@ -897,6 +943,7 @@
 				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				EXCLUDED_ARCHS = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -911,7 +958,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -922,23 +969,26 @@
 		};
 		288C596F1EB8908400A9EC5B /* Staging */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8F84B15D8DBA2950D5A2756D /* Pods-DansMaRue.staging.xcconfig */;
+			baseConfigurationReference = A7C8035B04718387FD0900C3 /* Pods-DansMaRue.staging.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = DansMaRue/DansMaRue.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 168;
-				DEVELOPMENT_TEAM = WTEMWM5569;
+				CURRENT_PROJECT_VERSION = 199;
+				DEVELOPMENT_TEAM = WTFMWM5569;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = WTEMWM5569;
+				EXCLUDED_ARCHS = "";
 				INFOPLIST_FILE = DansMaRue/SupportingFiles/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -DENVIRONMENT_STAGING";
 				PRODUCT_BUNDLE_IDENTIFIER = com.paris.signalement;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "a8529573-15d0-4d2c-886d-524d953e8430";
 				PROVISIONING_PROFILE_SPECIFIER = DansMaRue_Dev;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = DansMaRue_Dev;
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 4.2;
 			};
@@ -946,7 +996,7 @@
 		};
 		288C59701EB8908400A9EC5B /* Staging */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5A59C084EB229C729ABB8B8B /* Pods-DansMaRueTests.staging.xcconfig */;
+			baseConfigurationReference = 4DCB5D8FAD3B90D6EC00DF3C /* Pods-DansMaRueTests.staging.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -996,6 +1046,7 @@
 				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				EXCLUDED_ARCHS = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -1010,7 +1061,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1055,6 +1106,7 @@
 				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				EXCLUDED_ARCHS = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -1063,7 +1115,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -1073,23 +1125,26 @@
 		};
 		CD052AC31E7AED1F00571E6C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4D0E6427873BDC408B820D63 /* Pods-DansMaRue.debug.xcconfig */;
+			baseConfigurationReference = 12E82EB4E199AB09BE8DEFF0 /* Pods-DansMaRue.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = DansMaRue/DansMaRue.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 168;
-				DEVELOPMENT_TEAM = WTEMWM5569;
+				CURRENT_PROJECT_VERSION = 198;
+				DEVELOPMENT_TEAM = WTFMWM5569;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = WTEMWM5569;
+				EXCLUDED_ARCHS = "";
 				INFOPLIST_FILE = DansMaRue/SupportingFiles/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -DENVIRONMENT_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.paris.signalement;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "a8529573-15d0-4d2c-886d-524d953e8430";
 				PROVISIONING_PROFILE_SPECIFIER = DansMaRue_Dev;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = DansMaRue_Dev;
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 4.2;
 			};
@@ -1097,23 +1152,27 @@
 		};
 		CD052AC41E7AED1F00571E6C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6C4ECCEB5272A1BB61F05431 /* Pods-DansMaRue.release.xcconfig */;
+			baseConfigurationReference = 109E0C2E8FC4143B393180DB /* Pods-DansMaRue.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = DansMaRue/DansMaRue.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = WTEMWM5569;
+				CURRENT_PROJECT_VERSION = "";
+				DEVELOPMENT_TEAM = WTFMWM5569;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = WTEMWM5569;
+				EXCLUDED_ARCHS = "";
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = DansMaRue/SupportingFiles/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" -DENVIRONMENT_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.paris.signalement;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "e143baa2-8a93-4844-8fd3-331e72330f17";
 				PROVISIONING_PROFILE_SPECIFIER = DansMaRue_Dist_v2;
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = DansMaRue_Dev;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 4.2;
@@ -1122,7 +1181,7 @@
 		};
 		CD052AC61E7AED1F00571E6C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0A6B345BE2531A9036AC9BDF /* Pods-DansMaRueTests.debug.xcconfig */;
+			baseConfigurationReference = 06F042F364D47D1CBEA1DD46 /* Pods-DansMaRueTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1138,7 +1197,7 @@
 		};
 		CD052AC71E7AED1F00571E6C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BCAA5B9EF47F2D99361C3992 /* Pods-DansMaRueTests.release.xcconfig */;
+			baseConfigurationReference = 95CC8D0E7D287776AA0DCC98 /* Pods-DansMaRueTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";

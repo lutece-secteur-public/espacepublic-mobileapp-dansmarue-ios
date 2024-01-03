@@ -6,16 +6,15 @@
 //  Copyright © 2017 VilleDeParis. All rights reserved.
 //
 
-import UIKit
-import GooglePlaces
 import GoogleMaps
+import GooglePlaces
+import UIKit
 
 class ModifyAddressViewController: UIViewController {
+    // MARK: - Properties
 
-    
-    //MARK: - Properties
     // Google SearchBar properties
-    let addressNotification = Notification.Name(rawValue:Constants.NoticationKey.addressNotification)
+    let addressNotification = Notification.Name(rawValue: Constants.NoticationKey.addressNotification)
     var resultsViewController: GMSAutocompleteResultsViewController?
     var searchController: UISearchController?
     
@@ -24,9 +23,10 @@ class ModifyAddressViewController: UIViewController {
     var equipementSearchController: EquipementSearchTableViewController?
     var typeEquipementSelected: TypeEquipement?
 
-    weak var delegate : AddAnomalyViewController!
+    weak var delegate: AddAnomalyViewController!
 
-    //MARK: - View lifecycle
+    // MARK: - View lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -35,19 +35,20 @@ class ModifyAddressViewController: UIViewController {
         // Initialize searchBar en fonction du context
         if delegate.typeContribution == .indoor {
             if let selectedEquipement = delegate.selectedEquipement {
-                self.typeEquipementSelected = ReferalManager.shared.getTypeEquipement(forId: selectedEquipement.parentId)
+                typeEquipementSelected = ReferalManager.shared.getTypeEquipement(forId: selectedEquipement.parentId)
             }
-            self.initializeCustomSearchBar()
+            initializeCustomSearchBar()
         } else {
-            self.initSearchBar()
+            initSearchBar()
         }
+        UIAccessibility.post(notification: UIAccessibility.Notification.screenChanged, argument: searchController?.searchBar)
     }
     
     // MARK: - Other functions
+
     func initSearchBar() {
         resultsViewController = GMSAutocompleteResultsViewController()
         resultsViewController?.delegate = self
-        
         searchController = UISearchController(searchResultsController: resultsViewController)
         searchController?.searchResultsUpdater = resultsViewController
         
@@ -55,16 +56,19 @@ class ModifyAddressViewController: UIViewController {
         if let searchBar = searchController?.searchBar {
             searchBar.sizeToFit()
             searchBar.placeholder = Constants.PlaceHolder.saisirAdresse
-            
             searchBar.tintColor = UIColor.white
             searchBar.isTranslucent = false
-            
-            self.perform(#selector(searchBarFirstResponder), with: nil, afterDelay: 0.1)
+            searchBar.accessibilityLabel = Constants.PlaceHolder.saisirAdresse
+            searchBar.accessibilityHint = Constants.AccessibilityHint.searchBarHint
+            searchBar.accessibilityTraits = .searchField
+            perform(#selector(searchBarFirstResponder), with: nil, afterDelay: 0.1)
             
             if #available(iOS 13.0, *) {
                 searchController?.hidesNavigationBarDuringPresentation = true
-                searchBar.searchTextField.backgroundColor=UIColor.white
-                searchBar.searchTextField.tintColor=UIColor.black
+                searchBar.searchTextField.backgroundColor = UIColor.white
+                searchBar.searchTextField.tintColor = UIColor.black
+                searchBar.searchTextField.adjustsFontForContentSizeCategory = true
+                searchBar.searchTextField.font = UIFont.preferredFont(forTextStyle: .caption2)
                 self.navigationItem.searchController = searchController
             } else {
                 // Prevent the navigation bar from being hidden when searching.
@@ -73,9 +77,18 @@ class ModifyAddressViewController: UIViewController {
             
             view.addSubview(searchBar)
         }
+        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.barTintColor = UIColor.pinkButtonDmr()
+        extendedLayoutIncludesOpaqueBars = true
         
+        // When UISearchController presents the results view, present it in
+        // this view controller, not one further up the chain.
+        definesPresentationContext = true
+        
+        // Prevent the navigation bar from being hidden when searching.
+        searchController?.hidesNavigationBarDuringPresentation = false
         // Active sur le filtre sur Paris uniquement
-        MapsUtils.filterToParis(resultsViewController: self.resultsViewController!)
+        MapsUtils.filterToParis(resultsViewController: resultsViewController!)
     }
     
     func initializeCustomSearchBar() {
@@ -89,7 +102,7 @@ class ModifyAddressViewController: UIViewController {
         
         customSearchController = UISearchController(searchResultsController: equipementSearchController)
         customSearchController?.hidesNavigationBarDuringPresentation = false
-        customSearchController?.searchBar.placeholder = self.typeEquipementSelected?.placeholder
+        customSearchController?.searchBar.placeholder = typeEquipementSelected?.placeholder
         customSearchController?.searchBar.sizeToFit()
         
         equipementSearchController?.tableView.tableHeaderView = customSearchController?.searchBar
@@ -97,22 +110,21 @@ class ModifyAddressViewController: UIViewController {
         
         view.addSubview((customSearchController?.searchBar)!)
         
-        equipementSearchController?.equipements = ReferalManager.shared.getEquipements(forTypeEquipementId: (self.typeEquipementSelected?.typeEquipementId)!)!
+        equipementSearchController?.equipements = ReferalManager.shared.getEquipements(forTypeEquipementId: (typeEquipementSelected?.typeEquipementId)!)!
         equipementSearchController?.equipements.sort(by: { $0.name.caseInsensitiveCompare($1.name) == .orderedAscending })
         equipementSearchController?.tableView.reloadData()
     }
     
     @objc func searchBarFirstResponder() {
-        self.searchController?.searchBar.becomeFirstResponder()
+        searchController?.searchBar.becomeFirstResponder()
     }
 }
 
-
 // Handle the user's selection.
 extension ModifyAddressViewController: GMSAutocompleteResultsViewControllerDelegate {
-    
     func resultsController(_ resultsController: GMSAutocompleteResultsViewController,
-                           didAutocompleteWith place: GMSPlace) {
+                           didAutocompleteWith place: GMSPlace)
+    {
         searchController?.isActive = false
         
         let geocoder = GMSGeocoder()
@@ -122,7 +134,7 @@ extension ModifyAddressViewController: GMSAutocompleteResultsViewControllerDeleg
                 return
             }
             if let addressFound = response {
-                let addressSelected:GMSAddress = addressFound.firstResult()!
+                let addressSelected: GMSAddress = addressFound.firstResult()!
                 
                 var numRue = ""
                 var rue = ""
@@ -139,21 +151,21 @@ extension ModifyAddressViewController: GMSAutocompleteResultsViewControllerDeleg
                         cp = component.name
                     }
                 }
-                let adresse = numRue + " " + rue + ", " + cp + " Paris, France"
+                let adresse = numRue + " " + rue + ", " + cp + " PARIS, France"
                 addressSelected.setValue(adresse.components(separatedBy: ",")[0], forKey: "thoroughfare")
                 
                 self.delegate.changeAddress(newAddress: addressSelected)
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                   _ = self.navigationController?.popViewController(animated: true)
-                }                
+                    _ = self.navigationController?.popViewController(animated: true)
+                }
             }
         }
-        
     }
     
     func resultsController(_ resultsController: GMSAutocompleteResultsViewController,
-                           didFailAutocompleteWithError error: Error){
+                           didFailAutocompleteWithError error: Error)
+    {
         // TODO: handle the error.
         print("Error: ", error.localizedDescription)
     }
@@ -168,12 +180,11 @@ extension ModifyAddressViewController: GMSAutocompleteResultsViewControllerDeleg
     }
 }
 
-
 extension ModifyAddressViewController: EquipementDelegate {
     func didSelectEquipementAt(equipement: Equipement) {
         customSearchController?.isActive = false
         
-        self.delegate.changeEquipement(newEquipement: equipement)
-         _ = self.navigationController?.popViewController(animated: true)
+        delegate.changeEquipement(newEquipement: equipement)
+        _ = navigationController?.popViewController(animated: true)
     }
 }

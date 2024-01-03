@@ -6,15 +6,14 @@
 //  Copyright © 2017 VilleDeParis. All rights reserved.
 //
 
-import UIKit
 import GoogleMaps
 import GooglePlaces
 import SwiftyJSON
-import Mapbox
+import UIKit
 
 class MapViewController: UIViewController {
-    
     // MARK: Properties
+
     var locationManager = CLLocationManager()
     
     // Google SearchBar properties
@@ -26,8 +25,8 @@ class MapViewController: UIViewController {
     var customSearchController: UISearchController?
     var equipementSearchController: EquipementSearchTableViewController?
     
-    let anomalieNotification = Notification.Name(rawValue:Constants.NoticationKey.anomaliesChanged)
-    let addressNotification = Notification.Name(rawValue:Constants.NoticationKey.addressNotification)
+    let anomalieNotification = Notification.Name(rawValue: Constants.NoticationKey.anomaliesChanged)
+    let addressNotification = Notification.Name(rawValue: Constants.NoticationKey.addressNotification)
     let uberPin = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
     var uberPinVisible = false
     
@@ -35,16 +34,17 @@ class MapViewController: UIViewController {
     var switchButton: UIButton?
     
     // MARK: IBOutlet
-    @IBOutlet weak var mapContainerView: GMSMapView!
-    @IBOutlet weak var uberActionLabel: UILabel!
 
+    @IBOutlet var mapContainerView: GMSMapView!
+    @IBOutlet var uberActionLabel: UILabel!
+    @IBOutlet var mapViewConstraintBottom: NSLayoutConstraint!
+    var bottomSheetConstraintTop: NSLayoutConstraint?
     
-    //MARK: - View lifecycle
+    // MARK: - View lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         locationManager.delegate = self
-
         loadMapContainer()
         
         // Gestion des autorisations
@@ -53,11 +53,11 @@ class MapViewController: UIViewController {
             locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
             mapContainerView.isMyLocationEnabled = true
             mapContainerView.settings.myLocationButton = true
-            locationManager.startUpdatingLocation();
+            locationManager.startUpdatingLocation()
         } else if CLLocationManager.authorizationStatus() == .denied {
             // L'utilisateur refuse la location. Affichage d'une alert
             // Open the settings of your app
-            self.requestAuthorization()
+            requestAuthorization()
             positionToParis()
         } else {
             // Ask for Authorisation from the User.
@@ -68,112 +68,160 @@ class MapViewController: UIViewController {
         placesClient = GMSPlacesClient()
         initializeSearchBar()
         initializeCustomSearchBar()
-        
+    
         uberActionLabel.isHidden = true
 
         // Add button to switch anomaly if equipement is available
         DispatchQueue.global().async {
-            RestApiManager.sharedInstance.getEquipements{(result: Bool) in
+            RestApiManager.sharedInstance.getEquipements { (result: Bool) in
                 if result {
                     self.addSwitchButton()
                 }
             }
         }
-        
-        let url = URL(string: "mapbox://styles/mapbox/streets-v11")
-        let mapView = MGLMapView(frame: CGRect(x: 0, y: 0, width: 0, height: 0), styleURL: url)
-        mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        mapView.setCenter(CLLocationCoordinate2D(latitude: 59.31, longitude: 18.06), zoomLevel: 9, animated: false)
-        view.addSubview(mapView)
     }
-    
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if #available(iOS 15, *) {
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+            appearance.backgroundColor = UIColor.pinkDmr()
+            let proxy = UINavigationBar.appearance()
+            proxy.tintColor = UIColor.white
+            proxy.standardAppearance = appearance
+            proxy.scrollEdgeAppearance = appearance
+            self.navigationController?.navigationBar.standardAppearance = appearance
+            self.navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        } else {
+            navigationController?.navigationBar.barTintColor = UIColor.white
+        }
+        addBottomSheetView()
+    }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        addBottomSheetView()
-        
+        UIAccessibility.post(notification: UIAccessibility.Notification.screenChanged, argument: navigationItem.titleView)
         // Raffraichissement de la liste des anomalies
         if ContextManager.shared.typeContribution == .outdoor && MapsUtils.addressLabel == "" {
             if let location = MapsUtils.userLocation() {
-                retrieve(currentLocation: location, addMarker: true) { (result: Bool) in }
+                retrieve(currentLocation: location, addMarker: true) { (_: Bool) in }
             }
         } else if ContextManager.shared.typeContribution == .indoor, let equipement = ContextManager.shared.equipementSelected {
-            self.updateEquipementSelected(forId: equipement.equipementId)
+            updateEquipementSelected(forId: equipement.equipementId)
         }
         
         uberActionLabel.layer.masksToBounds = true
         uberActionLabel.layer.cornerRadius = 10
-        
+        uberActionLabel.adjustsFontForContentSizeCategory = true
+        uberActionLabel.font = UIFont.scaledFont(name: "Montserrat-Bold", textSize: 14.0)
     }
-    
-    
-    //MARK: - View navigation
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        bottomSheetVC?.view.layoutIfNeeded()
+        if bottomSheetVC!.currentStatus == .full {
+            bottomSheetVC?.view.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)
+        } else {
+            bottomSheetVC?.view.frame = CGRect(x: 0, y: view.frame.height - bottomSheetVC!.getBottomSheetVisibleHieght(), width: view.frame.width, height: view.frame.height)
+        }
+        bottomSheetVC?.partialView = view.frame.height - bottomSheetVC!.getBottomSheetVisibleHieght()
+        bottomSheetVC?.view.layoutIfNeeded()
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        UIAccessibility.post(notification: UIAccessibility.Notification.screenChanged, argument: navigationItem.titleView)
+        bottomSheetVC?.view.layoutIfNeeded()
+        if bottomSheetVC!.currentStatus == .full {
+            bottomSheetVC?.view.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height)
+        } else {
+            bottomSheetVC?.view.frame = CGRect(x: 0, y: view.frame.height - bottomSheetVC!.getBottomSheetVisibleHieght(), width: view.frame.width, height: view.frame.height)
+        }
+        bottomSheetVC?.partialView = view.frame.height - bottomSheetVC!.getBottomSheetVisibleHieght()
+        bottomSheetVC?.view.layoutIfNeeded()
+    }
+
+    // MARK: - View navigation
+
     /// Méthode permettant d'initialiser et de rajouter la bottomsheet sur la vue
     ///
     func addBottomSheetView() {
         let mapStoryboard = UIStoryboard(name: Constants.StoryBoard.map, bundle: nil)
         if bottomSheetVC == nil {
-            bottomSheetVC = mapStoryboard.instantiateViewController(withIdentifier: Constants.ViewControllerIdentifier.bottomSheet) as?BottomSheetViewController
+            bottomSheetVC = mapStoryboard.instantiateViewController(withIdentifier: Constants.ViewControllerIdentifier.bottomSheet) as? BottomSheetViewController
             
             // 2- Add bottomSheetVC as a child view and set its delegate
             bottomSheetVC?.uberDelegate = self
             bottomSheetVC?.delegate = self
         }
-        bottomSheetVC?.partialView = self.mapContainerView.frame.origin.y + self.mapContainerView.frame.height
-        self.addChild(bottomSheetVC!)
-        self.view.addSubview((bottomSheetVC?.view)!)
+        bottomSheetVC?.partialView = mapContainerView.frame.origin.y + mapContainerView.frame.height
+        addChild(bottomSheetVC!)
+        view.addSubview((bottomSheetVC?.view)!)
         bottomSheetVC?.didMove(toParent: self)
         
         // 3- Adjust bottomSheet frame and initial position.
-        bottomSheetVC?.view.frame = CGRect(x: 0, y: self.view.frame.maxY, width: view.frame.width, height: view.frame.height)
+        // bottomSheetVC?.view.frame = CGRect(x: 0, y: view.frame.maxY, width: view.frame.width, height: view.frame.height)
         
+        bottomSheetConstraintTop = bottomSheetVC?.view.topAnchor.constraint(equalTo: mapContainerView.bottomAnchor)
+        activateTopConstraint(true)
+        bottomSheetVC?.view.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        bottomSheetVC?.view.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        // bottomSheetVC?.view.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        bottomSheetVC?.view.heightAnchor.constraint(equalToConstant: view.frame.height).isActive = true
     }
     
+    func activateTopConstraint(_ state: Bool) {
+        bottomSheetConstraintTop?.isActive = state
+    }
+
     /// Méthode permettant d'initialiser la barre de recherche d'adresse pour l'espace public
     ///
-    func initializeSearchBar()  {
+    func initializeSearchBar() {
         resultsViewController = GMSAutocompleteResultsViewController()
         resultsViewController?.delegate = self
         
         searchController = UISearchController(searchResultsController: resultsViewController)
         searchController?.searchResultsUpdater = resultsViewController
-        
         // Put the search bar in the navigation bar.
         if let searchBar = searchController?.searchBar {
-            
+            UIAccessibility.post(notification: .layoutChanged, argument: searchBar)
             searchBar.placeholder = Constants.PlaceHolder.saisirAdresse
-            
             searchBar.tintColor = UIColor.white
             searchBar.isTranslucent = false
+            searchBar.accessibilityLabel = Constants.PlaceHolder.saisirAdresse
+            searchBar.accessibilityHint = Constants.AccessibilityHint.searchBarHint
+            searchBar.accessibilityTraits = .searchField
+            
             if #available(iOS 13.0, *) {
-                searchBar.searchTextField.backgroundColor=UIColor.white
-                searchBar.searchTextField.tintColor=UIColor.black
+                searchBar.searchTextField.backgroundColor = UIColor.white
+                searchBar.searchTextField.tintColor = UIColor.black
+                searchBar.searchTextField.adjustsFontForContentSizeCategory = true
+                searchBar.searchTextField.font = UIFont.preferredFont(forTextStyle: .caption2)
                 let appearance = UINavigationBarAppearance()
                 appearance.configureWithOpaqueBackground()
                 appearance.backgroundColor = UIColor.pinkButtonDmr()
-                self.navigationController?.navigationBar.standardAppearance = appearance;
+                self.navigationController?.navigationBar.standardAppearance = appearance
                 self.navigationController?.navigationBar.scrollEdgeAppearance = self.navigationController?.navigationBar.standardAppearance
             }
             
-            searchBar.layer.cornerRadius = 10;
-            self.setNavigationTitleView(withSearchBar: searchBar)
-            
+            searchBar.layer.cornerRadius = 10
+            setNavigationTitleView(withSearchBarController: searchController!)
         }
         
-        self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.navigationBar.barTintColor = UIColor.pinkButtonDmr()
-        self.extendedLayoutIncludesOpaqueBars = true
-        
+        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.barTintColor = UIColor.pinkButtonDmr()
+        extendedLayoutIncludesOpaqueBars = true
         
         // When UISearchController presents the results view, present it in
         // this view controller, not one further up the chain.
-        self.definesPresentationContext = true
+        definesPresentationContext = true
         
         // Prevent the navigation bar from being hidden when searching.
         searchController?.hidesNavigationBarDuringPresentation = false
         
         // Active sur le filtre sur Paris uniquement
-        MapsUtils.filterToParis(resultsViewController: self.resultsViewController!)
+        MapsUtils.filterToParis(resultsViewController: resultsViewController!)
     }
     
     /// Méthode permettant d'initialiser la barre de recherche des équipements pour l'indoor.
@@ -198,22 +246,24 @@ class MapViewController: UIViewController {
     
     /// Permet de positionner la SearchBar spécifié sur la barre de navigation
     ///
-    func setNavigationTitleView(withSearchBar searchBar: UISearchBar) {
-        if #available(iOS 11.0, *) {
-            // For iOS 11+, fix size to 32 for navigationbar
-            //searchBar.heightAnchor.constraint(equalToConstant: 44).isActive = true
-            let searchBarContainer = SearchBarContainerView(customSearchBar: searchBar)
-            searchBarContainer.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 32)
-            self.navigationItem.titleView = searchBarContainer
-        } else {
-            searchBar.sizeToFit()
-            self.navigationItem.titleView = searchBar
+    func setNavigationTitleView(withSearchBarController searchBarController: UISearchController) {
+        navigationItem.searchController = searchBarController
+        navigationItem.title = Constants.TabBarTitle.carte
+        navigationItem.titleView?.isUserInteractionEnabled = true
+        navigationItem.titleView?.becomeFirstResponder()
+        if #available(iOS 13.0, *) {
+            navigationItem.titleView?.accessibilityRespondsToUserInteraction = true
         }
-        
+        navigationItem.titleView?.accessibilityLabel = Constants.TabBarTitle.carte
+        navigationItem.titleView?.accessibilityTraits = .header
+        navigationItem.titleView?.isAccessibilityElement = true
+
         let menuBtn = UIButton(type: .custom)
         menuBtn.frame = CGRect(x: 0.0, y: 0.0, width: 44, height: 44)
-        menuBtn.setImage(UIImage(named:Constants.Image.favorite), for: .normal)
-        menuBtn.addTarget(self, action: #selector(addTapped), for:.touchDown)
+        menuBtn.setImage(UIImage(named: Constants.Image.favorite), for: .normal)
+        menuBtn.addTarget(self, action: #selector(addTapped), for: .touchDown)
+        menuBtn.accessibilityTraits = .button
+        menuBtn.accessibilityLabel = Constants.AccessibilityLabel.favoriteAdressButton
         let menuBarItem = UIBarButtonItem(customView: menuBtn)
         
         let currWidth = menuBarItem.customView?.widthAnchor.constraint(equalToConstant: 25)
@@ -221,26 +271,25 @@ class MapViewController: UIViewController {
         let currHeight = menuBarItem.customView?.heightAnchor.constraint(equalToConstant: 25)
         currHeight?.isActive = true
         
-        self.navigationItem.rightBarButtonItem = menuBarItem
+        navigationItem.rightBarButtonItem = menuBarItem
     }
     
     @objc func addTapped() {
         let manageAddressVC = UIStoryboard(name: Constants.StoryBoard.manageAddress, bundle: nil).instantiateInitialViewController() as! ManageAddressViewController
         manageAddressVC.delegate = self
-        self.navigationController?.pushViewController(manageAddressVC, animated: true)
+        navigationController?.pushViewController(manageAddressVC, animated: true)
     }
 
     /// Ajout d'un bouton sur la carte permettant de sélectionner le type de contribution
     func addSwitchButton() {
-        
-        //Si equipement est lancé, on ajoute le bouton de selection du type
+        // Si equipement est lancé, on ajoute le bouton de selection du type
         DispatchQueue.global().async {
-            RestApiManager.sharedInstance.getEquipements{(result: Bool) in
-                if result {                    
+            RestApiManager.sharedInstance.getEquipements { (result: Bool) in
+                if result {
                     if UIDevice().userInterfaceIdiom == .phone {
                         switch UIScreen.main.nativeBounds.height {
                         case 2436:
-                            //Iphone x - position du switchButton plus basse
+                            // Iphone x - position du switchButton plus basse
                             self.switchButton = UIButton(frame: CGRect(x: 15, y: 100, width: self.view.frame.size.width - 30, height: 40))
                         default:
                             self.switchButton = UIButton(frame: CGRect(x: 15, y: 80, width: self.view.frame.size.width - 30, height: 40))
@@ -257,7 +306,7 @@ class MapViewController: UIViewController {
                     self.switchButton?.backgroundColor = UIColor.pinkButtonDmr()
                     self.switchButton?.alpha = 0.8
                     
-                    self.switchButton?.addTarget(self, action: #selector(MapViewController.switchButtonAction(_: )), for: .touchUpInside)
+                    self.switchButton?.addTarget(self, action: #selector(MapViewController.switchButtonAction(_:)), for: .touchUpInside)
                     
                     self.view.addSubview(self.switchButton!)
                 }
@@ -266,23 +315,23 @@ class MapViewController: UIViewController {
     }
 
     // MARK: - Other Methods
+
     private func loadMapContainer() {
         mapContainerView.mapType = GMSMapViewType.terrain
-        
+        mapContainerView.isAccessibilityElement = true
         // Permet de décaler les donnees Google (Logo, icone, ...)
-        let mapInsets = UIEdgeInsets.init(top: 0.0, left: 0.0, bottom: 30.0, right: 0.0)
+        let mapInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 30.0, right: 0.0)
         mapContainerView.padding = mapInsets
         mapContainerView.delegate = self
-        
     }
     
     /// Action sur la bouton de type de contribution.
     /// Ouverture d'un nouvel écran permettant de sélectionner le type de contribution
     ///
-    @objc func switchButtonAction(_:Any) {
+    @objc func switchButtonAction(_: Any) {
         let typeContributionView = UIStoryboard(name: Constants.StoryBoard.typeContribution, bundle: nil).instantiateInitialViewController() as! TypeContributionViewController
         typeContributionView.delegate = self
-        self.navigationController?.pushViewController(typeContributionView, animated: true)
+        navigationController?.pushViewController(typeContributionView, animated: true)
     }
     
     /// Methode permettant de changer le type de contribution.
@@ -290,30 +339,29 @@ class MapViewController: UIViewController {
     ///
     /// - Parameter withName: String - Libellé à appliquer sur le bouton
     func changeTypeContribution(withName buttonTitle: String) {
-        self.switchButton?.setTitle(buttonTitle, for: .normal)
+        switchButton?.setTitle(buttonTitle, for: .normal)
         
         // Changement de la searchbar en fonction du type de contribution
         if ContextManager.shared.typeContribution == .outdoor {
             // Changement du placeholder pour anomalie outdoor
             searchController?.searchBar.placeholder = Constants.PlaceHolder.saisirAdresse
-            self.setNavigationTitleView(withSearchBar: (searchController?.searchBar)!)
+            setNavigationTitleView(withSearchBarController: searchController!)
         } else {
             // Changement du placeholder en fonction du Type Equipement
             customSearchController?.searchBar.placeholder = ContextManager.shared.typeEquipementSelected?.placeholder
             equipementSearchController?.equipements = ReferalManager.shared.getEquipements(forTypeEquipementId: (ContextManager.shared.typeEquipementSelected?.typeEquipementId)!)!
             equipementSearchController?.equipements.sort(by: { $0.name.caseInsensitiveCompare($1.name) == .orderedAscending })
             equipementSearchController?.tableView.reloadData()
-            self.setNavigationTitleView(withSearchBar: (customSearchController?.searchBar)!)
+            setNavigationTitleView(withSearchBarController: searchController!)
                         
             // hide uber label
-            self.shouldDisplayUberPin(yesWeCan: false)
-            self.bottomSheetVC?.uberDisplayed = false
+            shouldDisplayUberPin(yesWeCan: false)
+            bottomSheetVC?.uberDisplayed = false
         }
         
         if let position = MapsUtils.userLocation() {
-            retrieve(currentLocation: position, addMarker: true) { (result: Bool) in }
+            retrieve(currentLocation: position, addMarker: true) { (_: Bool) in }
         }
-        
     }
     
     /// Permet d'ajouter un GMSMarker et de positionner la caméra au centre de Paris.
@@ -325,27 +373,25 @@ class MapViewController: UIViewController {
         MapsUtils.addMarker(withName: "Paris", coordinate: CLLocationCoordinate2DMake(Constants.Maps.parisLatitude, Constants.Maps.parisLongitude), inMap: mapContainerView)
     }
     
-    ///Demande à l'utilisateur l'accès au service de localisation
+    /// Demande à l'utilisateur l'accès au service de localisation
     ///
     private func requestAuthorization() {
-        let alertController = UIAlertController (title: Constants.AlertBoxTitle.locationDisabled, message: Constants.AlertBoxMessage.locationDisabled, preferredStyle: UIAlertController.Style.alert)
+        let alertController = UIAlertController(title: Constants.AlertBoxTitle.locationDisabled, message: Constants.AlertBoxMessage.locationDisabled, preferredStyle: UIAlertController.Style.alert)
         
-        let okBtn = UIAlertAction(title:"OK" , style: .default, handler: {(_ action: UIAlertAction) -> Void in
+        let okBtn = UIAlertAction(title: "OK", style: .default, handler: { (_: UIAlertAction) in
         })
         
         alertController.addAction(okBtn)
         
-        self.present(alertController, animated: true, completion: nil)
-        
+        present(alertController, animated: true, completion: nil)
     }
     
     func didTapMyLocationButton(for mapView: GMSMapView) -> Bool {
         if let location = mapView.myLocation?.coordinate {
-            
             let cameraUpdate = GMSCameraUpdate.setTarget(location, zoom: Constants.Maps.zoomLevel_50m)
             mapView.animate(with: cameraUpdate)
             
-            retrieve(currentLocation: location, addMarker: true) { (result: Bool) in }
+            retrieve(currentLocation: location, addMarker: true) { (_: Bool) in }
         }
         return true
     }
@@ -356,11 +402,11 @@ class MapViewController: UIViewController {
     ///   - location: Coordonnées de la position de l'utilisateur
     ///   - addMarker: Flag indiquant si le marqueur de position doit etre rajouter
     ///   - onCompletion: true : si la recherche a aboutie, false sinon
-    func retrieve(currentLocation location:CLLocationCoordinate2D, addMarker: Bool, address: String="", cp: String="", onCompletion: @escaping (Bool) -> Void) {
-        self.mapContainerView.clear()
+    func retrieve(currentLocation location: CLLocationCoordinate2D, addMarker: Bool, address: String = "", cp: String = "", onCompletion: @escaping (Bool) -> Void) {
+        mapContainerView.clear()
         
         if ContextManager.shared.typeContribution == .outdoor {
-            MapsUtils.addMarker(withName: MapsUtils.fullAddress(), coordinate: location, inMap: self.mapContainerView)
+            MapsUtils.addMarker(withName: MapsUtils.fullAddress(), coordinate: location, inMap: mapContainerView)
         }
         
         if Reach().connectionStatus() {
@@ -383,32 +429,9 @@ class MapViewController: UIViewController {
                         RestApiManager.sharedInstance.getIncidentsByPosition(coordinates: location) { (anomalies: [Anomalie]) in
                             if ContextManager.shared.typeContribution == .outdoor {
                                 DispatchQueue.main.async {
-                                    
                                     for anomalie in anomalies {
                                         // Ajout du GMSMarker sur la map
                                         self.addMarkerAnomalie(anomalie: anomalie)
-                                        
-                                        if anomalie.anomalieStatus != .Resolu && !anomaliesBottomSheet.contains(anomalie) {
-                                            anomaliesBottomSheet.append(anomalie)
-                                        }
-                                    }
-                                    
-                                    NotificationCenter.default.post(name: self.anomalieNotification, object: anomaliesBottomSheet)
-                                    onCompletion(true)
-                                }
-                            }
-                        }
-                    }
-                    
-                    // Cas du mode Espace public. On recherche les anomalies Ramen à proximite
-                   DispatchQueue.global().async {
-                        RestApiManager.sharedInstance.getDossierRamenByPosition(coordinates: location) { (anomalies: [Anomalie]) in
-                            if ContextManager.shared.typeContribution == .outdoor {
-                                DispatchQueue.main.async {
-                                    for anomalie in anomalies {
-                                        // Ajout du GMSMarker sur la map
-                                        self.addMarkerAnomalie(anomalie: anomalie)
-                                        
                                         
                                         if anomalie.anomalieStatus != .Resolu && !anomaliesBottomSheet.contains(anomalie) {
                                             anomaliesBottomSheet.append(anomalie)
@@ -425,7 +448,6 @@ class MapViewController: UIViewController {
                 } else if ContextManager.shared.typeContribution == .indoor {
                     // Cas de la sélection d'un TypeEquipement, on affiche les équipements autour de nous
                     DispatchQueue.global().async {
-                        
                         RestApiManager.sharedInstance.getEquipementByPosition(coordinates: location) { (equipements: [Equipement]) in
                             
                             if ContextManager.shared.typeContribution == .indoor {
@@ -442,7 +464,6 @@ class MapViewController: UIViewController {
                                                 }
                                             }
                                         }
-                                        
                                     }
                                     
                                     NotificationCenter.default.post(name: self.anomalieNotification, object: anomaliesBottomSheet)
@@ -457,34 +478,32 @@ class MapViewController: UIViewController {
                 MapsUtils.set(userLocation: location)
                 let nc = NotificationCenter.default
                 
-                if("" != address) {
+                if !address.isEmpty {
                     addressFound.firstResult()?.setValue(address.components(separatedBy: ",")[0], forKey: "thoroughfare")
                 }
                 
-                if("" != cp) {
+                if !cp.isEmpty {
                     addressFound.firstResult()?.setValue(cp, forKey: "postalCode")
                 }
                 
-                nc.post(name: self.addressNotification, object: addressFound.firstResult(), userInfo: ["":""])
+                nc.post(name: self.addressNotification, object: addressFound.firstResult(), userInfo: ["": ""])
             }
         } else {
             // Device en mode déconnecté
             MapsUtils.set(userLocation: location)
-            let nc = NotificationCenter.default
             
-            //nc.post(name: self.addressNotification, object: location)
-            self.mapContainerView.clear()
-            NotificationCenter.default.post(name: self.anomalieNotification, object: [Anomalie]())
+            // nc.post(name: self.addressNotification, object: location)
+            mapContainerView.clear()
+            NotificationCenter.default.post(name: anomalieNotification, object: [Anomalie]())
             
             onCompletion(false)
         }
-        
     }
     
     /// Methode permettant de récuperer le n° d'une adresse
     ///
     /// - Parameter street: l'adresse complete
-    func getStreetNumber(adresse : String) -> String {
+    func getStreetNumber(adresse: String) -> String {
         var number = ""
         var hasValue = false
         
@@ -492,14 +511,13 @@ class MapViewController: UIViewController {
         for char in adresse {
             let str = String(char)
             // Checks if the char is a number
-            if (Int(str) != nil){
+            if Int(str) != nil {
                 // If it is it appends it to number
-                number+=str
+                number += str
                 // Here we set the hasValue to true, beacause the street number will come in one order
                 hasValue = true
-            }
-            else{
-                if(hasValue){
+            } else {
+                if hasValue {
                     break
                 }
             }
@@ -518,11 +536,9 @@ class MapViewController: UIViewController {
     /// Methode permettant de recherche les informations d'un équipement avec anomalies et mise à jour de la bottomsheet
     ///
     /// - Parameter equipementId: Identifiant de l'équipement
-    func updateEquipementSelected(forId equipementId:String) {
-        
+    func updateEquipementSelected(forId equipementId: String) {
         // Cas de la sélection d'un TypeEquipement, on affiche les équipements autour de nous
         DispatchQueue.global().async {
-            
             RestApiManager.sharedInstance.getIncidentsByEquipement(equipementId: equipementId) { (equipement: Equipement) in
                 
                 DispatchQueue.main.async {
@@ -539,7 +555,6 @@ class MapViewController: UIViewController {
                     
                     self.bottomSheetVC?.animateBottomSheet(withDuration: 0, status: .none)
                     self.bottomSheetVC?.showEquipement(equipement: ReferalManager.shared.getEquipement(forId: equipementId)!)
-                    
                 }
             }
         }
@@ -549,7 +564,6 @@ class MapViewController: UIViewController {
     ///
     /// - Parameter anomalie: Anomalie - Instance de l'anomalie permettant la création du marker
     func addMarkerAnomalie(anomalie: Anomalie) {
-        
         DispatchQueue.main.async {
             let position = CLLocationCoordinate2D(latitude: CLLocationDegrees(anomalie.latitude), longitude: CLLocationDegrees(anomalie.longitude))
             
@@ -565,8 +579,7 @@ class MapViewController: UIViewController {
             if anomalie.anomalieStatus == .Resolu {
                 var iconAnomalie = UIImage(named: Constants.Image.anoDoneOther)!
                 var iconCateg = UIImage(named: "ano_done_other")
-                if anomalie.source == .ramen
-                {
+                if anomalie.source == .ramen {
                     iconCateg = UIImage(named: "ano_done_1000")
                 
                 } else {
@@ -588,7 +601,8 @@ class MapViewController: UIViewController {
                 } else {
                     if let anoCateg = UIImage(named: "ano_\(categParentId)") {
                         iconCateg = anoCateg
-                    }                }
+                    }
+                }
                 iconAnomalie = iconCateg!
 
                 markerMap.icon = iconAnomalie
@@ -605,7 +619,7 @@ class MapViewController: UIViewController {
         markerEquipement.position = CLLocationCoordinate2D(latitude: equipement.latitude, longitude: equipement.longitude)
         markerEquipement.appearAnimation = .pop
         markerEquipement.title = equipement.name
-        markerEquipement.map = self.mapContainerView
+        markerEquipement.map = mapContainerView
         markerEquipement.equipement = equipement
         
         let typeEquipement = ReferalManager.shared.getTypeEquipement(forId: equipement.parentId)
@@ -622,12 +636,10 @@ class MapViewController: UIViewController {
     }
 }
 
-
 // MARK: - GMSMapView Delegate
-extension MapViewController: GMSMapViewDelegate {
-    
-    func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
 
+extension MapViewController: GMSMapViewDelegate {
+    func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
         if case let markerDmr as GMSMarkerAnomalie = marker {
             print("Select marker anomalie id \(markerDmr.anomalie?.id ?? "unkown")")
             self.bottomSheetVC?.showAnomalie(anomalie: markerDmr.anomalie!)
@@ -641,96 +653,89 @@ extension MapViewController: GMSMapViewDelegate {
     }
     
     func mapView(_ mapView: GMSMapView, idleAt position: GMSCameraPosition) {
-        self.bottomSheetVC?.selectAnomalie = nil
+        bottomSheetVC?.selectAnomalie = nil
         // Par defaut, utilise les coordonnees de la position de la camera
         var latitude = position.target.latitude
         var longitude = position.target.longitude
         // Sinon si uberPin visible, utilise la position du uberPin
-        if self.uberPinVisible {
+        if uberPinVisible {
             let uberPointCenter = CGPoint(x: uberPin.center.x, y: uberPin.frame.maxY)
-            let uberPointCoordinates = self.mapContainerView.projection.coordinate(for: uberPointCenter)
+            let uberPointCoordinates = mapContainerView.projection.coordinate(for: uberPointCenter)
             
             latitude = uberPointCoordinates.latitude
             longitude = uberPointCoordinates.longitude
         }
         
-        if self.uberPinVisible {
+        if uberPinVisible {
             let coordinates = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-            retrieve(currentLocation: coordinates, addMarker: true) { (result: Bool) in }
+            retrieve(currentLocation: coordinates, addMarker: true) { (_: Bool) in }
         }
     }
     
     func mapView(_ mapView: GMSMapView, didTapAt coordinate: CLLocationCoordinate2D) {
         // Function to remove selection in the bottomSheet when Tap into the map
-        self.bottomSheetVC?.selectAnomalie = nil
-        self.bottomSheetVC?.selectEquipement = nil
-        self.bottomSheetVC?.animateBottomSheet(withDuration: 0, status: (self.bottomSheetVC?.currentStatus)!)
+        bottomSheetVC?.selectAnomalie = nil
+        bottomSheetVC?.selectEquipement = nil
+        bottomSheetVC?.animateBottomSheet(withDuration: 0, status: (bottomSheetVC?.currentStatus)!)
     }
     
     func mapView(_ mapView: GMSMapView, didLongPressAt coordinate: CLLocationCoordinate2D) {
-       retrieve(currentLocation: coordinate, addMarker: true) { (result: Bool) in }        
+        retrieve(currentLocation: coordinate, addMarker: true) { (_: Bool) in }
     }
 }
 
 // MARK: - CLLocationManager Delegate
+
 extension MapViewController: CLLocationManagerDelegate {
-    
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        
-        if (status == CLAuthorizationStatus.authorizedWhenInUse) {
+        if status == CLAuthorizationStatus.authorizedWhenInUse {
             print("locationManager.didChangeAuthorization : authorizedWhenInUse")
             mapContainerView.isMyLocationEnabled = true
             mapContainerView.settings.myLocationButton = true
-            locationManager.startUpdatingLocation();
-        } else if (status == CLAuthorizationStatus.denied) {
+            locationManager.startUpdatingLocation()
+        } else if status == CLAuthorizationStatus.denied {
             print("locationManager.didChangeAuthorization : denied")
             mapContainerView.isMyLocationEnabled = false
             mapContainerView.settings.myLocationButton = false
         }
     }
     
-    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        
         if MapsUtils.userLocation() == nil {
             locationManager.stopMonitoringSignificantLocationChanges()
             let coordinates = (locations.last?.coordinate)!
             let cameraUpdate = GMSCameraUpdate.setTarget(coordinates, zoom: Constants.Maps.zoomLevel_50m)
-            self.mapContainerView.animate(with: cameraUpdate)
+            mapContainerView.animate(with: cameraUpdate)
 
-            retrieve(currentLocation: coordinates, addMarker: true) { (result: Bool) in }
+            retrieve(currentLocation: coordinates, addMarker: true) { (_: Bool) in }
             
             locationManager.stopUpdatingLocation()
         }
-        
     }
- 
 }
 
 extension MapViewController: UberDelegate {
-    
     func shouldDisplayUberPin(yesWeCan: Bool) {
         if yesWeCan {
             uberPin.image = UIImage(named: Constants.Image.pinNoir)
-            uberPin.center = self.mapContainerView.center
-            self.view.addSubview(uberPin)
-            self.view.bringSubviewToFront(uberPin)
-            self.uberPinVisible = true
+            uberPin.center = mapContainerView.center
+            view.addSubview(uberPin)
+            view.bringSubviewToFront(uberPin)
+            uberPinVisible = true
             uberActionLabel.isHidden = false
         } else {
             uberPin.removeFromSuperview()
-            self.uberPinVisible = false
+            uberPinVisible = false
             uberActionLabel.isHidden = true
         }
     }
 }
 
-
 // Handle the user's selection.
 extension MapViewController: GMSAutocompleteResultsViewControllerDelegate {
-    
     func resultsController(_ resultsController: GMSAutocompleteResultsViewController,
-                           didAutocompleteWith place: GMSPlace) {
+                           didAutocompleteWith place: GMSPlace)
+    {
         searchController?.isActive = false
         
         // Cache le uberPin
@@ -760,13 +765,12 @@ extension MapViewController: GMSAutocompleteResultsViewControllerDelegate {
                 cp = component.name
             }
         }
-        let adresse = numRue + " " + rue + ", " + cp + " Paris, France"
+        let adresse = numRue + " " + rue + ", " + cp + " PARIS, France"
         
-        retrieve(currentLocation: place.coordinate, addMarker: true, address: adresse, cp: cp) { (result: Bool) in }
-        
+        retrieve(currentLocation: place.coordinate, addMarker: true, address: adresse, cp: cp) { (_: Bool) in }
     }
     
-    func centerCameraToPosition(currentLocation location:CLLocationCoordinate2D) {
+    func centerCameraToPosition(currentLocation location: CLLocationCoordinate2D) {
         if let mapView = mapContainerView {
             // Positionnement de la caméra au centre du marker
             let camera = GMSCameraPosition.camera(withLatitude: location.latitude,
@@ -777,7 +781,8 @@ extension MapViewController: GMSAutocompleteResultsViewControllerDelegate {
     }
     
     func resultsController(_ resultsController: GMSAutocompleteResultsViewController,
-                           didFailAutocompleteWithError error: Error){
+                           didFailAutocompleteWithError error: Error)
+    {
         // TODO: handle the error.
         print("Error: ", error.localizedDescription)
     }
@@ -790,15 +795,12 @@ extension MapViewController: GMSAutocompleteResultsViewControllerDelegate {
     func didUpdateAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
-    
-    
 }
 
 extension MapViewController: EquipementDelegate {
     func didSelectEquipementAt(equipement: Equipement) {
         customSearchController?.isActive = false
         if let mapView = mapContainerView {
-            
             // Positionnement de la caméra au centre du marker
             let camera = GMSCameraPosition.camera(withLatitude: equipement.latitude,
                                                   longitude: equipement.longitude,
@@ -807,20 +809,19 @@ extension MapViewController: EquipementDelegate {
         }
         
         if Reach().connectionStatus() {
-            self.updateEquipementSelected(forId: equipement.equipementId)
+            updateEquipementSelected(forId: equipement.equipementId)
             // on affiche le marker de l'equipement
-            self.addMarkerEquipement(equipement: equipement)
+            addMarkerEquipement(equipement: equipement)
         } else {
             // Mode hors connexion, on affiche uniquement le marker de l'equipement
-            self.addMarkerEquipement(equipement: equipement)
+            addMarkerEquipement(equipement: equipement)
             // Affiche des informations de l'équipement sélectionné
-            self.bottomSheetVC?.showEquipement(equipement: ReferalManager.shared.getEquipement(forId:  equipement.equipementId)!)
+            bottomSheetVC?.showEquipement(equipement: ReferalManager.shared.getEquipement(forId: equipement.equipementId)!)
         }
     }
 }
 
 class SearchBarContainerView: UIView {
-    
     let searchBar: UISearchBar
     
     init(customSearchBar: UISearchBar) {
@@ -835,6 +836,7 @@ class SearchBarContainerView: UIView {
         self.frame = frame
     }
     
+    @available(*, unavailable)
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

@@ -12,12 +12,12 @@ class AnomalieUIButton: UIButton {
     var anomalie: Anomalie
     
     override init(frame: CGRect) {
-        self.anomalie = Anomalie(id: "", address: "", latitude: 0, longitude: 0, categorieId: "", descriptive: "", priorityId: "", anomalieStatus: .Brouillon, photoCloseUrl: nil, photoFarUrl: nil, photoDoneUrl: nil, number: "")
+        self.anomalie = Anomalie(id: "", address: "", latitude: 0, longitude: 0, categorieId: "", descriptive: "", priorityId: "", anomalieStatus: .Brouillon, photoCloseUrl: nil, photoFarUrl: nil, photoDoneUrl: nil, number: "", messagesSFGeneric: [(id: String, message: String)](),messagesSFTypologie:[(id: String, message: String)]())
         super.init(frame: frame)
     }
 
     required init?(coder aDecoder: NSCoder) {
-        self.anomalie = Anomalie(id: "", address: "", latitude: 0, longitude: 0, categorieId: "", descriptive: "", priorityId: "", anomalieStatus: .Brouillon, photoCloseUrl: nil, photoFarUrl: nil, photoDoneUrl: nil, number: "")
+        self.anomalie = Anomalie(id: "", address: "", latitude: 0, longitude: 0, categorieId: "", descriptive: "", priorityId: "", anomalieStatus: .Brouillon, photoCloseUrl: nil, photoFarUrl: nil, photoDoneUrl: nil, number: "", messagesSFGeneric: [(id: String, message: String)](),messagesSFTypologie:[(id: String, message: String)]())
         super.init(coder: aDecoder)
     }
 }

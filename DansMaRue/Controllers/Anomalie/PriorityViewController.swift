@@ -9,39 +9,47 @@
 import UIKit
 
 class PriorityViewController: UIViewController {
+    // MARK: - Properties
 
-    //MARK: - Properties
     weak var delegate: AddAnomalyViewController!
     
-    //MARK: - IBoutlets
+    // MARK: - IBoutlets
+
     @IBOutlet var tableView: UITableView!
     
     // MARK: - View life Cycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.navigationItem.title = Constants.LabelMessage.priority
+        navigationItem.titleView?.isAccessibilityElement = true
+        navigationItem.title = Constants.LabelMessage.priority
+        navigationItem.leftBarButtonItem?.accessibilityLabel = Constants.AccessibilityLabel.backButton
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: nil, style: .plain, target: self, action: #selector(backAction))
         if let image = UIImage(named: Constants.Image.iconBack) {
             navigationItem.leftBarButtonItem?.image = image
         }
-        
+        tableView.estimatedRowHeight = 45
+        tableView.rowHeight = UITableView.automaticDimension
     }
     
-    
-    //MARK: Other Methods
-    @objc func backAction(){
-    _ = navigationController?.popViewController(animated: true)
+    // MARK: Other Methods
+
+    @objc func backAction() {
+        _ = navigationController?.popViewController(animated: true)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        UIAccessibility.post(notification: UIAccessibility.Notification.screenChanged, argument: navigationItem.titleView)
+    }
 }
   
-    //MARK: Extension 
+// MARK: Extension
+
 extension PriorityViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         delegate.changePriority(newPriority: Priority.allValues[indexPath.row])
         _ = navigationController?.popViewController(animated: true)
-        
     }
 }
 
@@ -57,13 +65,14 @@ extension PriorityViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellIdentifier = "PriorityTableViewCell"
         
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? PriorityTableViewCell  else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? PriorityTableViewCell else {
             fatalError("The dequeued cell is not an instance of PriorityTableViewCell.")
         }
         
         // Fetches the appropriate meal for the data source layout.
         cell.labelPriority.text = Priority.allValues[indexPath.row].description
-      
+        cell.labelPriority.adjustsFontForContentSizeCategory = true
+        cell.labelPriority.font = UIFont.scaledFont(name: "Montserrat-Regular", textSize: 14.0)
         
         return cell
     }

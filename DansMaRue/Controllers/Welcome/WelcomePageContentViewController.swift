@@ -9,18 +9,20 @@
 import UIKit
 
 class WelcomePageContentViewController: UIPageViewController {
+    // MARK: - Properties
 
-    //MARK: - Properties
     var pageIndex = 0
-    var arrayPageTitle: NSArray = NSArray()
-    var arrayPagePhoto: NSArray = NSArray()
-    var arrayPageText: NSArray = NSArray()
-    
-    //MARK: - View lifecycle
+    var arrayPageTitle: NSArray = .init()
+    var arrayPagePhoto: NSArray = .init()
+    var arrayPageText: NSArray = .init()
+    let proxy = UIPageControl.appearance()
+
+    // MARK: - View lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.dataSource = self
+        dataSource = self
         
         arrayPageTitle = [Constants.LabelMessage.bienvenue,
                           Constants.LabelMessage.envoyerInfo,
@@ -33,46 +35,62 @@ class WelcomePageContentViewController: UIPageViewController {
         arrayPageText = [Constants.LabelMessage.textSlide1,
                          Constants.LabelMessage.textSlide2,
                          Constants.LabelMessage.textSlide3]
+      
+        proxy.pageIndicatorTintColor = .white
+        proxy.currentPageIndicatorTintColor = UIColor(hexString: "#B1002D")
+        proxy.currentPage = pageIndex
         
-        self.setViewControllers([getViewControllerAtIndex(index:0)] as [UIViewController], direction: UIPageViewController.NavigationDirection.forward, animated: false, completion: nil)
-        
+        setViewControllers([getViewControllerAtIndex(index: 0)] as [UIViewController], direction: UIPageViewController.NavigationDirection.forward, animated: false, completion: nil)
     }
-
+    
+    override func viewDidLayoutSubviews() {
+        if #available(iOS 14.0, *) {
+            self.pageControl?.currentPageIndicatorTintColor = .white
+            self.pageControl?.setIndicatorImage(UIImage(named: "dot_white_small"), forPage: 0)
+            self.pageControl?.setIndicatorImage(UIImage(named: "dot_white_small"), forPage: 1)
+            self.pageControl?.setIndicatorImage(UIImage(named: "dot_white_small"), forPage: 2)
+        }
+        if #available(iOS 16.0, *) {
+            self.pageControl?.currentPageIndicatorTintColor = .white
+            self.pageControl?.setCurrentPageIndicatorImage(UIImage(named: "dot_white_large"), forPage: 0)
+            self.pageControl?.setCurrentPageIndicatorImage(UIImage(named: "dot_white_large"), forPage: 1)
+            self.pageControl?.setCurrentPageIndicatorImage(UIImage(named: "dot_white_large"), forPage: 2)
+        }
+    }
 }
 
 // MARK: UIPageViewControllerDataSource
+
 extension WelcomePageContentViewController: UIPageViewControllerDataSource {
-    
-    func pageViewController (_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         let pageContent: WelcomeSliderViewController = viewController as! WelcomeSliderViewController
         
         var index = pageContent.welcomePageIndex
         
-        if ((index == 0) || (index == NSNotFound)) {
+        if (index == 0) || (index == NSNotFound) {
             return nil
         }
-        index -= 1;
+        index -= 1
         return getViewControllerAtIndex(index: index)
     }
     
-    func pageViewController (_ pageViewController: UIPageViewController,viewControllerAfter viewController: UIViewController) -> UIViewController? {
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         let pageContent: WelcomeSliderViewController = viewController as! WelcomeSliderViewController
         
         var index = pageContent.welcomePageIndex
         
-        if (index == NSNotFound) {
-            return nil;
+        if index == NSNotFound {
+            return nil
         }
-        index += 1;
-        if (index == arrayPageTitle.count) {
-            return nil;
+        index += 1
+        if index == arrayPageTitle.count {
+            return nil
         }
         
         return getViewControllerAtIndex(index: index)
     }
     
     func getViewControllerAtIndex(index: NSInteger) -> WelcomeSliderViewController {
-        
         pageIndex = index
         
         let welcomeStoryboard = UIStoryboard(name: Constants.StoryBoard.welcome, bundle: nil)
@@ -82,8 +100,7 @@ extension WelcomePageContentViewController: UIPageViewControllerDataSource {
         welcomeSliderViewController.welcomeImage = "\(arrayPagePhoto[index])"
         welcomeSliderViewController.welcomePageIndex = index
         welcomeSliderViewController.welcomeSubtitleText = "\(arrayPageText[index])"
-        
-        
+
         return welcomeSliderViewController
     }
     
@@ -96,3 +113,13 @@ extension WelcomePageContentViewController: UIPageViewControllerDataSource {
     }
 }
 
+extension UIPageViewController {
+    var pageControl: UIPageControl? {
+        for view in view.subviews {
+            if view is UIPageControl {
+                return view as? UIPageControl
+            }
+        }
+        return nil
+    }
+}

@@ -26,7 +26,8 @@ class Anomalie : NSObject, NSCoding {
     var photoCloseUrl: String
     var photoFarUrl: String
     var photoDoneUrl: String
-    
+    var messagesSFGeneric: [(id: String, message: String)]
+    var messagesSFTypologie: [(id: String, message: String)]
     var firstImageUrl: String {
         return photoFarUrl.isEmpty ? photoCloseUrl : photoFarUrl
     }
@@ -98,7 +99,7 @@ class Anomalie : NSObject, NSCoding {
     var number: String
     
     //MARK: Initialization
-    init(address: String, latitude: Double, longitude: Double, categorieId: String?, descriptive: String?, priorityId: String?, photo1: UIImage?, photo2: UIImage?, anomalieStatus: AnomalieStatus, mailUser: String?, number: String?) {
+    init(address: String, latitude: Double, longitude: Double, categorieId: String?, descriptive: String?, priorityId: String?, photo1: UIImage?, photo2: UIImage?, anomalieStatus: AnomalieStatus, mailUser: String?, number: String?, messagesSFGeneric: [(id: String, message: String)], messagesSFTypologie: [(id: String, message: String)]) {
         // Initialize stored properties.
         self.id = ""
         self.address = address
@@ -129,10 +130,12 @@ class Anomalie : NSObject, NSCoding {
         self.alias = ""
         self.resolvedAuthorization = false
         self.number = number ?? ""
+        self.messagesSFGeneric = messagesSFGeneric
+        self.messagesSFTypologie = messagesSFTypologie
 
     }
     
-    init(id: String?, address: String, latitude: Double, longitude: Double, categorieId: String?, descriptive: String?, priorityId: String?, anomalieStatus: AnomalieStatus, photoCloseUrl: String?, photoFarUrl: String?, photoDoneUrl: String?, number: String?) {
+    init(id: String?, address: String, latitude: Double, longitude: Double, categorieId: String?, descriptive: String?, priorityId: String?, anomalieStatus: AnomalieStatus, photoCloseUrl: String?, photoFarUrl: String?, photoDoneUrl: String?, number: String?, messagesSFGeneric: [(id: String, message: String)], messagesSFTypologie: [(id: String, message: String)]) {
         // Initialize stored properties.
         self.id = id ?? ""
         self.address = address
@@ -163,6 +166,8 @@ class Anomalie : NSObject, NSCoding {
         self.alias = ""
         self.resolvedAuthorization = false
         self.number = number ?? ""
+        self.messagesSFGeneric = messagesSFGeneric
+        self.messagesSFTypologie = messagesSFTypologie
     }
 
  
@@ -212,6 +217,8 @@ class Anomalie : NSObject, NSCoding {
         }
         self.resolvedAuthorization = false
         self.number = ""
+        self.messagesSFGeneric = [(id: String, message: String)]()
+        self.messagesSFTypologie = [(id: String, message: String)]()
     }
     
     func archive() -> Data {
@@ -271,12 +278,12 @@ class AnomalieEquipement: Anomalie {
         aCoder.encode(equipementId, forKey: "equipementId")
     }
     
-    override init(address: String, latitude: Double, longitude: Double, categorieId: String?, descriptive: String?, priorityId: String?, photo1: UIImage?, photo2: UIImage?, anomalieStatus: AnomalieStatus, mailUser: String?, number: String?) {
-        super.init(address: address, latitude: latitude, longitude: longitude, categorieId: categorieId, descriptive: descriptive, priorityId: priorityId, photo1: photo1, photo2: photo2, anomalieStatus: anomalieStatus, mailUser: mailUser, number: number)
+    override init(address: String, latitude: Double, longitude: Double, categorieId: String?, descriptive: String?, priorityId: String?, photo1: UIImage?, photo2: UIImage?, anomalieStatus: AnomalieStatus, mailUser: String?, number: String?, messagesSFGeneric: [(id: String, message: String)], messagesSFTypologie: [(id: String, message: String)]) {
+        super.init(address: address, latitude: latitude, longitude: longitude, categorieId: categorieId, descriptive: descriptive, priorityId: priorityId, photo1: photo1, photo2: photo2, anomalieStatus: anomalieStatus, mailUser: mailUser, number: number, messagesSFGeneric: messagesSFGeneric, messagesSFTypologie: messagesSFTypologie)
     }
     
-    override init(id: String?, address: String, latitude: Double, longitude: Double, categorieId: String?, descriptive: String?, priorityId: String?, anomalieStatus: AnomalieStatus, photoCloseUrl: String?, photoFarUrl: String?, photoDoneUrl: String?, number: String?) {
-        super.init(id: id, address: address, latitude: latitude, longitude: longitude, categorieId: categorieId, descriptive: descriptive, priorityId: priorityId, anomalieStatus: anomalieStatus, photoCloseUrl: photoCloseUrl, photoFarUrl: photoFarUrl, photoDoneUrl: photoDoneUrl, number: number)
+    override init(id: String?, address: String, latitude: Double, longitude: Double, categorieId: String?, descriptive: String?, priorityId: String?, anomalieStatus: AnomalieStatus, photoCloseUrl: String?, photoFarUrl: String?, photoDoneUrl: String?, number: String?, messagesSFGeneric: [(id: String, message: String)], messagesSFTypologie: [(id: String, message: String)]) {
+        super.init(id: id, address: address, latitude: latitude, longitude: longitude, categorieId: categorieId, descriptive: descriptive, priorityId: priorityId, anomalieStatus: anomalieStatus, photoCloseUrl: photoCloseUrl, photoFarUrl: photoFarUrl, photoDoneUrl: photoDoneUrl, number: number, messagesSFGeneric: messagesSFGeneric, messagesSFTypologie: messagesSFTypologie)
     }
     
     required init(coder decoder: NSCoder) {

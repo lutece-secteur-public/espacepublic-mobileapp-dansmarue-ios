@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Ucv-6s-IUl">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Ucv-6s-IUl">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -17,10 +17,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="tuL-Gb-Z85">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <button key="tableFooterView" hidden="YES" opaque="NO" tag="101" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="CUg-YD-43m">
-                                    <rect key="frame" x="0.0" y="147" width="375" height="30"/>
+                                <button key="tableFooterView" hidden="YES" opaque="NO" tag="101" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="CUg-YD-43m">
+                                    <rect key="frame" x="0.0" y="169" width="375" height="55"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="23"/>
                                     <state key="normal" title="Tout supprimer">
@@ -32,23 +32,24 @@
                                 </button>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TypeFavoritesTableViewCell" rowHeight="91" id="7iy-oQ-Sbb" userLabel="TypeTableViewCell" customClass="TypeFavoritesTableViewCell" customModule="DansMaRue" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="91"/>
+                                        <rect key="frame" x="0.0" y="50" width="375" height="91"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="7iy-oQ-Sbb" id="FnM-Js-cZB">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="91"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mas-lL-Rv1" userLabel="Type Label">
-                                                    <rect key="frame" x="45" y="8" width="284" height="72"/>
+                                                <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mas-lL-Rv1" userLabel="Type Label">
+                                                    <rect key="frame" x="45" y="30" width="285" height="33"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="Mas-lL-Rv1" firstAttribute="leading" secondItem="FnM-Js-cZB" secondAttribute="leadingMargin" constant="30" id="2ri-rU-r4C"/>
-                                                <constraint firstItem="Mas-lL-Rv1" firstAttribute="centerY" secondItem="FnM-Js-cZB" secondAttribute="centerY" constant="-1.25" id="HB1-Pe-IT2"/>
-                                                <constraint firstItem="Mas-lL-Rv1" firstAttribute="top" secondItem="FnM-Js-cZB" secondAttribute="top" constant="8" id="VYh-b2-KoU"/>
+                                                <constraint firstItem="Mas-lL-Rv1" firstAttribute="leading" secondItem="FnM-Js-cZB" secondAttribute="leadingMargin" constant="29" id="2ri-rU-r4C"/>
+                                                <constraint firstItem="Mas-lL-Rv1" firstAttribute="centerY" secondItem="FnM-Js-cZB" secondAttribute="centerY" constant="1" id="HB1-Pe-IT2"/>
+                                                <constraint firstItem="Mas-lL-Rv1" firstAttribute="top" secondItem="FnM-Js-cZB" secondAttribute="top" constant="30" id="VYh-b2-KoU"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="Mas-lL-Rv1" secondAttribute="bottom" constant="17" id="wIi-Sh-ebG"/>
                                                 <constraint firstItem="Mas-lL-Rv1" firstAttribute="centerX" secondItem="FnM-Js-cZB" secondAttribute="centerX" id="yav-cq-H5d"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -63,6 +64,7 @@
                                 </connections>
                             </tableView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="Ra1-sB-8Ng"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="tuL-Gb-Z85" firstAttribute="top" secondItem="Ra1-sB-8Ng" secondAttribute="top" id="BBV-ix-n1s"/>
@@ -70,7 +72,6 @@
                             <constraint firstItem="tuL-Gb-Z85" firstAttribute="leading" secondItem="Ra1-sB-8Ng" secondAttribute="leading" id="aDa-G1-nNQ"/>
                             <constraint firstItem="tuL-Gb-Z85" firstAttribute="bottom" secondItem="Ra1-sB-8Ng" secondAttribute="bottom" id="fgF-Iv-N3F"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="Ra1-sB-8Ng"/>
                     </view>
                     <navigationItem key="navigationItem" title="Title" id="SPT-6U-8BV" userLabel="Navigation Item">
                         <barButtonItem key="rightBarButtonItem" title="Modifier" id="rxF-9H-Ujr">
@@ -80,6 +81,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="deleteButton" destination="CUg-YD-43m" id="toB-fq-5jt"/>
                         <outlet property="tableView" destination="tuL-Gb-Z85" id="8GK-Bk-iyc"/>
                     </connections>
                 </viewController>

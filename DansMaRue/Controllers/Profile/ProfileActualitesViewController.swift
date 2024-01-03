@@ -9,41 +9,61 @@
 import UIKit
 
 class ProfileActualitesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-    
-    @IBOutlet weak var subTitle: UILabel!
-    @IBOutlet weak var actualitesTableView: UITableView!
+    @IBOutlet var subTitle: UILabel!
+    @IBOutlet var actualitesTableView: UITableView!
     
     var actualites = [Actualite]()
     var rowSelected = -1
     var sectionsShow = Set<Int>()
     
-    //MARK: - View lifecycle
+    // MARK: - View lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        actualitesTableView.register(SectionCustomHeader.self, forHeaderFooterViewReuseIdentifier: "sectionHeader")
+        actualitesTableView.delegate = self
+        actualitesTableView.dataSource = self
+        actualitesTableView.separatorStyle = UITableViewCell.SeparatorStyle.none
+        actualitesTableView.estimatedRowHeight = 116
+        actualitesTableView.estimatedSectionHeaderHeight = 116
+        actualitesTableView.rowHeight = UITableView.automaticDimension
+        actualitesTableView.sectionHeaderHeight = UITableView.automaticDimension
         
-        self.actualitesTableView.delegate = self
-        self.actualitesTableView.dataSource = self
-        self.actualitesTableView.separatorStyle = UITableViewCell.SeparatorStyle.none
-        
-        self.title = Constants.TabBarTitle.monEspace
+        title = Constants.TabBarTitle.monEspace
         subTitle.text = Constants.LabelMessage.actualites
+        subTitle.isAccessibilityElement = true
+        subTitle.textColor = UIColor.greyDmr()
+        subTitle.accessibilityLabel = Constants.LabelMessage.actualites
+        subTitle.accessibilityTraits = .header
+        subTitle.adjustsFontForContentSizeCategory = true
+        subTitle.font = UIFont.preferredFont(forTextStyle: .title3)
         
-        if let actualites =  ReferalManager.shared.getActualites() {
+        if let actualites = ReferalManager.shared.getActualites() {
             self.actualites.append(contentsOf: actualites)
         }
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        actualitesTableView.layoutIfNeeded()
+        actualitesTableView.reloadData()
+        UIAccessibility.post(notification: UIAccessibility.Notification.screenChanged, argument: navigationItem.titleView)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let actualite = actualites[indexPath.section]
         let actualitesCell = tableView.dequeueReusableCell(withIdentifier: "actualites_cell")
+        actualitesCell?.isAccessibilityElement = true
+        actualitesCell?.accessibilityTraits = .staticText
+        actualitesCell?.accessibilityLabel = actualite.texte.htmlToString
         let actualiteTexte = actualitesCell?.viewWithTag(102) as! UILabel
+        actualiteTexte.isAccessibilityElement = true
+        actualiteTexte.accessibilityTraits = .staticText
        
         let font = UIFont.systemFont(ofSize: 14)
         let attributes = [NSAttributedString.Key.font: font]
-        let attributedQuote = NSAttributedString(string: actualite.texte.htmlToString, attributes: attributes)
+        _ = NSAttributedString(string: actualite.texte.htmlToString, attributes: attributes)
         actualiteTexte.attributedText = actualite.texte.htmlToAttributedString
-        
+        actualiteTexte.adjustsFontForContentSizeCategory = true
+        actualiteTexte.font = UIFont.scaledFont(name: "Montserrat-Regular", textSize: 18.0)
         return actualitesCell!
     }
     
@@ -52,35 +72,47 @@ class ProfileActualitesViewController: UIViewController, UITableViewDataSource, 
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if self.sectionsShow.contains(section) {
+        if sectionsShow.contains(section) {
             return 1
-        }
-        else {
+        } else {
             return 0
         }
     }
-    
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: "sectionHeader") as! SectionCustomHeader
+        let view = tableView.dequeueReusableCell(withIdentifier: "header_cell")
         let actualite = actualites[section]
         let imageURL = URL(string: actualite.imageUrl)!
-        
-        view.image.sd_setImage(with: imageURL, placeholderImage: nil, options: .allowInvalidSSLCertificates)
-        
-        view.sectionTitle.setTitle(actualite.libelle, for: .normal)
-        view.sectionTitle.setTitleColor(UIColor.orange, for: .normal)
-        view.sectionTitle.addTarget(self,action: #selector(self.hideSection(sender:)),for: .touchUpInside)
-        view.sectionTitle.tag = section
-        view.sectionTitle.addTarget(self,action: #selector(self.hideSection(sender:)),for: .touchUpInside)
-        view.sectionTitle.titleLabel!.numberOfLines = 0;
-        view.sectionTitle.titleLabel!.lineBreakMode = NSLineBreakMode.byWordWrapping;
+        let imageView = view?.viewWithTag(100) as! UIImageView
+        let titleLabel = view?.viewWithTag(101) as! UILabel
+        imageView.sd_setImage(with: imageURL, placeholderImage: nil, options: .allowInvalidSSLCertificates)
+        imageView.isAccessibilityElement = false
+        view?.isAccessibilityElement = true
+        view?.accessibilityLabel = actualite.libelle
+        view?.accessibilityTraits = .button
+        titleLabel.text = actualite.libelle
+        titleLabel.accessibilityTraits = .staticText
+        titleLabel.tintColor = UIColor(hexString: "#C60")
+        titleLabel.textColor = UIColor(hexString: "#C60")
+        view?.tag = section
+        titleLabel.numberOfLines = 0
+        titleLabel.adjustsFontForContentSizeCategory = true
+        titleLabel.font = UIFont.scaledFont(name: "Montserrat-Bold", textSize: 18.0)
+        titleLabel.isUserInteractionEnabled = true
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(hideSection(_:)))
+        gesture.numberOfTapsRequired = 1
+        view?.addGestureRecognizer(gesture)
         
         return view
     }
     
     @objc
-    private func hideSection(sender: UIButton) {
-        let section = sender.tag
+    private func hideSection(_ sender: UITapGestureRecognizer) {
+        let section = sender.view?.tag ?? 0
         
         func indexPathsForSection() -> [IndexPath] {
             var indexPaths = [IndexPath]()
@@ -89,65 +121,29 @@ class ProfileActualitesViewController: UIViewController, UITableViewDataSource, 
             return indexPaths
         }
         
-        if !self.sectionsShow.contains(section) {
-            self.sectionsShow.insert(section)
-            self.actualitesTableView.insertRows(at: indexPathsForSection(), with: .fade)
+        if !sectionsShow.contains(section) {
+            sectionsShow.insert(section)
+            actualitesTableView.insertRows(at: indexPathsForSection(), with: .fade)
+            actualitesTableView.reloadData()
         } else {
-            self.sectionsShow.remove(section)
-            self.actualitesTableView.deleteRows(at: indexPathsForSection(), with: .fade)
+            sectionsShow.remove(section)
+            actualitesTableView.deleteRows(at: indexPathsForSection(), with: .fade)
+            actualitesTableView.reloadData()
         }
     }
 }
-
 
 extension String {
     var htmlToAttributedString: NSAttributedString? {
         guard let data = data(using: .utf8) else { return nil }
         do {
-            return try NSAttributedString(data: data, options: [.documentType: NSAttributedString.DocumentType.html, .characterEncoding:String.Encoding.utf8.rawValue], documentAttributes: nil)
+            return try NSAttributedString(data: data, options: [.documentType: NSAttributedString.DocumentType.html, .characterEncoding: String.Encoding.utf8.rawValue], documentAttributes: nil)
         } catch {
             return nil
         }
     }
+
     var htmlToString: String {
         return htmlToAttributedString?.string ?? ""
-    }
-}
-
-class SectionCustomHeader: UITableViewHeaderFooterView {
-    let title = UILabel()
-    let image = UIImageView()
-    let sectionTitle = UIButton()
-    
-    override init(reuseIdentifier: String?) {
-        super.init(reuseIdentifier: reuseIdentifier)
-        configureContents()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func configureContents() {
-        image.translatesAutoresizingMaskIntoConstraints = false
-        sectionTitle.translatesAutoresizingMaskIntoConstraints = false
-
-        contentView.addSubview(image)
-        contentView.addSubview(sectionTitle)
-        contentView.heightAnchor.constraint(equalToConstant: 100)
-        
-        NSLayoutConstraint.activate([
-            image.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
-            image.widthAnchor.constraint(equalToConstant: 100),
-            image.heightAnchor.constraint(equalToConstant: 100),
-            image.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            
-            sectionTitle.heightAnchor.constraint(equalToConstant: 1000),
-            sectionTitle.leadingAnchor.constraint(equalTo: image.trailingAnchor,
-                   constant: 8),
-            sectionTitle.trailingAnchor.constraint(equalTo:
-                   contentView.layoutMarginsGuide.trailingAnchor),
-            sectionTitle.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
-        ])
     }
 }
